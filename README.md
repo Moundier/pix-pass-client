@@ -22,14 +22,17 @@ Flutter commands
 - `flutter emulators --launch flutter_emulator`
 - `flutter run --device-connection attached`
 
+flutter pub add equatable
+flutter pub add flutter_bloc
+
 Fixes
 - Upgrade or Downgrade Gradle version
 - Upgrade or Downgrade Java version
 
-Settings
+Editor Settings
 - dart: enable sdk formatter
 
-Extensions
+Editor Extensions
 - Dart extensions
 - Flutter extensions
 
@@ -37,3 +40,7 @@ Packages
 - Modular UI
 - Nes UI
 - Neu brutalism UI
+
+Example of theme toggling
+- nes_ui/example/lib/app/*
+- app.dart
