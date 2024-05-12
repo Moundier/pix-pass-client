@@ -1,6 +1,7 @@
 
 import 'package:client_flutter/shared/widgets/my_button.dart';
 import 'package:client_flutter/shared/widgets/my_card_copy.dart';
+import 'package:client_flutter/shared/widgets/my_dialog.dart';
 import 'package:client_flutter/shared/widgets/my_input_container.dart';
 import 'package:client_flutter/shared/widgets/my_list_view.dart';
 import 'package:client_flutter/shared/widgets/my_navbar.dart';
@@ -8,13 +9,13 @@ import 'package:client_flutter/shared/widgets/my_dummy.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class OptionPage extends StatefulWidget {
-  const OptionPage({super.key});
+class SecretPage extends StatefulWidget {
+  const SecretPage({super.key});
   @override
-  State<OptionPage> createState() => OptionPageState();
+  State<SecretPage> createState() => OptionPageState();
 }
 
-class OptionPageState extends State<OptionPage> {
+class OptionPageState extends State<SecretPage> {
   
   bool showPlaceholder = false;
   bool showTextField = false;
@@ -65,6 +66,7 @@ class OptionPageState extends State<OptionPage> {
         ),
         actions: actionWidget(),
       ),
+      // Ternary Operator
       body: showPlaceholder ? MyDummy() : MyListView(
         widgetList: [
           
@@ -73,20 +75,32 @@ class OptionPageState extends State<OptionPage> {
           CardCopy(
             option: 'Facebook',
             paramImage: 'assets/key.png', 
-            onPressed: () => {}
+            onPressed: () => MyDialog(widget: Text('Bithc')),
+
+            
           ),
 
           CardCopy(
             option: 'Youtrack',
             paramImage: 'assets/key.png', 
-            onPressed: () => {}
+            onPressed: () => MyDialog(widget: widget)
           ),
 
         ]
       ),
-      bottomSheet: showTextField ?  MyInputContainer(showInput) : MyButton(showInput,),
+      bottomSheet: showTextField ? MyInputContainer(showInput) : MyButton(showInput,),
       bottomNavigationBar: MyNavbar(),
     );
   }
 }
 
+class Edit extends StatelessWidget {
+  
+  const Edit({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+}

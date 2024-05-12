@@ -30,7 +30,7 @@ class MyInputContainer extends StatelessWidget {
     );
 
     return Container(
-      color: const Color.fromARGB(255, 154, 154, 154),
+      color: Color.fromARGB(255, 255, 255, 255),
       child: Row(
         children: [
           

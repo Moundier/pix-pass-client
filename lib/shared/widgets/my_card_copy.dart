@@ -40,7 +40,6 @@ class CardCopyState extends State<CardCopy> {
       padding: EdgeInsets.all(4),
       child: GestureDetector(
         onTap: () {
-          print('Oh My god');
           NesDialog.show<void>(
             frame: const NesWindowDialogFrame(),
             context: context,

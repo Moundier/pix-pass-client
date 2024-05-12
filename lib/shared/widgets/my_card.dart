@@ -1,4 +1,4 @@
-import 'package:client_flutter/pages/page_option.dart';
+import 'package:client_flutter/pages/page_secret.dart';
 import 'package:client_flutter/shared/events/event_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class CardCustom extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           print("Are you stupid? yes");
-          RouteEvent.openPage(context, OptionPage());
+          CustomTransition.push(context, SecretPage());
         },
         child: NesContainer(
           width: 400,
@@ -38,10 +38,11 @@ class CardCustom extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  'contato.gabrielcasanova@gmail.com'.substring(0, 33),
+
+                  'garamoundier.developer@protonmail.com'.substring(0, 33) + '...',
                   style: const TextStyle(
                     fontFamily: 'minecraftia',
-                    fontSize: 10.0,
+                    fontSize: 12.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

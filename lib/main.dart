@@ -29,7 +29,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatefulWidget {
+
   const MainPage({super.key});
+  
   @override
   State<MainPage> createState() => MainPageState();
 }
@@ -52,7 +54,7 @@ class MainPageState extends State<MainPage> {
         title: const Text('Main Page'),
         leading: Padding(
           padding: const EdgeInsets.all(8),
-          child: Image.asset('lib/images/lock.gif', width: 100, height: 100,)
+          child: Image.asset('assets/images/lock.gif', width: 100, height: 100,)
         ),
       ),
       // Here is the colors
@@ -63,12 +65,12 @@ class MainPageState extends State<MainPage> {
           const SizedBox(height: 10),
           
           CardCustom(
-            paramImage: 'assets/key.png', 
+            paramImage: 'assets/images/key.png', 
             onPressed: () => {}
           ),
 
           CardCustom(
-            paramImage: 'assets/key.png', 
+            paramImage: 'assets/images/key.png', 
             onPressed: () => {}
           ),
 

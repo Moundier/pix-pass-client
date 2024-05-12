@@ -38,9 +38,9 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 10),
 
               // forgot password?
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
@@ -60,16 +60,16 @@ class LoginPage extends StatelessWidget {
                 type: NesButtonType.primary, 
                 child: const Text('Sign In'),
                 onPressed: () { 
-                  RouteEvent.openPage(context, const MainPage());
+                  CustomTransition.push(context, const MainPage());
                 },
               ),
 
               const SizedBox(height: 20),
 
               // or continue with
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: const Row(
                   children: [
                     Expanded(
                       child: Divider(
@@ -99,9 +99,9 @@ class LoginPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  NesButton(type: NesButtonType.primary, child: Image.asset('lib/images/face_id.png', width: 50, height: 50,), onPressed: () {  } ,),
+                  NesButton(type: NesButtonType.primary, child: Image.asset('assets/images/face_id.png', width: 50, height: 50,), onPressed: () {  } ,),
                   const SizedBox(width: 25),
-                  NesButton(type: NesButtonType.primary, child: Image.asset('lib/images/touch_id.png', width: 50, height: 50,), onPressed: () {  } ,),
+                  NesButton(type: NesButtonType.primary, child: Image.asset('assets/images/touch_id.png', width: 50, height: 50,), onPressed: () {  } ,),
                 ],
               ),
 

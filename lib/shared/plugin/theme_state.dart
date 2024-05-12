@@ -9,12 +9,8 @@ class ThemeState extends Equatable {
 
   final bool lightMode;
 
-  ThemeState copyWith({
-    bool? lightMode,
-  }) {
-    return ThemeState(
-      lightMode: lightMode ?? this.lightMode,
-    );
+  ThemeState copyWith({bool? lightMode, }) {
+    return ThemeState(lightMode: lightMode ?? this.lightMode,);
   }
 
   @override

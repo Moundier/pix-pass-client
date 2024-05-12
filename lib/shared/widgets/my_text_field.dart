@@ -23,7 +23,7 @@ class MyTextField extends StatelessWidget {
             borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 4),
           ),
           contentPadding: const EdgeInsets.symmetric(
-            vertical: 10.0, // Change vertical padding here
+            vertical: 8.0, // Change vertical padding here
             horizontal: 10.0, // Change horizontal padding here
           ),
           labelText: labelText, 

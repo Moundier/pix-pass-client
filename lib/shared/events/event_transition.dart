@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class RouteEvent extends StatelessElement {
+class CustomTransition extends StatelessElement {
   
-  RouteEvent(super.widget);
+  CustomTransition(super.widget,);
 
-  static void openPage(BuildContext context, page) {
-    Navigator.of(context).push(
-      NesHorizontalCloseTransition.route<void>(
-        pageBuilder: (_, __, ___) { return page; }
-      )
+  static void pop(BuildContext context) {
+    Navigator.of(context).pop(true); 
+  }
+
+  static void push(BuildContext context, page) {
+    Navigator.of(context).push(transitionFill(page));
+  }
+
+  static PageRouteBuilder transitionFill(page) {
+    return NesFillTransition.route<void>(
+      pageBuilder: (_, __, ___) { return page; }
     );
   }
 
-  static void transitionFill(BuildContext context, page) {
-    Navigator.of(context).push(
-      NesFillTransition.route<void>(
-        pageBuilder: (_, __, ___) { return page; }
-      )
+  static transitionHorizontal(page) {
+    return NesHorizontalCloseTransition.route<void>(
+      pageBuilder: (_, __, ___) { return page; }
     );
   }
 
-  static void transitionGrid(BuildContext context, page) {
-    Navigator.of(context).push(
-      NesHorizontalGridTransition.route<void>(
-        pageBuilder: (x, y, z) { return page; } 
-      )
+  static void transitionGrid(page) {
+    NesHorizontalGridTransition.route<void>(
+      pageBuilder: (_, __, ___) {
+        return page;
+      }
     );
   }
 

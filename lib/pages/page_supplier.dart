@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class UtensilPage extends StatelessWidget {
+class SupplierPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
