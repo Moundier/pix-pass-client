@@ -1,13 +1,9 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
 import 'package:flutter/material.dart';
-import 'package:nes_ui/nes_ui.dart';
+// import 'package:nes_ui/nes_ui.dart';
 
-/// {@template nes_check_box}
-/// A Check Box widget.
-/// {@endtemplate}
 class MyNesCheckBox extends StatelessWidget {
-  /// {@macro nes_check_box}
   const MyNesCheckBox({
     super.key,
     required this.value,
@@ -15,17 +11,15 @@ class MyNesCheckBox extends StatelessWidget {
     required this.image
   });
 
-  /// Value (Checked or not)
   final bool value;
 
-  /// Called with the new value and received a change input.
   final void Function(bool)? onChange;
   final Image image;
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.labelMedium ?? const TextStyle();
-    final nesTheme = context.nesThemeExtension<NesTheme>();
+    // final textStyle = Theme.of(context).textTheme.labelMedium ?? const TextStyle();
+    // final nesTheme = context.nesThemeExtension<NesTheme>();
 
     return GestureDetector(
       onTap: () {

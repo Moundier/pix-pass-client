@@ -1,21 +1,20 @@
 import 'package:client_flutter/pages/page_login.dart';
 import 'package:client_flutter/shared/events/event_transition.dart';
-import 'package:client_flutter/shared/widgets/my_button.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_dialog.dart';
 import 'package:client_flutter/shared/widgets/my_nes_checkbox.dart';
 import 'package:client_flutter/shared/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
-import 'package:mini_sprite/mini_sprite.dart';
+// import 'package:mini_sprite/mini_sprite.dart';
 
 class UserPage extends StatefulWidget {
   
   @override
-  _UserPageState createState() => _UserPageState();
+  UserPageState createState() => UserPageState();
 }
 
-class _UserPageState extends State<UserPage> {
+class UserPageState extends State<UserPage> {
 
   bool isSelected = false;
 
@@ -152,11 +151,10 @@ class _UserPageState extends State<UserPage> {
                       )
                     ],
                   ), 
-                  onPressed: () { },
                 ),
                 
-                SizedBox(height: 10,),
-
+                const SizedBox(height: 10,),
+                
                 NesButton(
                   type: NesButtonType.normal, 
                   child: Row(

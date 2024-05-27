@@ -1,5 +1,4 @@
 import 'package:client_flutter/main.dart';
-import 'package:client_flutter/pages/page_secret.dart';
 import 'package:client_flutter/pages/page_user.dart';
 import 'package:client_flutter/shared/events/event_transition.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class MyNavbar extends StatelessWidget {
               onPressed: () => CustomTransition.push(context, MainPage()),
               child: Row(
                 children: [
-                  NesIcon(iconData: NesIcons.hamburgerMenu, size: Size.fromHeight(16),),
+                  NesIcon(iconData: NesIcons.hamburgerMenu, size: const Size.fromHeight(16),),
                 ],
               ),
             ),
@@ -38,7 +37,7 @@ class MyNavbar extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  NesIcon(iconData: NesIcons.threeHorizontalDots, size: Size.fromHeight(16),),
+                  NesIcon(iconData: NesIcons.threeHorizontalDots, size: const Size.fromHeight(16),),
                 ],
               ),
             ),
@@ -50,7 +49,7 @@ class MyNavbar extends StatelessWidget {
               onPressed: () => CustomTransition.push(context, UserPage()),
               child: Row(
                 children: [
-                  NesIcon(iconData: NesIcons.user, size: Size.fromHeight(16),),
+                  NesIcon(iconData: NesIcons.user, size: const Size.fromHeight(16),),
                 ],
               ),
             ),
@@ -64,7 +63,7 @@ class MyNavbar extends StatelessWidget {
               },
               child: Row(
                 children: [
-                  NesIcon(iconData: NesIcons.questionMark, size: Size.fromHeight(16),),
+                  NesIcon(iconData: NesIcons.questionMark, size: const Size.fromHeight(16),),
                 ],
               ),
             ),

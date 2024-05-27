@@ -18,11 +18,11 @@ class CardCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4),
+      padding: const EdgeInsets.all(4),
       child: GestureDetector(
         onTap: () {
           print("Are you stupid? yes");
-          CustomTransition.push(context, SecretPage());
+          CustomTransition.push(context, const SecretPage());
         },
         child: NesContainer(
           width: 400,
@@ -32,17 +32,16 @@ class CardCustom extends StatelessWidget {
             children: <Widget>[
               Image.asset(
                 paramImage,
-                width: 60,
-                height: 60,
+                width: 40,
+                height: 40,
                 fit: BoxFit.cover,
               ),
               Expanded(
                 child: Text(
-
                   'garamoundier.developer@protonmail.com'.substring(0, 33) + '...',
                   style: const TextStyle(
                     fontFamily: 'minecraftia',
-                    fontSize: 12.0,
+                    fontSize: 9.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -50,7 +49,7 @@ class CardCustom extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: NesIconButton(
                     primaryColor: const Color.fromARGB(255, 130, 9, 0),
                     icon: NesIcons.delete,

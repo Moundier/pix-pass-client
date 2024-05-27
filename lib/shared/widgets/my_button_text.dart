@@ -21,7 +21,7 @@ class MyButtonText extends StatelessWidget {
           text, 
           style: TextStyle(
             color: const Color.fromARGB(255, 0, 0, 0),
-            fontSize: 16,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
             fontFamily: 'minecraftia'
           ),
