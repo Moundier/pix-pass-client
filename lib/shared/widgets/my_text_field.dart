@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 class MyTextField extends StatelessWidget {
+  
   final String labelText;
+  final double padding;
 
   const MyTextField({
     super.key,
     required this.labelText,
+    required this.padding
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      padding: EdgeInsets.symmetric(horizontal: padding),
       child: TextFormField(
         cursorColor: Colors.black,
         decoration: InputDecoration(
@@ -23,8 +26,8 @@ class MyTextField extends StatelessWidget {
             borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 4),
           ),
           contentPadding: const EdgeInsets.symmetric(
-            vertical: 8.0, // Change vertical padding here
             horizontal: 10.0, // Change horizontal padding here
+            vertical: 8.0, // Change vertical padding here
           ),
           labelText: labelText, 
           labelStyle: const TextStyle(
@@ -34,9 +37,10 @@ class MyTextField extends StatelessWidget {
         ),
         style: const TextStyle(fontFamily: 'minecraftia'),
         validator: (value) {
-          
-          if (value == null || value.isEmpty) return 'Not valid';
-          
+          if (value == null || value.isEmpty) {
+            print("Is not valid");
+            return 'Not valid';
+          } 
           return null;
         },
       ),

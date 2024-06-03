@@ -18,8 +18,6 @@ class MyNesCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final textStyle = Theme.of(context).textTheme.labelMedium ?? const TextStyle();
-    // final nesTheme = context.nesThemeExtension<NesTheme>();
 
     return GestureDetector(
       onTap: () {
@@ -28,21 +26,17 @@ class MyNesCheckBox extends StatelessWidget {
       child: Container(
         width: 30,
         height: 30,
-        
         decoration: BoxDecoration(
           color: Colors.white,
-          // borderRadius: BorderRadius.circular(10.0), // Adjust the value according to your requirement
           border: Border.all(
             color: Colors.black,
             width: 3,
           ),
         ),
-        child: value
-            ? Transform.translate(
-                offset: const Offset(0, 2),
-                child: image,
-              )
-            : null,
+        child: value ? Transform.translate(
+          offset: const Offset(0, 2),
+          child: image,
+        ) : null,
       ),
     );
   }

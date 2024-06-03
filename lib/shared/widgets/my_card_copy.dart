@@ -1,4 +1,6 @@
-import 'package:client_flutter/shared/widgets/my_button_icon.dart';
+import 'package:client_flutter/shared/widgets/my_button_text.dart';
+import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
+import 'package:client_flutter/shared/widgets/my_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -34,16 +36,39 @@ class CardCopyState extends State<CardCopy> {
     required this.onPressed,
   });
 
+  final labelController = TextEditingController();
+  final secretController = TextEditingController();
+
+  Widget editor() {
+    return Column(
+      children: [
+        const SizedBox(width: 200),
+        const MyTextField(labelText: 'Password', padding: 16),
+        const SizedBox(height: 10),
+        const MyTextField(labelText: 'Confirm Password', padding: 16),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MyButtonText('Confirm', NesButtonType.success, () { }),
+            const SizedBox(width: 20,),
+            MyButtonText('Cancel', NesButtonType.error, () {  }),
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4),
+      padding: const EdgeInsets.all(4),
       child: GestureDetector(
         onTap: () {
           NesDialog.show<void>(
-            frame: const NesWindowDialogFrame(),
+            frame: const NesWindowDialogFrame(title: "Edit secret"),
             context: context,
-            builder: (_) => const Text('Hello World'),
+            builder: (_) => editor(),
           );
         },
         child: NesContainer(
@@ -52,12 +77,7 @@ class CardCopyState extends State<CardCopy> {
           padding: const EdgeInsets.all(0.0),
           child: Row(
             children: <Widget>[
-              // Image.asset(
-              //   paramImage,
-              //   width: 60,
-              //   height: 60,
-              //   fit: BoxFit.cover,
-              // ),
+
               const SizedBox(width: 20,),
               Expanded(
                 child: Text(
@@ -69,9 +89,12 @@ class CardCopyState extends State<CardCopy> {
                   ),
                 ),
               ),
-              MyButtonIcon(() => {}, 'assets/images/clipboard.png'),
-              // MyButtonIcon(() => {}, 'assets/images/pencil.png'),
-              // MyButtonIcon(() => {}, 'assets/images/waste_basket.png'),
+
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: MyNesIconButton(imagePath: 'assets/images/clipboard.png', onPress: () => print("Message"),),
+              ),
+              
             ]
           ),
         ),

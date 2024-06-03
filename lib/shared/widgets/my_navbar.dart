@@ -1,12 +1,12 @@
 import 'package:client_flutter/main.dart';
-import 'package:client_flutter/pages/page_user.dart';
+import 'package:client_flutter/pages/page_profile.dart';
 import 'package:client_flutter/shared/events/event_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 class MyNavbar extends StatelessWidget {
   
-  MyNavbar({super.key});
+  const MyNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {

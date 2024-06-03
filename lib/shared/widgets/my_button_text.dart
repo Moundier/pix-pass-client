@@ -11,22 +11,20 @@ class MyButtonText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // padding: EdgeInsets.all(4),
-      child: NesButton( 
-        type: type,
-        
-        onPressed: toggleWidget,
-        child: Text(
-          text, 
-          style: TextStyle(
-            color: const Color.fromARGB(255, 0, 0, 0),
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'minecraftia'
-          ),
-        )
-      ),
+
+    return NesButton( 
+      type: type,
+      
+      onPressed: toggleWidget,
+      child: Text(
+        text, 
+        style: const TextStyle(
+          color:  Color.fromARGB(255, 0, 0, 0),
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'minecraftia'
+        ),
+      )
     );
   }
 

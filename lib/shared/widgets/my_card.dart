@@ -30,22 +30,25 @@ class CardCustom extends StatelessWidget {
           padding: const EdgeInsets.all(0.0),
           child: Row(
             children: <Widget>[
+              
               Image.asset(
                 paramImage,
-                width: 40,
-                height: 40,
+                width: 60,
+                height: 60,
                 fit: BoxFit.cover,
               ),
-              Expanded(
+
+              const Expanded(
                 child: Text(
-                  'garamoundier.developer@protonmail.com'.substring(0, 33) + '...',
-                  style: const TextStyle(
+                  'garamoundier.developer@protonmail.com',
+                  style: TextStyle(
                     fontFamily: 'minecraftia',
-                    fontSize: 9.0,
+                    fontSize: 11.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
+
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
@@ -57,6 +60,7 @@ class CardCustom extends StatelessWidget {
                   ),
                 )
               ),
+              
             ]
           ),
         ), 

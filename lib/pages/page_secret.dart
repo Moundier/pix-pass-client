@@ -17,8 +17,8 @@ class SecretPage extends StatefulWidget {
 
 class OptionPageState extends State<SecretPage> {
   
-  bool showPlaceholder = false;
   bool showTextField = false;
+  bool showPlaceholder = false;
 
   void showInput() {
     setState(() {
@@ -38,20 +38,13 @@ class OptionPageState extends State<SecretPage> {
           child: Image.asset('assets/images/pencil.png', width: 30, height: 30,),
         )
       ), 
-      // Align(
-      //   alignment: Alignment.centerRight,
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(10.0),
-      //     child: Image.asset('assets/images/waste_basket.png', width: 30, height: 30,),
-      //   )
-      // ),   
     ];
   }
 
   @override
   Widget build(BuildContext context) {
 
-    Color background = Color.fromARGB(255, 218, 218, 218);
+    Color background = const Color.fromARGB(255, 218, 218, 218);
 
     return Scaffold(
       backgroundColor: background,
@@ -66,30 +59,28 @@ class OptionPageState extends State<SecretPage> {
         ),
         actions: actionWidget(),
       ),
-      // Ternary Operator
-      body: showPlaceholder ? MyDummy() : MyListView(
+
+      body: showPlaceholder ? const MyDummy() : MyListView(
+
         widgetList: [
-          
           const SizedBox(height: 10),
 
           CardCopy(
             option: 'Facebook',
-            paramImage: 'assets/key.png', 
-            onPressed: () => MyDialog(widget: Text('Bithc')),
-
-            
+            paramImage: 'assets/key.png',
+            onPressed: () => const MyDialog(widget: Text('Hello World')).show(context),
           ),
 
           CardCopy(
             option: 'Youtrack',
             paramImage: 'assets/key.png', 
-            onPressed: () => MyDialog(widget: widget)
+            onPressed: () => MyDialog(widget: widget).show(context),
           ),
 
         ]
       ),
-      bottomSheet: showTextField ? MyInputContainer(showInput) : MyButton(showInput,),
-      bottomNavigationBar: MyNavbar(),
+      bottomSheet: showTextField ? MyInputContainer(inputTextLabel: "Label", valueTextLabel: "Password", toggleWidget:  showInput,) : MyButton(showInput,),
+      bottomNavigationBar: const MyNavbar(),
     );
   }
 }

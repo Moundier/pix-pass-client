@@ -2,8 +2,8 @@ import 'package:client_flutter/pages/page_login.dart';
 import 'package:client_flutter/shared/events/event_transition.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_dialog.dart';
-import 'package:client_flutter/shared/widgets/my_nes_checkbox.dart';
 import 'package:client_flutter/shared/widgets/my_text_field.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 // import 'package:mini_sprite/mini_sprite.dart';
@@ -32,7 +32,7 @@ class UserPageState extends State<UserPage> {
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             Row(
@@ -123,96 +123,63 @@ class UserPageState extends State<UserPage> {
 
             const SizedBox(height: 10,),
 
-            Column(
-              children: [
-                
-            
-                NesButton(
-                  type: NesButtonType.normal, 
-                  child: Row(
-                    children: [
-                      NesIcon(iconData: NesIcons.bell),
-                      const SizedBox(width: 10,),
-                      const Expanded(
-                        child: Text(
-                          'Configure Pair Authentication', 
-                          style: TextStyle(
-                            fontFamily: 'minecraftia', 
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          )
-                        ),
-                      ),
-                      MyNesCheckBox(
-                        value: true, 
-                        onChange: (bool? value) { 
-                        }, 
-                        image: Image.asset('assets/images/check.png')
-                      )
-                    ],
-                  ), 
-                ),
-                
-                const SizedBox(height: 10,),
-                
-                NesButton(
-                  type: NesButtonType.normal, 
-                  child: Row(
-                    children: [
-                      NesIcon(iconData: NesIcons.bell),
-                      const SizedBox(width: 10,),
-                      const Expanded(
-                        child: Text(
-                          'Allow Touch Identiffication', 
-                          style: TextStyle(
-                            fontFamily: 'minecraftia', 
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          )
-                        ),
-                      ),
-                      MyNesCheckBox(
-                        value: true, 
-                        onChange: (bool? value) { 
-                        }, 
-                        image: Image.asset('assets/images/check.png', width: 5, height: 5,)
-                      )
-                    ],
-                  ), 
-                  onPressed: () { },
-                ),
+            NesContainer(
+              padding: EdgeInsets.all(12),
+              width: 400,
+              child: Row(
+                children: [
+                  Image.asset('assets/images/touch_id.png', height: 40,), 
+                  const SizedBox(width: 10,),
+                  const Text(
+                    "Enable face id", style: TextStyle(
+                      fontFamily: 'minecraftia', 
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
 
-                const SizedBox(height: 10,),
+                  SizedBox(width: 40,),
 
-                NesButton(
-                  type: NesButtonType.normal, 
-                  child: Row(
-                    children: [
-                      NesIcon(iconData: NesIcons.bell),
-                      const SizedBox(width: 10,),
-                      const Expanded(
-                        child: Text(
-                          'Allow Facial Identification', 
-                          style: TextStyle(
-                            fontFamily: 'minecraftia', 
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          )
-                        ),
-                      ),
-                      MyNesCheckBox(
-                        value: true, 
-                        onChange: (bool? value) { 
-                        }, 
-                        image: Image.asset('assets/images/check.png'),
-                      )
-                    ],
-                  ), 
-                  onPressed: () { },
-                ),
-
-              ]
+                  NesButton(
+                    type: NesButtonType.success, 
+                    child: Text("Enabled"),
+                    onPressed: () { 
+                      print("Enable");
+                    },
+                  )
+                ],
+              ),
             ),
+
+            const SizedBox(height: 10,),
+
+            NesContainer(
+              padding: EdgeInsets.all(12),
+              width: 400,
+              child: Row(
+                children: [
+                  Image.asset('assets/images/face_id.png', height: 40,), 
+                  const SizedBox(width: 10,),
+                  const Text(
+                    "Enable face id", style: TextStyle(
+                      fontFamily: 'minecraftia', 
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+
+                  SizedBox(width: 40,),
+
+                  NesButton(
+                    type: NesButtonType.error, 
+                    child: Text("Disabled"),
+                    onPressed: () { 
+                      print("Enable");
+                    },
+                  )
+                ],
+              ),
+            )
 
           ],
         ),
@@ -263,29 +230,27 @@ class Update extends StatelessWidget {
           )
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            const MyTextField(labelText: 'Username', ),
-            const SizedBox(height: 10),
-            const MyTextField(labelText: 'Email', ),
-            const SizedBox(height: 10),
-            const MyTextField(labelText: 'Password', ),
-            const SizedBox(height: 10),
-            const MyTextField(labelText: 'Confirm Password', ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MyButtonText('Confirm', NesButtonType.success, () { }),
-                const SizedBox(width: 20,),
-                MyButtonText('Cancel', NesButtonType.error, () { }),
-              ],
-            ),
-          ],
-        )
-      ),
+      body: Column(
+        children: [
+          const SizedBox(height: 10, ),
+          const MyTextField(labelText: 'Username', padding: 16,),
+          const SizedBox(height: 10),
+          const MyTextField(labelText: 'Email', padding: 16),
+          const SizedBox(height: 10),
+          const MyTextField(labelText: 'Password', padding: 16),
+          const SizedBox(height: 10),
+          const MyTextField(labelText: 'Confirm Password', padding: 16),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MyButtonText('Confirm', NesButtonType.success, () { }),
+              const SizedBox(width: 20,),
+              MyButtonText('Cancel', NesButtonType.error, () {  }),
+            ],
+          ),
+        ],
+      )
     ); 
     
   }

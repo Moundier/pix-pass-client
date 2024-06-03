@@ -76,7 +76,7 @@ class MainPageState extends State<MainPage> {
 
         ]
       ),
-      bottomSheet: showTextField ?  MyInputContainer(showInput) : MyButton(showInput,),
+      bottomSheet: showTextField ?  MyInputContainer(inputTextLabel: "Label", valueTextLabel: "Email", toggleWidget: showInput,) : MyButton(showInput,),
       bottomNavigationBar: MyNavbar(),
     );
   }

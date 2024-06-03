@@ -31,9 +31,9 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 10),
 
               // text fields
-              const MyTextField(labelText: 'Email'),
+              const MyTextField(labelText: 'Email', padding: 16),
               const SizedBox(height: 10),
-              const MyTextField(labelText: 'Password'),
+              const MyTextField(labelText: 'Password', padding: 16),
 
               const SizedBox(height: 10),
 

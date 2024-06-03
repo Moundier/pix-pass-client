@@ -3,7 +3,7 @@ import 'package:nes_ui/nes_ui.dart';
 
 class MyDummy extends StatelessWidget {
   
-  MyDummy({super.key});
+  const MyDummy({super.key});
   
   @override
   Widget build(BuildContext context) {

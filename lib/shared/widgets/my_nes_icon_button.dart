@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-/// {@template nes_icon_button}
-/// A button widget that wraps a [NesIcon] into a pressable button.
-/// {@endtemplate}
-class NesIconButton extends StatelessWidget {
-  /// {@macro nes_icon_button}
-  const NesIconButton({
+class MyNesIconButton extends StatelessWidget {
+
+  const MyNesIconButton({
     super.key,
-    required this.image,
+    required this.imagePath,
     this.onPress,
     this.onPressStart,
     this.onPressEnd,
@@ -18,30 +15,20 @@ class NesIconButton extends StatelessWidget {
     this.disabled,
   });
 
-  /// Icon of the button.
-  final Image image;
+  final String imagePath;
 
-  /// Called when the button is pressed.
   final VoidCallback? onPress;
 
-  /// Called when the button is pressed.
   final VoidCallback? onPressStart;
 
-  /// Called when pressed has ended.
   final VoidCallback? onPressEnd;
 
-  /// Optional primary color for the icon.
-  /// Will use value from the theme if none is provided.
   final Color? primaryColor;
 
-  /// Optional secondary color for the icon.
-  /// Will use value from the theme if none is provided.
   final Color? secondaryColor;
 
-  /// An optional size for the icon button.
   final Size? size;
 
-  /// Disable the button
   final bool? disabled;
 
   bool _isDisabled() =>
@@ -57,7 +44,7 @@ class NesIconButton extends StatelessWidget {
       disabled: _isDisabled(),
       child: Opacity(
         opacity: _isDisabled() ? .2 : 1.0,
-        child: Image.asset('',)
+        child: Image.asset(imagePath, width: 40, height: 40,)
       ),
     );
   }

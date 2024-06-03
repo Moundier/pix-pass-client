@@ -9,9 +9,10 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
-      padding: EdgeInsets.all(4),
-      color: Color.fromARGB(255, 218, 218, 218),
+      padding: const EdgeInsets.all(4),
+      color: const Color.fromARGB(255, 218, 218, 218),
       child: NesButton( 
         type: NesButtonType.primary,
         onPressed: toggleWidget,
