@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class CustomTransition extends StatelessElement {
+class NavigationService extends StatelessElement {
   
-  CustomTransition(super.widget,);
+  NavigationService(super.widget,);
 
   static void pop(BuildContext context) {
     Navigator.of(context).pop(true); 

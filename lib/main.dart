@@ -58,8 +58,8 @@ class MainPageState extends State<MainPage> {
         ),
       ),
       // Here is the colors
-      backgroundColor: Color.fromARGB(255, 218, 218, 218),
-      body: showPlaceholder ? MyDummy() : MyListView(
+      backgroundColor: const Color.fromARGB(255, 218, 218, 218),
+      body: showPlaceholder ? const MyDummy() : MyListView(
         widgetList: [
           
           const SizedBox(height: 10),

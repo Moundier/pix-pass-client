@@ -1,5 +1,5 @@
 import 'package:client_flutter/pages/page_secret.dart';
-import 'package:client_flutter/shared/events/event_transition.dart';
+import 'package:client_flutter/shared/events/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,7 +22,7 @@ class CardCustom extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           print("Are you stupid? yes");
-          CustomTransition.push(context, const SecretPage());
+          NavigationService.push(context, const SecretPage());
         },
         child: NesContainer(
           width: 400,
