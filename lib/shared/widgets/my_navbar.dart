@@ -1,6 +1,6 @@
 import 'package:client_flutter/main.dart';
-import 'package:client_flutter/pages/page_profile.dart';
-import 'package:client_flutter/shared/events/navigation_service.dart';
+import 'package:client_flutter/screens/user_page.dart';
+import 'package:client_flutter/shared/service/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 

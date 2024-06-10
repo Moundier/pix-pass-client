@@ -49,7 +49,7 @@ class OptionPageState extends State<SecretPage> {
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        title: const Text('Option'),
+        title: const Text('Secret Page'),
         leading: Padding(
           padding: const EdgeInsets.all(8),
           child: NesIconButton(

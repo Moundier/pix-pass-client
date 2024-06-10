@@ -1,9 +1,8 @@
-import 'package:client_flutter/pages/page_login.dart';
-import 'package:client_flutter/shared/events/event_transition.dart';
+import 'package:client_flutter/screens/login_page.dart';
+import 'package:client_flutter/shared/service/navigation_service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_dialog.dart';
 import 'package:client_flutter/shared/widgets/my_text_field.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 // import 'package:mini_sprite/mini_sprite.dart';
@@ -83,7 +82,7 @@ class UserPageState extends State<UserPage> {
                               child: const Text('EDIT PROFILE', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'minecraftia'),), 
                               onPressed: () {
                                 // Navigation
-                                CustomTransition.push(context, Update());
+                                NavigationService.push(context, Update());
                               },
                             )
                           ],
@@ -134,7 +133,7 @@ class UserPageState extends State<UserPage> {
                     "Enable face id", style: TextStyle(
                       fontFamily: 'minecraftia', 
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 12,
                     ),
                   ),
 
@@ -158,17 +157,18 @@ class UserPageState extends State<UserPage> {
               width: 400,
               child: Row(
                 children: [
+                  
                   Image.asset('assets/images/face_id.png', height: 40,), 
                   const SizedBox(width: 10,),
                   const Text(
                     "Enable face id", style: TextStyle(
                       fontFamily: 'minecraftia', 
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 12,
                     ),
                   ),
 
-                  SizedBox(width: 40,),
+                  const SizedBox(width: 40,),
 
                   NesButton(
                     type: NesButtonType.error, 
@@ -185,7 +185,7 @@ class UserPageState extends State<UserPage> {
         ),
       ),
       bottomSheet: Container(
-        color: Colors.white,
+        color: Colors.red,
         padding: EdgeInsets.all(12),
         child: NesButton(
           type: NesButtonType.error, 
@@ -195,13 +195,16 @@ class UserPageState extends State<UserPage> {
               widget: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
                   MyButtonText('Confirm', NesButtonType.success, () { 
-                    CustomTransition.push(context, LoginPage());
+                    NavigationService.push(context, LoginPage());
                   }),
                   const SizedBox(width: 20,),
+
                   MyButtonText('Cancel', NesButtonType.error, () { 
                     Navigator.of(context).pop(true); 
                   }),
+                  
                 ],
               ),
             ).show(context);

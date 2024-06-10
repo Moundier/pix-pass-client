@@ -1,8 +1,8 @@
 import 'package:client_flutter/main.dart';
-import 'package:client_flutter/shared/events/event_transition.dart';
 import 'package:client_flutter/shared/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
+import 'package:client_flutter/shared/service/navigation_service.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -60,7 +60,7 @@ class LoginPage extends StatelessWidget {
                 type: NesButtonType.primary, 
                 child: const Text('Sign In'),
                 onPressed: () { 
-                  CustomTransition.push(context, const MainPage());
+                  NavigationService.push(context, MainPage());
                 },
               ),
 
@@ -71,12 +71,14 @@ class LoginPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: const Row(
                   children: [
+
                     Expanded(
                       child: Divider(
                         thickness: 4,
                         color: Color.fromARGB(255, 0, 0, 0),
                       ),
                     ),
+
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
@@ -84,6 +86,7 @@ class LoginPage extends StatelessWidget {
                         style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 10),
                       ),
                     ),
+
                     Expanded(
                       child: Divider(
                         thickness: 4,

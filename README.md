@@ -20,7 +20,7 @@ Flutter environment
 
 Flutter commands
 - `flutter emulators --launch flutter_emulator`
-- `flutter run --device-connection attached`
+- `f`
 
 flutter pub add equatable
 flutter pub add flutter_bloc

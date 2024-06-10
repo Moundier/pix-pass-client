@@ -11,7 +11,8 @@ class NavigationService extends StatelessElement {
   }
 
   static void push(BuildContext context, page) {
-    Navigator.of(context).push(transitionFill(page));
+    dynamic animation = transitionHorizontal(page);
+    Navigator.of(context).push(animation);
   }
 
   static PageRouteBuilder transitionFill(page) {

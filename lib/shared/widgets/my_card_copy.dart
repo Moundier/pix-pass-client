@@ -40,14 +40,23 @@ class CardCopyState extends State<CardCopy> {
   final secretController = TextEditingController();
 
   Widget editor() {
+
     return Column(
+
       children: [
-        const SizedBox(width: 200),
-        const MyTextField(labelText: 'Password', padding: 16),
-        const SizedBox(height: 10),
-        const MyTextField(labelText: 'Confirm Password', padding: 16),
-        const SizedBox(height: 10),
-        Row(
+
+        const SizedBox(width: 320),
+
+        const Column(
+          children: [
+            MyTextField(labelText: 'Password', padding: 2),
+            SizedBox(height: 10),
+            MyTextField(labelText: 'Confirm Password', padding: 2,),
+            SizedBox(height: 10),
+          ],
+        ),
+
+         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MyButtonText('Confirm', NesButtonType.success, () { }),
@@ -55,6 +64,7 @@ class CardCopyState extends State<CardCopy> {
             MyButtonText('Cancel', NesButtonType.error, () {  }),
           ],
         ),
+
       ],
     );
   }
@@ -79,6 +89,7 @@ class CardCopyState extends State<CardCopy> {
             children: <Widget>[
 
               const SizedBox(width: 20,),
+              
               Expanded(
                 child: Text(
                   '1234567890111213141516171819202122'.substring(0, 33),
