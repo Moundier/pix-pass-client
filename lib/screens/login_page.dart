@@ -7,12 +7,10 @@ import 'package:client_flutter/shared/service/navigation_service.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  // text editing controllers
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // sign user in method
-  void signUserIn() {}
+  TextStyle textStyle(Color? color) => TextStyle(color: color, fontSize: 10);
 
   @override
   Widget build(BuildContext context) {
@@ -24,32 +22,20 @@ class LoginPage extends StatelessWidget {
           child: Column(
             children: [
 
-              // logo
-              // Image.asset('lib/images/key_turning.gif', width: 200, height: 200,),
               Image.asset('assets/images/safe.gif', width: 200, height: 200,),
 
               const SizedBox(height: 10),
-
-              // text fields
               const MyTextField(labelText: 'Email', padding: 16),
               const SizedBox(height: 10),
               const MyTextField(labelText: 'Password', padding: 16),
-
               const SizedBox(height: 10),
 
-              // forgot password?
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      'Forgot Password?',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 0, 99, 180),
-                        fontSize: 10
-                      ),
-                    ),
+                    Text('Forgot Password?', style: textStyle(const Color.fromARGB(255, 0, 99, 180))),
                   ],
                 ),
               ),
@@ -59,20 +45,17 @@ class LoginPage extends StatelessWidget {
               NesButton(
                 type: NesButtonType.primary, 
                 child: const Text('Sign In'),
-                onPressed: () { 
-                  NavigationService.push(context, MainPage());
-                },
+                onPressed: () => NavigationService.push(context, const MainPage())
               ),
 
               const SizedBox(height: 20),
 
-              // or continue with
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: const Row(
+                child: Row(
                   children: [
 
-                    Expanded(
+                    const Expanded(
                       child: Divider(
                         thickness: 4,
                         color: Color.fromARGB(255, 0, 0, 0),
@@ -80,19 +63,17 @@ class LoginPage extends StatelessWidget {
                     ),
 
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or continue with',
-                        style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 10),
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text( 'Or continue with', style: textStyle(const Color.fromARGB(255, 0, 0, 0)), ),
                     ),
 
-                    Expanded(
+                    const Expanded(
                       child: Divider(
                         thickness: 4,
                         color: Color.fromARGB(255, 0, 0, 0),
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -110,22 +91,12 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // not a member? register now
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Not a member?',
-                    style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 10),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    'Register now',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 0, 99, 180),
-                      fontSize: 10
-                    ),
-                  ),
+                  Text('Not a member?', style: textStyle(const Color.fromARGB(255, 0, 0, 0))),
+                  const SizedBox(width: 10),
+                  Text('Register now', style: textStyle(const Color.fromARGB(255, 0, 99, 180))),
                 ],
               ),
               

@@ -1,3 +1,4 @@
+import 'package:client_flutter/shared/service/navigation_service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
 import 'package:client_flutter/shared/widgets/my_text_field.dart';
@@ -59,9 +60,9 @@ class CardCopyState extends State<CardCopy> {
          Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MyButtonText('Confirm', NesButtonType.success, () { }),
+            MyButtonText('Update', NesButtonType.warning, () { }),
             const SizedBox(width: 20,),
-            MyButtonText('Cancel', NesButtonType.error, () {  }),
+            MyButtonText('Delete', NesButtonType.error, () => NavigationService.pop(context)),
           ],
         ),
 
