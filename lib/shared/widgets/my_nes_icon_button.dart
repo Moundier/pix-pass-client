@@ -16,19 +16,12 @@ class MyNesIconButton extends StatelessWidget {
   });
 
   final String imagePath;
-
   final VoidCallback? onPress;
-
   final VoidCallback? onPressStart;
-
   final VoidCallback? onPressEnd;
-
   final Color? primaryColor;
-
   final Color? secondaryColor;
-
   final Size? size;
-
   final bool? disabled;
 
   bool _isDisabled() =>
