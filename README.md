@@ -22,6 +22,12 @@ Flutter commands
 - `flutter emulators --launch flutter_emulator`
 - `f`
 
+Flutter case: source folder renamed
+- `rm -rf build`
+- `flutter clean`
+- `flutter build linux`
+- `flutter run`
+
 flutter pub add equatable
 flutter pub add flutter_bloc
 

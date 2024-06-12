@@ -1,19 +1,20 @@
 import 'package:client_flutter/screens/login/login.page.dart';
+import 'package:client_flutter/screens/tab2/tab2.sequence.dart';
 import 'package:client_flutter/shared/service/navigation_service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_dialog.dart';
-import 'package:client_flutter/shared/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
-// import 'package:mini_sprite/mini_sprite.dart';
 
-class UserPage extends StatefulWidget {
+class Tab2Page extends StatefulWidget {
+
+  const Tab2Page({super.key});
   
   @override
-  UserPageState createState() => UserPageState();
+  Tab2PageState createState() => Tab2PageState();
 }
 
-class UserPageState extends State<UserPage> {
+class Tab2PageState extends State<Tab2Page> {
 
   bool isSelected = false;
 
@@ -82,7 +83,7 @@ class UserPageState extends State<UserPage> {
                             NesButton(
                               type: NesButtonType.success, 
                               child: const Text('EDIT PROFILE', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'minecraftia'),), 
-                              onPressed: () => NavigationService.push(context, const Update()),
+                              onPressed: () => NavigationService.push(context, const Tab2Sequence()),
                             )
                           ],
                         ),
@@ -227,47 +228,3 @@ class UserPageState extends State<UserPage> {
 
 }
 
-class Update extends StatelessWidget {
-
-  const Update({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit'),
-        leading: Padding(
-          padding: const EdgeInsets.all(8),
-          child: NesIconButton(
-            icon: NesIcons16.leftArrowIndicator,
-            onPress: () => Navigator.of(context).pop(),
-          )
-        ),
-      ),
-
-      body: Column(
-        children: [
-          const SizedBox(height: 10, ),
-          const MyTextField(labelText: 'Username', padding: 16,),
-          const SizedBox(height: 10),
-          const MyTextField(labelText: 'Email', padding: 16),
-          const SizedBox(height: 10),
-          const MyTextField(labelText: 'Password', padding: 16),
-          const SizedBox(height: 10),
-          const MyTextField(labelText: 'Confirm Password', padding: 16),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MyButtonText(text: 'Confirm', type: NesButtonType.success, toggleWidget: () { }),
-              const SizedBox(width: 20,),
-              MyButtonText(text: 'Cancel', type: NesButtonType.error, toggleWidget: () {  }),
-            ],
-          ),
-        ],
-      )
-    ); 
-    
-  }
-}

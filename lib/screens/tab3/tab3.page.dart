@@ -2,7 +2,10 @@ import 'package:client_flutter/shared/styles/my_small_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class AboutPage extends StatelessWidget {
+class Tab3Page extends StatelessWidget {
+
+
+  const Tab3Page({super.key});
   
   @override
   Widget build(BuildContext context) {
@@ -17,11 +20,13 @@ class AboutPage extends StatelessWidget {
           )
         ),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            // Information divider
 
             const Row(
               children: [
@@ -48,10 +53,10 @@ class AboutPage extends StatelessWidget {
             const SizedBox(height: 8,),
             const MyBoldTextStyle("MANTAINER: Gabriel Vieira Casanova"),
             const SizedBox(height: 8,),
-            const MyBoldTextStyle("CONTACT: garamoundier.developer@protonmail.com"),
+            const MyBoldTextStyle("Contact: garamoundier.developer@protonmail.com"),
             const SizedBox(height: 10),
 
-            NesButton(type: NesButtonType.normal, child: Text('Donate'), onPressed: () => {} ,),
+            NesButton(type: NesButtonType.normal, child: const Text('Donate'), onPressed: () => {} ,),
 
             const SizedBox(height: 20,),
 
@@ -124,6 +129,7 @@ class AboutPage extends StatelessWidget {
                   ),
 
                   const SizedBox(width: 10,),
+
                   const Text(
                     "Send Feedback", style: TextStyle(
                       fontFamily: 'minecraftia', 
@@ -134,13 +140,9 @@ class AboutPage extends StatelessWidget {
 
                   const SizedBox(width: 40,),
 
-
-
                 ],
               ),
             )
-            
-
 
           ],
         ),

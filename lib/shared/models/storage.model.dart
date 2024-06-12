@@ -2,6 +2,7 @@ import 'package:client_flutter/shared/models/password.model.dart';
 
 class Storage {
   
+  String? note;
   String? label;
   List<Password>? passwords;
 

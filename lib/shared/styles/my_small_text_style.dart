@@ -16,7 +16,7 @@ class MyBoldTextStyle extends StatelessWidget {
       style: const TextStyle(
         fontFamily: 'minecraftia',
         color: Color.fromARGB(255, 0, 0, 0),
-        fontSize: 10,
+        fontSize: 8,
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.bold
       ),

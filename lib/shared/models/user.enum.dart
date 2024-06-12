@@ -1,6 +1,6 @@
 enum Role {
-  USER, 
-  GUEST, 
-  ADMIN, 
-  CREATOR  
+  user, 
+  guest, 
+  admin, 
+  creator  
 }

@@ -22,4 +22,19 @@ class Password {
     return;
   }
   
+
+  // insert
+  // locate
+  // update
+  // delete
+
+  // save
+  // find
+  // edit
+  // wipe
+
+  // create
+  // read
+  // update
+  // delete
 }

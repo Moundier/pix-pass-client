@@ -1,97 +1,125 @@
-import 'package:client_flutter/main.dart';
-import 'package:client_flutter/shared/widgets/my_text_field.dart';
+import 'package:client_flutter/shared/styles/my_input.style.dart';
+import 'package:client_flutter/shared/styles/my_text.style.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
-import 'package:client_flutter/shared/service/navigation_service.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterPage({super.key});
 
-  // text editing controllers
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  // register user method
-  void registerUser() {}
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 218, 218, 218),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            children: [
-              // logo
-              Image.asset('assets/images/safe.gif', width: 200, height: 200,),
-              const SizedBox(height: 10),
-              // text fields
-              const MyTextField(labelText: 'Email', padding: 16),
-              const SizedBox(height: 10),
-              const MyTextField(labelText: 'Password', padding: 16),
-              const SizedBox(height: 20),
-              NesButton(
-                type: NesButtonType.primary, 
-                child: const Text('Register'),
-                onPressed: () { 
-                  registerUser();
-                  NavigationService.push(context, MainPage());
-                },
-              ),
-              const SizedBox(height: 20),
-              // or continue with
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: const Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 4,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or sign up with',
-                        style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 10),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 4,
-                        color: Color.fromARGB(255, 0, 0, 0),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  NesButton(type: NesButtonType.primary, child: Image.asset('assets/images/face_id.png', width: 50, height: 50,), onPressed: () {  } ,),
-                  const SizedBox(width: 25),
-                  NesButton(type: NesButtonType.primary, child: Image.asset('assets/images/touch_id.png', width: 50, height: 50,), onPressed: () {  } ,),
-                ],
-              ),
-              const SizedBox(height: 20),
-              // register now
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Register now',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 0, 99, 180),
-                      fontSize: 10
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      body: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: const RegisterForm(),
+      ),
+    );
+  }
+}
+
+class RegisterForm extends StatefulWidget {
+
+  const RegisterForm({super.key});
+
+  @override
+  _RegisterFormState createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmController = TextEditingController();
+
+  TextStyle textStyle() {
+    return const TextStyle(fontFamily: 'minecraftia');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+
+          NesIconButton(
+            icon: NesIcons16.leftArrowIndicator,
+            onPress: () => Navigator.of(context).pop(),
           ),
-        ),
+
+          Center(child: Image.asset('assets/images/id_card.png', width: 180, height: 180,),),
+            
+          const SizedBox(height: 20.0),
+
+          TextFormField(
+            controller: _emailController,
+            keyboardType: TextInputType.emailAddress,
+            decoration: MyInputStyle.build("Email"),
+            style: MyTextStyle.build(),
+            validator: (value) {
+              if (value?.isEmpty ?? true) {
+                return 'Please enter your email';
+              }
+              // Add more email validation logic if needed
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 20.0),
+
+          TextFormField(
+            controller: _passwordController,
+            obscureText: true,
+            decoration: MyInputStyle.build("Password"),
+            style: MyTextStyle.build(),
+            validator: (value) {
+              if (value?.isEmpty ?? true) {
+                return 'Please enter your password'; // Add more password validation logic if needed
+              }
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 20.0),
+
+          TextFormField(
+            controller: _confirmController,
+            obscureText: true,
+            decoration: MyInputStyle.build("Confirm Password"),
+            style: MyTextStyle.build(),
+            validator: (value) {
+              if (value?.isEmpty ?? true) {
+                return 'Please confirm your password'; // Add more password validation logic if needed
+              }
+              if (value != _passwordController.text) {
+                return 'Passwords don\'t match';
+              }
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 20.0),
+
+          NesButton(
+            type: NesButtonType.success,
+            onPressed: () {
+              if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+                // Send data to server or navigate to next screen
+                print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
+
+                // Snackbar message
+                // Throw a timeinterval
+                // Go to login
+              }
+            },
+            child: const Text('Register'),
+          ),
+
+        ],
       ),
     );
   }

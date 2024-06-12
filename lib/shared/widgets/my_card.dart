@@ -1,4 +1,4 @@
-import 'package:client_flutter/screens/secret_page.dart';
+import 'package:client_flutter/screens/tab1/tab1.sequence.dart';
 import 'package:client_flutter/shared/service/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class CardCustom extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           print("Are you stupid? yes");
-          NavigationService.push(context, const PasswordPage());
+          NavigationService.push(context, const Tab1Sequence());
         },
         child: NesContainer(
           width: 400,

@@ -9,13 +9,13 @@ import 'package:client_flutter/shared/widgets/my_dummy.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class PasswordPage extends StatefulWidget {
-  const PasswordPage({super.key});
+class Tab1Sequence extends StatefulWidget {
+  const Tab1Sequence({super.key});
   @override
-  State<PasswordPage> createState() => PasswordPageState();
+  State<Tab1Sequence> createState() => Tab1SequenceState();
 }
 
-class PasswordPageState extends State<PasswordPage> {
+class Tab1SequenceState extends State<Tab1Sequence> {
   
   bool showTextField = false;
   bool showPlaceholder = false;

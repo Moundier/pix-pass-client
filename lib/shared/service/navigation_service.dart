@@ -10,7 +10,7 @@ class NavigationService extends StatelessElement {
     Navigator.of(context).pop(true); 
   }
 
-  static void push(BuildContext context, page) {
+  static void push(BuildContext context, dynamic page) {
 
     dynamic type = 0;
     switch (type) {
