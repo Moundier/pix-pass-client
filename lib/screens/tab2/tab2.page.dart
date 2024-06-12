@@ -1,4 +1,4 @@
-import 'package:client_flutter/screens/login_page.dart';
+import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/shared/service/navigation_service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_dialog.dart';
@@ -16,6 +16,9 @@ class UserPage extends StatefulWidget {
 class UserPageState extends State<UserPage> {
 
   bool isSelected = false;
+
+  bool enableBiometrics = false;
+  bool enableRecognition = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,6 @@ class UserPageState extends State<UserPage> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(10.0), // Set border radius here
                   ),
-                  // child: Image.asset('', width: 80, height: 80, ),
                 ),
 
                 const SizedBox(width: 10,),
@@ -80,10 +82,7 @@ class UserPageState extends State<UserPage> {
                             NesButton(
                               type: NesButtonType.success, 
                               child: const Text('EDIT PROFILE', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'minecraftia'),), 
-                              onPressed: () {
-                                // Navigation
-                                NavigationService.push(context, Update());
-                              },
+                              onPressed: () => NavigationService.push(context, const Update()),
                             )
                           ],
                         ),
@@ -123,7 +122,7 @@ class UserPageState extends State<UserPage> {
             const SizedBox(height: 10,),
 
             NesContainer(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
               width: 400,
               child: Row(
                 children: [
@@ -140,12 +139,14 @@ class UserPageState extends State<UserPage> {
                   SizedBox(width: 40,),
 
                   NesButton(
-                    type: NesButtonType.success, 
-                    child: Text("Enabled"),
-                    onPressed: () { 
-                      print("Enable");
-                    },
-                  )
+                    onPressed: () => setState(() => enableBiometrics = !enableBiometrics),
+                    type: enableBiometrics ? NesButtonType.error : NesButtonType.success, 
+                    child: NesIcon(
+                      iconData: enableBiometrics? NesIcons.remove : NesIcons.check, 
+                      size: const Size.fromHeight(16)
+                    ),
+                  ),
+
                 ],
               ),
             ),
@@ -153,12 +154,13 @@ class UserPageState extends State<UserPage> {
             const SizedBox(height: 10,),
 
             NesContainer(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
               width: 400,
               child: Row(
                 children: [
-                  
+
                   Image.asset('assets/images/face_id.png', height: 40,), 
+
                   const SizedBox(width: 10,),
                   const Text(
                     "Enable face id", style: TextStyle(
@@ -170,13 +172,17 @@ class UserPageState extends State<UserPage> {
 
                   const SizedBox(width: 40,),
 
-                  NesButton(
-                    type: NesButtonType.error, 
-                    child: Text("Disabled"),
-                    onPressed: () { 
-                      print("Enable");
-                    },
-                  )
+                  Container(
+                    child: NesButton(
+                      onPressed: () => setState(() => enableRecognition = !enableRecognition),
+                      type: enableRecognition ? NesButtonType.error : NesButtonType.success, 
+                      child: NesIcon(
+                        iconData: enableRecognition? NesIcons.remove : NesIcons.check, 
+                        size: const Size.fromHeight(16)
+                      ),
+                    ),
+                  ),
+
                 ],
               ),
             )
@@ -196,14 +202,19 @@ class UserPageState extends State<UserPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
 
-                  MyButtonText('Confirm', NesButtonType.success, () { 
-                    NavigationService.push(context, LoginPage());
-                  }),
+                  MyButtonText(
+                    text: 'Confirm', 
+                    type: NesButtonType.success, 
+                    toggleWidget: () => NavigationService.push(context, LoginPage())
+                  ),
+                  
                   const SizedBox(width: 20,),
 
-                  MyButtonText('Cancel', NesButtonType.error, () { 
-                    Navigator.of(context).pop(true); 
-                  }),
+                  MyButtonText(
+                    text: 'Cancel', 
+                    type: NesButtonType.error, 
+                    toggleWidget: () => Navigator.of(context).pop(true) 
+                  ),
                   
                 ],
               ),
@@ -222,6 +233,7 @@ class Update extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit'),
@@ -233,6 +245,7 @@ class Update extends StatelessWidget {
           )
         ),
       ),
+
       body: Column(
         children: [
           const SizedBox(height: 10, ),
@@ -247,9 +260,9 @@ class Update extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MyButtonText('Confirm', NesButtonType.success, () { }),
+              MyButtonText(text: 'Confirm', type: NesButtonType.success, toggleWidget: () { }),
               const SizedBox(width: 20,),
-              MyButtonText('Cancel', NesButtonType.error, () {  }),
+              MyButtonText(text: 'Cancel', type: NesButtonType.error, toggleWidget: () {  }),
             ],
           ),
         ],

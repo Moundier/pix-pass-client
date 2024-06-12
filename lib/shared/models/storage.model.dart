@@ -2,10 +2,10 @@ import 'package:client_flutter/shared/models/password.model.dart';
 
 class Storage {
   
-  String label;
-  List<Password> options;
+  String? label;
+  List<Password>? passwords;
 
-  Storage(this.label, this.options);
+  Storage(this.label, this.passwords);
 
   void insertStorage() {
     return;

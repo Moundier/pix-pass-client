@@ -60,9 +60,9 @@ class CardCopyState extends State<CardCopy> {
          Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MyButtonText('Update', NesButtonType.warning, () { }),
+            MyButtonText(text:  'Update', type: NesButtonType.warning, toggleWidget: () { }),
             const SizedBox(width: 20,),
-            MyButtonText('Delete', NesButtonType.error, () => NavigationService.pop(context)),
+            MyButtonText(text: 'Delete', type: NesButtonType.error, toggleWidget: () => NavigationService.pop(context)),
           ],
         ),
 

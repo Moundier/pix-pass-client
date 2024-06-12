@@ -1,5 +1,6 @@
 import 'package:client_flutter/main.dart';
-import 'package:client_flutter/screens/user_page.dart';
+import 'package:client_flutter/screens/tab2/tab2.page.dart';
+import 'package:client_flutter/screens/tab3/tab3.page.dart';
 import 'package:client_flutter/shared/service/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
@@ -24,13 +25,6 @@ class MyNavbar extends StatelessWidget {
               child: NesIcon(iconData: NesIcons.hamburgerMenu, size: const Size.fromHeight(16),),
             ),
             
-            const SizedBox(width: 20),
-            
-            NesButton(
-              type: NesButtonType.normal,
-              onPressed: () => { },
-              child: NesIcon(iconData: NesIcons.threeHorizontalDots, size: const Size.fromHeight(16),),
-            ),
 
             const SizedBox(width: 20),
 
@@ -44,8 +38,8 @@ class MyNavbar extends StatelessWidget {
             
             NesButton(
               type: NesButtonType.normal,
-              onPressed: () => { },
-              child: NesIcon(iconData: NesIcons.user, size: const Size.fromHeight(16),),
+              onPressed: () => NavigationService.push(context, AboutPage()),
+              child: NesIcon(iconData: NesIcons.threeHorizontalDots, size: const Size.fromHeight(16),),
             ),
 
           ],

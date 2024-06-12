@@ -9,13 +9,13 @@ import 'package:client_flutter/shared/widgets/my_dummy.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class SecretPage extends StatefulWidget {
-  const SecretPage({super.key});
+class PasswordPage extends StatefulWidget {
+  const PasswordPage({super.key});
   @override
-  State<SecretPage> createState() => OptionPageState();
+  State<PasswordPage> createState() => PasswordPageState();
 }
 
-class OptionPageState extends State<SecretPage> {
+class PasswordPageState extends State<PasswordPage> {
   
   bool showTextField = false;
   bool showPlaceholder = false;
@@ -74,7 +74,7 @@ class OptionPageState extends State<SecretPage> {
           CardCopy(
             option: 'Youtrack',
             paramImage: 'assets/key.png', 
-            onPressed: () => MyDialog(widget: widget).show(context),
+            onPressed: () => MyDialog(widget: widget,).show(context),
           ),
 
         ]
@@ -83,15 +83,4 @@ class OptionPageState extends State<SecretPage> {
       bottomNavigationBar: const MyNavbar(),
     );
   }
-}
-
-class Edit extends StatelessWidget {
-  
-  const Edit({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-
 }

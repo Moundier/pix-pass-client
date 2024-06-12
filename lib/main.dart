@@ -1,5 +1,5 @@
 
-import 'package:client_flutter/screens/login_page.dart';
+import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/shared/widgets/my_button.dart';
 import 'package:client_flutter/shared/widgets/my_card.dart';
 import 'package:client_flutter/shared/widgets/my_input_container.dart';
@@ -76,7 +76,7 @@ class MainPageState extends State<MainPage> {
 
         ]
       ),
-      bottomSheet: showTextField ?  MyInputContainer(inputTextLabel: "Label", valueTextLabel: "Email", toggleWidget: showInput,) : MyButton(showInput,),
+      bottomSheet: showTextField ? MyInputContainer(inputTextLabel: "Label", valueTextLabel: "Email", toggleWidget: showInput,) : MyButton(showInput,),
       bottomNavigationBar: MyNavbar(),
     );
   }

@@ -1,9 +1,10 @@
 class User {
 
-  int id;
+  BigInt id;
   String email;
   String password;
   String image;
 
   User(this.id, this.email, this.password, this.image);
+
 }

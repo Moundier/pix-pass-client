@@ -11,6 +11,22 @@ class NavigationService extends StatelessElement {
   }
 
   static void push(BuildContext context, page) {
+
+    dynamic type = 0;
+    switch (type) {
+      case 'apple':
+        print('You chose apple');
+        break;
+      case 'banana':
+        print('You chose banana');
+        break;
+      case 'orange':
+        print('You chose orange');
+        break;
+      default:
+        print('Invalid fruit');
+    }
+
     dynamic animation = transitionHorizontal(page);
     Navigator.of(context).push(animation);
   }

@@ -22,7 +22,7 @@ class CardCustom extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           print("Are you stupid? yes");
-          NavigationService.push(context, const SecretPage());
+          NavigationService.push(context, const PasswordPage());
         },
         child: NesContainer(
           width: 400,
