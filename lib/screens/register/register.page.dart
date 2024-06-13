@@ -1,5 +1,6 @@
 import 'package:client_flutter/screens/register/register.service.dart';
 import 'package:client_flutter/shared/styles/my_input.style.dart';
+import 'package:client_flutter/shared/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
@@ -117,13 +118,14 @@ class _RegisterFormState extends State<RegisterForm> {
             type: NesButtonType.success,
             onPressed: () {
 
-              if (_formKey.currentState == null && !_formKey.currentState!.validate()) {
-                throw Exception("Something went wrong");
+              if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+                 print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
+                _registerService.registerUser(_emailController.text, _passwordController.text);
+
               }
 
-              print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
-              _registerService.auth(_emailController.text, _passwordController.text);
-
+              MyNesSnackbar.show(context, text: "Success", type: MyNesSnackbarType.success);
+             
               // Snackbar message
               // Throw a timeinterval
               // Go to login

@@ -1,19 +1,37 @@
+import 'package:client_flutter/screens/register/register.request.dart';
+import 'package:client_flutter/shared/auth/tokens.response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RegisterService {
 
-  final String _apiUrl = 'http://localhost:9090/';
+  Future<void> registerUser(String email, String password) async {
+  final url = Uri.parse('http://localhost:9090/auth/register'); // Adjust URL if needed
 
-  Future<String> auth(String email, String password) async {
-    
+  try {
     final response = await http.post(
-      Uri.parse('$_apiUrl/createAccount'),
-      body: jsonEncode({'email': email, 'password': password}),
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(RegisterRequest(firstName: 'firstName', lastName: 'lastName', email: email, password: password)),
     );
-    
-    return 'Account created successfully $response';
+
+    if (response.statusCode == 200) {
+      var tokensResponse = TokensResponse.fromJson(jsonDecode(response.body));
+      print('Access Token: ${tokensResponse.accessToken}');
+      print('Refresh Token: ${tokensResponse.refreshToken}');
+      // Handle tokens or navigate to next screen
+    } else {
+      print('Failed to register user: ${response.statusCode}');
+      print(response.body);
+      // Handle error, show message to user, etc.
+    }
+  } catch (e) {
+    print('Error registering user: $e');
+    // Handle network errors, timeouts, etc.
   }
+}
 
   bool isValidEmail() {
     return true;
