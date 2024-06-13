@@ -1,11 +1,13 @@
 import 'package:client_flutter/shared/styles/my_small_text_style.dart';
+import 'package:client_flutter/shared/styles/my_text.style.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 class Tab3Page extends StatelessWidget {
 
+  final String? now = DateTime.now().toString(); 
 
-  const Tab3Page({super.key});
+  Tab3Page({super.key,});
   
   @override
   Widget build(BuildContext context) {
@@ -48,12 +50,20 @@ class Tab3Page extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 8,),
-            const MyBoldTextStyle("ORIGIN: Brazil, Rio Grande do Sul"),
-            const SizedBox(height: 8,),
-            const MyBoldTextStyle("MANTAINER: Gabriel Vieira Casanova"),
-            const SizedBox(height: 8,),
-            const MyBoldTextStyle("Contact: garamoundier.developer@protonmail.com"),
+            const SizedBox(height: 10),
+            MyTextStyle(text: "Developed by Garamoundier"),
+
+            const SizedBox(height: 10),
+            MyTextStyle(text: "Pix Pass simplifies password management"),
+
+            const SizedBox(height: 10),
+            MyTextStyle(text: "Includes encryption and biometric security"),
+
+            const SizedBox(height: 10),
+            MyTextStyle(text: "Thank you for choosing Pix Pass"),
+            const SizedBox(height: 10),
+
+            MyTextStyle(text: "garamoundier.developer@protonmail.com"),
             const SizedBox(height: 10),
 
             NesButton(type: NesButtonType.normal, child: const Text('Donate'), onPressed: () => {} ,),

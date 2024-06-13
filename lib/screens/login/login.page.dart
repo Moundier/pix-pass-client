@@ -1,19 +1,19 @@
 import 'package:client_flutter/screens/register/register.page.dart';
 import 'package:client_flutter/screens/tab1/tab1.page.dart';
-import 'package:client_flutter/shared/styles/my_hyperlink.style.dart';
 import 'package:client_flutter/shared/styles/my_input.style.dart';
-import 'package:client_flutter/shared/styles/my_text.style.dart';
 import 'package:client_flutter/shared/widgets/my_hyperlink_text.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
-import 'package:client_flutter/shared/service/navigation_service.dart';
+import 'package:client_flutter/shared/service/navigation.service.dart';
 
 class LoginPage extends StatelessWidget {
+
   LoginPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
 
   TextStyle textStyle(Color? color) => TextStyle(color: color, fontSize: 10);
 
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: MyInputStyle.build("Email"),
-                    style: MyTextStyle.build(),
+                    style: TextStyle(),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'Please enter your email'; // Add more email validation logic if needed
@@ -55,7 +55,7 @@ class LoginPage extends StatelessWidget {
                     controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     decoration: MyInputStyle.build("Password"),
-                    style: MyTextStyle.build(),
+                    style: TextStyle(),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
                         return 'Please enter your password';
@@ -67,10 +67,10 @@ class LoginPage extends StatelessWidget {
 
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text('Forgot Password?', style: textStyle(const Color.fromARGB(255, 0, 99, 180))),
+                      Text('Forgot Password?', style: TextStyle(color: Color.fromARGB(255, 0, 99, 180), fontSize: 10)),
                     ],
                   ),
                 ),
@@ -85,17 +85,14 @@ class LoginPage extends StatelessWidget {
                     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
                       // Send data to server or navigate to next screen
                       print('Email: ${_emailController.text}, Password: ${_passwordController.text}'),
-
-                      // Snackbar message
-                      // Throw a timeinterval
-                      // Go to login
-
                       NavigationService.push(context, const Tab1Page()),
                     }
                   }
                 ),
 
                 const SizedBox(height: 20),
+
+                /// TODO: MyDivider
 
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -156,10 +153,8 @@ class LoginPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Not a member?',
-                        style: textStyle(const Color.fromARGB(255, 0, 0, 0))),
+                    const Text('Not a member?', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 10)),
                     const SizedBox(width: 10),
-
                     MyHyperlinkText(text: 'Register Now', onTap: () => NavigationService.push(context, const RegisterPage()),)
                   ],
                 ),

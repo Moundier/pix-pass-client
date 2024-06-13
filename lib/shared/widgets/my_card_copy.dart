@@ -1,4 +1,4 @@
-import 'package:client_flutter/shared/service/navigation_service.dart';
+import 'package:client_flutter/shared/service/navigation.service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
 import 'package:client_flutter/shared/widgets/my_text_field.dart';

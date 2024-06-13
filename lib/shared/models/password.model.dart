@@ -16,7 +16,6 @@ class Password {
   void updatePassword() {
     return;
   }
-
   
   void deletePassword() {
     return;

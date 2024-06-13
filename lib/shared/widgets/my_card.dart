@@ -1,5 +1,5 @@
 import 'package:client_flutter/screens/tab1/tab1.sequence.dart';
-import 'package:client_flutter/shared/service/navigation_service.dart';
+import 'package:client_flutter/shared/service/navigation.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

@@ -1,6 +1,6 @@
 import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/screens/tab2/tab2.sequence.dart';
-import 'package:client_flutter/shared/service/navigation_service.dart';
+import 'package:client_flutter/shared/service/navigation.service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_dialog.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:client_flutter/screens/tab1/tab1.page.dart';
 import 'package:client_flutter/screens/tab2/tab2.page.dart';
 import 'package:client_flutter/screens/tab3/tab3.page.dart';
-import 'package:client_flutter/shared/service/navigation_service.dart';
+import 'package:client_flutter/shared/service/navigation.service.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 

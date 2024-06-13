@@ -9,14 +9,12 @@ class MyBoldTextStyle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String label = labelText ?? '';
-
     return Text(
-      label, 
+      labelText ?? '', 
       style: const TextStyle(
         fontFamily: 'minecraftia',
         color: Color.fromARGB(255, 0, 0, 0),
-        fontSize: 8,
+        fontSize: 12,
         fontStyle: FontStyle.normal,
         fontWeight: FontWeight.bold
       ),

@@ -1,5 +1,5 @@
+import 'package:client_flutter/screens/register/register.service.dart';
 import 'package:client_flutter/shared/styles/my_input.style.dart';
-import 'package:client_flutter/shared/styles/my_text.style.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
@@ -33,23 +33,32 @@ class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
 
+  final RegisterService _registerService = RegisterService();
+
   TextStyle textStyle() {
     return const TextStyle(fontFamily: 'minecraftia');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
+
+    return Scaffold(
+      appBar: AppBar(
+        // title: const Text('Main Page'),
+        leading: Padding(
+          padding: const EdgeInsets.all(8),
+          child: NesIconButton(
+            icon: NesIcons16.leftArrowIndicator,
+            onPress: () => Navigator.of(context).pop(),
+          ),
+        ),
+      ),
+      body: Form(
         
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-
-          NesIconButton(
-            icon: NesIcons16.leftArrowIndicator,
-            onPress: () => Navigator.of(context).pop(),
-          ),
 
           Center(child: Image.asset('assets/images/id_card.png', width: 180, height: 180,),),
             
@@ -59,7 +68,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: MyInputStyle.build("Email"),
-            style: MyTextStyle.build(),
+            style: TextStyle(),
             validator: (value) {
               if (value?.isEmpty ?? true) {
                 return 'Please enter your email';
@@ -75,7 +84,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _passwordController,
             obscureText: true,
             decoration: MyInputStyle.build("Password"),
-            style: MyTextStyle.build(),
+            style: TextStyle(),
             validator: (value) {
               if (value?.isEmpty ?? true) {
                 return 'Please enter your password'; // Add more password validation logic if needed
@@ -90,7 +99,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _confirmController,
             obscureText: true,
             decoration: MyInputStyle.build("Confirm Password"),
-            style: MyTextStyle.build(),
+            style: TextStyle(),
             validator: (value) {
               if (value?.isEmpty ?? true) {
                 return 'Please confirm your password'; // Add more password validation logic if needed
@@ -107,19 +116,23 @@ class _RegisterFormState extends State<RegisterForm> {
           NesButton(
             type: NesButtonType.success,
             onPressed: () {
-              if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-                // Send data to server or navigate to next screen
-                print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
 
-                // Snackbar message
-                // Throw a timeinterval
-                // Go to login
+              if (_formKey.currentState == null && !_formKey.currentState!.validate()) {
+                throw Exception("Something went wrong");
               }
+
+              print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
+              _registerService.auth(_emailController.text, _passwordController.text);
+
+              // Snackbar message
+              // Throw a timeinterval
+              // Go to login
             },
             child: const Text('Register'),
           ),
 
         ],
+      ),
       ),
     );
   }
