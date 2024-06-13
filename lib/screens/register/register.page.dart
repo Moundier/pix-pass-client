@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/screens/register/register.service.dart';
+import 'package:client_flutter/shared/service/navigation.service.dart';
 import 'package:client_flutter/shared/styles/my_input.style.dart';
 import 'package:client_flutter/shared/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +49,6 @@ class _RegisterFormState extends State<RegisterForm> {
 
     return Scaffold(
       appBar: AppBar(
-        // title: const Text('Main Page'),
         leading: Padding(
           padding: const EdgeInsets.all(8),
           child: NesIconButton(
@@ -69,12 +72,16 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: MyInputStyle.build("Email"),
-            style: TextStyle(),
+            style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
             validator: (value) {
-              if (value?.isEmpty ?? true) {
-                return 'Please enter your email';
-              }
-              // Add more email validation logic if needed
+
+              final text = value ?? '';
+              final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+              
+              if (text.isEmpty) return 'Please enter your email';
+
+              if (!emailRegex.hasMatch(text)) return 'Invalid email';
+              
               return null;
             },
           ),
@@ -85,11 +92,19 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _passwordController,
             obscureText: true,
             decoration: MyInputStyle.build("Password"),
-            style: TextStyle(),
+            style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
             validator: (value) {
-              if (value?.isEmpty ?? true) {
+              
+              final text = value ?? '';
+              
+              if (text.isEmpty) {
                 return 'Please enter your password'; // Add more password validation logic if needed
               }
+
+              if (text.length < 2) {
+                return 'Password is ${text.length} < 2';
+              }
+
               return null;
             },
           ),
@@ -100,14 +115,19 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: _confirmController,
             obscureText: true,
             decoration: MyInputStyle.build("Confirm Password"),
-            style: TextStyle(),
+            style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
             validator: (value) {
-              if (value?.isEmpty ?? true) {
+
+              final text = value ?? '';
+
+              if (text.isEmpty) {
                 return 'Please confirm your password'; // Add more password validation logic if needed
               }
-              if (value != _passwordController.text) {
+
+              if (text != _passwordController.text) {
                 return 'Passwords don\'t match';
               }
+
               return null;
             },
           ),
@@ -121,13 +141,16 @@ class _RegisterFormState extends State<RegisterForm> {
               if (_formKey.currentState != null && _formKey.currentState!.validate()) {
                  print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
                 _registerService.registerUser(_emailController.text, _passwordController.text);
+                
+                
+                MyNesSnackbar.show(context, text: "Success", type: MyNesSnackbarType.success);
+                // TODO: Throw a timeinterval
 
-              }
+                NavigationService.push(context, LoginPage());
+              } 
 
-              MyNesSnackbar.show(context, text: "Success", type: MyNesSnackbarType.success);
              
               // Snackbar message
-              // Throw a timeinterval
               // Go to login
             },
             child: const Text('Register'),
