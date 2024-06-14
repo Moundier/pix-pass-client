@@ -1,4 +1,3 @@
-import 'package:client_flutter/shared/styles/my_small_text_style.dart';
 import 'package:client_flutter/shared/styles/my_text.style.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';

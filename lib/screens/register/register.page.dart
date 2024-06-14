@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/screens/register/register.service.dart';
 import 'package:client_flutter/shared/service/navigation.service.dart';
@@ -34,11 +32,29 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
 
   final _formKey = GlobalKey<FormState>();
+
+  final RegisterService _registerService = RegisterService();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
 
-  final RegisterService _registerService = RegisterService();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _confirmFocus = FocusNode();
+
+
+  @override
+  void dispose() {
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+    _confirmFocus.dispose();
+
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmController.dispose();
+    super.dispose();
+  }
 
   TextStyle textStyle() {
     return const TextStyle(fontFamily: 'minecraftia');
@@ -69,6 +85,7 @@ class _RegisterFormState extends State<RegisterForm> {
           const SizedBox(height: 20.0),
 
           TextFormField(
+            focusNode: _emailFocus,
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             decoration: MyInputStyle.build("Email"),
@@ -84,11 +101,15 @@ class _RegisterFormState extends State<RegisterForm> {
               
               return null;
             },
+            onEditingComplete: () {
+              FocusScope.of(context).requestFocus(_passwordFocus);
+            },
           ),
 
           const SizedBox(height: 20.0),
 
           TextFormField(
+            focusNode: _passwordFocus,
             controller: _passwordController,
             obscureText: true,
             decoration: MyInputStyle.build("Password"),
@@ -107,11 +128,15 @@ class _RegisterFormState extends State<RegisterForm> {
 
               return null;
             },
+            onEditingComplete: () {
+              FocusScope.of(context).requestFocus(_confirmFocus);
+            },
           ),
 
           const SizedBox(height: 20.0),
 
           TextFormField(
+            focusNode: _confirmFocus,
             controller: _confirmController,
             obscureText: true,
             decoration: MyInputStyle.build("Confirm Password"),
@@ -130,31 +155,40 @@ class _RegisterFormState extends State<RegisterForm> {
 
               return null;
             },
+            onEditingComplete: () {
+              FocusScope.of(context).unfocus();
+            },
           ),
 
           const SizedBox(height: 20.0),
 
-          NesButton(
-            type: NesButtonType.success,
-            onPressed: () {
+          Row(
+            children: <Widget>[
 
-              if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-                 print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
-                _registerService.registerUser(_emailController.text, _passwordController.text);
-                
-                
-                MyNesSnackbar.show(context, text: "Success", type: MyNesSnackbarType.success);
-                // TODO: Throw a timeinterval
+              NesButton(
+                type: NesButtonType.success,
+                onPressed: () {
 
-                NavigationService.push(context, LoginPage());
-              } 
+                  if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+                    print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
+                    _registerService.registerUser(_emailController.text, _passwordController.text);
+                    MyNesSnackbar.show(context, text: "Success", type: MyNesSnackbarType.success);
+                    NavigationService.push(context, LoginPage());
+                  } 
+                },
+                child: const Text('Enter'),
+              ),
 
-             
-              // Snackbar message
-              // Go to login
-            },
-            child: const Text('Register'),
-          ),
+              SizedBox(width: 20,),
+
+              NesButton(
+                type: NesButtonType.error,
+                child: const Text('Cancel'),
+                onPressed: () => {},
+              ),
+
+            ],
+          )
 
         ],
       ),

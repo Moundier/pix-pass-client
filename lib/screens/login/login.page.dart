@@ -19,14 +19,17 @@ class LoginPage extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Scaffold(
+        appBar: AppBar(
+        leading: Container(padding: const EdgeInsets.all(8)),
+      ),
+
         body: Center(
           child: Column(
             children: [
 
               Image.asset(
                 'assets/images/safe.gif',
-                width: 200,
-                height: 200,
+                height: 150,
               ),
 
               Container(
@@ -35,8 +38,7 @@ class LoginPage extends StatelessWidget {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: MyInputStyle.build("Email"),
-                  style:
-                      const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
+                  style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
                   validator: (value) {
                     if (value?.isEmpty ?? true) return 'Please enter your email'; // Add more email validation logic if needed
 
@@ -51,8 +53,7 @@ class LoginPage extends StatelessWidget {
                   controller: _passwordController,
                   keyboardType: TextInputType.visiblePassword,
                   decoration: MyInputStyle.build("Password"),
-                  style:
-                      const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
+                  style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
                   validator: (value) {
                     if (value?.isEmpty ?? true) return 'Please enter your password';
 
@@ -72,9 +73,9 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               NesButton(
-                  type: NesButtonType.primary,
-                  child: const Text('Sign In'),
-                  onPressed: () => {
+                type: NesButtonType.primary,
+                child: const Text('Sign In'),
+                onPressed: () => {
                   if (_formKey.currentState != null && _formKey.currentState!.validate()) {
                     print('Email: ${_emailController.text}, Password: ${_passwordController.text}'),
                     NavigationService.push(context, const Tab1Page()),

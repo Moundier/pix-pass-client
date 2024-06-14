@@ -26,6 +26,7 @@ class MyNesSnackbar extends StatelessWidget {
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: Duration(seconds: 2),
         backgroundColor: Colors.transparent,
         elevation: 0,
         content: SizedBox(
@@ -61,6 +62,7 @@ class MyNesSnackbar extends StatelessWidget {
     }
 
     return NesContainer(
+      padding: EdgeInsets.all(24),
       backgroundColor: color,
       child: Text(
         text,
