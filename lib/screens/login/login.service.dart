@@ -1,17 +1,33 @@
-import 'package:http/http.dart' as http;
+
 import 'dart:convert';
+import 'package:http/http.dart';
 
 class LoginService {
 
-  final String _apiUrl = 'http://localhost:9090/';
+  final String _apiUrl = 'http://localhost:9090/auth'; // 192.168.0.5 // localhost
 
-  Future<String> login(String username, String password) async {
-    final response = await http.post(
-      Uri.parse('$_apiUrl/authenticate'),
-      body: jsonEncode({'username': username, 'password': password}),
-    );
+  Future<Response> login(String username, String password) async {
+    
+    try {
+      final response = await post(
+        Uri.parse('$_apiUrl/login'),
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: jsonEncode({'email': username, 'password': password}),
+      );
 
-    return jsonDecode(response.body)['token'];
+      if (response.statusCode != 200) {
+        return response;
+      }
+
+      // Store locally on device
+      jsonDecode(response.body);
+
+      return response;
+
+    } catch (e) {
+      print('Error during login $e');
+      return Response("", 500); // or handle error in a different way
+    }
   }
 
 }

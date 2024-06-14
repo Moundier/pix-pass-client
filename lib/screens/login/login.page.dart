@@ -1,9 +1,12 @@
+import 'package:client_flutter/screens/login/login.service.dart';
 import 'package:client_flutter/screens/register/register.page.dart';
 import 'package:client_flutter/screens/tab1/tab1.page.dart';
 import 'package:client_flutter/shared/styles/my_input.style.dart';
 import 'package:client_flutter/shared/widgets/my_divider.dart';
 import 'package:client_flutter/shared/widgets/my_hyperlink_text.dart';
+import 'package:client_flutter/shared/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:nes_ui/nes_ui.dart';
 import 'package:client_flutter/shared/service/navigation.service.dart';
 
@@ -13,6 +16,8 @@ class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final _loginService = LoginService();
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +80,30 @@ class LoginPage extends StatelessWidget {
               NesButton(
                 type: NesButtonType.primary,
                 child: const Text('Sign In'),
-                onPressed: () => {
-                  if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-                    print('Email: ${_emailController.text}, Password: ${_passwordController.text}'),
-                    NavigationService.push(context, const Tab1Page()),
+                onPressed: () async {
+
+                  bool formIsSatisfied = _formKey.currentState != null;
+                  bool formIsValidated = _formKey.currentState!.validate();
+                  
+                  print('Email: ${_emailController.text}');
+                  print('Password: ${_passwordController.text}');
+
+                  if (formIsSatisfied && formIsValidated) {
+
+                    Response response = await _loginService.login(
+                      _emailController.text, 
+                      _passwordController.text
+                    );
+
+                    if (response.statusCode == 200) {
+                      // Provider.of<AuthProvider>(context, listen: false).isAuthenticated;
+                      // Provider.of<AuthProvider>(context, listen: false).login("");
+                      print(response.body);
+                      NavigationService.push(context, const Tab1Page());                  
+                      return;
+                    }
+
+                    MyNesSnackbar.show(context, text: "Error: ${response.body}", type: MyNesSnackbarType.error);
                   }
                 }
               ),
@@ -99,7 +124,7 @@ class LoginPage extends StatelessWidget {
                   NesButton(
                     type: NesButtonType.primary,
                     child: Image.asset('assets/images/touch_id.png', width: 50),
-                    onPressed: () {},
+                    onPressed: () {  },
                   ),
                 ],
               ),

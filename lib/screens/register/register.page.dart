@@ -164,14 +164,16 @@ class _RegisterFormState extends State<RegisterForm> {
 
           Row(
             children: <Widget>[
-
               NesButton(
                 type: NesButtonType.success,
                 onPressed: () {
 
-                  if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-                    print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
+                  bool formIsSatisfied = _formKey.currentState != null;
+                  bool formIsValidated = _formKey.currentState!.validate();
+
+                  if (formIsSatisfied && formIsValidated) {
                     _registerService.registerUser(_emailController.text, _passwordController.text);
+                    print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
                     MyNesSnackbar.show(context, text: "Success", type: MyNesSnackbarType.success);
                     NavigationService.push(context, LoginPage());
                   } 
@@ -184,7 +186,7 @@ class _RegisterFormState extends State<RegisterForm> {
               NesButton(
                 type: NesButtonType.error,
                 child: const Text('Cancel'),
-                onPressed: () => {},
+                onPressed: () => { },
               ),
 
             ],
