@@ -1,10 +1,16 @@
 import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/screens/register/register.service.dart';
-import 'package:client_flutter/shared/service/navigation.service.dart';
+import 'package:client_flutter/shared/service/alert_service.dart';
+import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:client_flutter/shared/styles/my_input.style.dart';
-import 'package:client_flutter/shared/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
+
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
 class RegisterPage extends StatelessWidget {
 
@@ -15,21 +21,21 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(16.0),
-        child: const RegisterForm(),
+        child: const _RegisterForm(),
       ),
     );
   }
 }
 
-class RegisterForm extends StatefulWidget {
+class _RegisterForm extends StatefulWidget {
 
-  const RegisterForm({super.key});
+  const _RegisterForm();
 
   @override
   _RegisterFormState createState() => _RegisterFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _RegisterFormState extends State<_RegisterForm> {
 
   final _formKey = GlobalKey<FormState>();
 
@@ -114,17 +120,11 @@ class _RegisterFormState extends State<RegisterForm> {
             obscureText: true,
             decoration: MyInputStyle.build("Password"),
             style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
-            validator: (value) {
+            validator: (String? value) {
               
-              final text = value ?? '';
-              
-              if (text.isEmpty) {
-                return 'Please enter your password'; // Add more password validation logic if needed
-              }
+              if (value!.isEmpty) return 'Please enter your password'; // Add more password validation logic if needed
 
-              if (text.length < 2) {
-                return 'Password is ${text.length} < 2';
-              }
+              if (value.length < 2) return 'Password is ${value.length} < 2';
 
               return null;
             },
@@ -141,23 +141,12 @@ class _RegisterFormState extends State<RegisterForm> {
             obscureText: true,
             decoration: MyInputStyle.build("Confirm Password"),
             style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
-            validator: (value) {
-
-              final text = value ?? '';
-
-              if (text.isEmpty) {
-                return 'Please confirm your password'; // Add more password validation logic if needed
-              }
-
-              if (text != _passwordController.text) {
-                return 'Passwords don\'t match';
-              }
-
+            validator: (String? value) {
+              if (value!.isEmpty) return 'Please confirm your password'; // Add more password validation logic if needed
+              if (value != _passwordController.text) return 'Passwords don\'t match';
               return null;
             },
-            onEditingComplete: () {
-              FocusScope.of(context).unfocus();
-            },
+            onEditingComplete: () => FocusScope.of(context).unfocus(),
           ),
 
           const SizedBox(height: 20.0),
@@ -168,25 +157,25 @@ class _RegisterFormState extends State<RegisterForm> {
                 type: NesButtonType.success,
                 onPressed: () {
 
-                  bool formIsSatisfied = _formKey.currentState != null;
-                  bool formIsValidated = _formKey.currentState!.validate();
+                  bool formIsSatisfied = (_formKey.currentState != null);
+                  bool formIsValidated = (_formKey.currentState!.validate());
 
                   if (formIsSatisfied && formIsValidated) {
                     _registerService.registerUser(_emailController.text, _passwordController.text);
-                    print('Email: ${_emailController.text}, Password: ${_passwordController.text}');
-                    MyNesSnackbar.show(context, text: "Success", type: MyNesSnackbarType.success);
-                    NavigationService.push(context, LoginPage());
+                    logger.d('{ ${_emailController.text}, ${_passwordController.text} }');
+                    AlertService.show(context, text: "Success", type: AlertType.success);
+                    AnimationService.push(context, LoginPage());
                   } 
                 },
                 child: const Text('Enter'),
               ),
 
-              SizedBox(width: 20,),
+              const SizedBox(width: 20,),
 
               NesButton(
                 type: NesButtonType.error,
                 child: const Text('Cancel'),
-                onPressed: () => { },
+                onPressed: () { },
               ),
 
             ],

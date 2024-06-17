@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-enum MyNesSnackbarType {
+enum AlertType {
   normal,
   success,
   warning,
   error,
 }
 
-class MyNesSnackbar extends StatelessWidget {
+class AlertService extends StatelessWidget {
 
   final String text;
-  final MyNesSnackbarType type;
+  final AlertType type;
   
-  const MyNesSnackbar({
+  const AlertService({
     required this.text,
-    this.type = MyNesSnackbarType.normal,
+    this.type = AlertType.normal,
     super.key,
   });
 
   static void show(
     BuildContext context, {
     required String text,
-    MyNesSnackbarType type = MyNesSnackbarType.normal,
+    AlertType type = AlertType.normal,
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -31,7 +31,7 @@ class MyNesSnackbar extends StatelessWidget {
         elevation: 0,
         content: SizedBox(
           width: double.infinity,
-          child: MyNesSnackbar(
+          child: AlertService(
             text: text,
             type: type,
           ),
@@ -47,16 +47,16 @@ class MyNesSnackbar extends StatelessWidget {
     late Color color;
 
     switch (type) {
-      case MyNesSnackbarType.normal:
+      case AlertType.normal:
         color = snackbarTheme.normal;
         break;
-      case MyNesSnackbarType.success:
+      case AlertType.success:
         color = snackbarTheme.success;
         break;
-      case MyNesSnackbarType.warning:
+      case AlertType.warning:
         color = snackbarTheme.warning;
         break;
-      case MyNesSnackbarType.error:
+      case AlertType.error:
         color = snackbarTheme.error;
         break;
     }

@@ -1,49 +1,66 @@
-import 'package:client_flutter/screens/tab1/tab1.sequence.dart';
-import 'package:client_flutter/shared/service/navigation.service.dart';
+import 'package:client_flutter/screens/tab1/tab1.next.dart';
+import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
+
 class CardCustom extends StatelessWidget {
-  final String paramImage;
-  final VoidCallback onPressed;
+  final String? paramImage;
+  final VoidCallback? onPressed;
+  final String? label;
+  final String? note;
 
   const CardCustom({
     super.key,
-    required this.paramImage,
-    required this.onPressed,
+    this.paramImage,
+    this.onPressed,
+    this.label,
+    this.note,
   });
 
   @override
   Widget build(BuildContext context) {
+
+    // A22, J4+, J5P
+    final size = MediaQuery.of(context).size;
+    final fontSize = (size.width + size.height) / 2 * 0.018; 
+
+    // logger.i("Component/Device width: ");
+    // logger.i(MediaQuery.of(context).size.width);
+
     return Container(
       padding: const EdgeInsets.all(4),
       child: GestureDetector(
         onTap: () {
-          print("Are you stupid? yes");
-          NavigationService.push(context, const Tab1Sequence());
+          logger.i("card clicked");
+          AnimationService.push(context, const Tab1Next(), );
         },
         child: NesContainer(
           width: 400,
-          label: 'Label',
+          label: label,
           padding: const EdgeInsets.all(0.0),
           child: Row(
             children: <Widget>[
               
               Image.asset(
-                paramImage,
-                width: 60,
-                height: 60,
+                paramImage ?? '',
+                height:  MediaQuery.of(context).size.height * .08,
                 fit: BoxFit.cover,
               ),
 
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'garamoundier.developer@protonmail.com',
+                  note ?? '',
                   style: TextStyle(
                     fontFamily: 'minecraftia',
-                    fontSize: 11.0,
+                    fontSize: fontSize, // Small text constant
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -52,7 +69,7 @@ class CardCustom extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(fontSize),
                   child: NesIconButton(
                     primaryColor: const Color.fromARGB(255, 130, 9, 0),
                     icon: NesIcons.delete,

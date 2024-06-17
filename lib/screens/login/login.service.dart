@@ -1,16 +1,15 @@
 
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:client_flutter/shared/config/constants.dart';
 
 class LoginService {
-
-  final String _apiUrl = 'http://localhost:9090/auth'; // 192.168.0.5 // localhost
 
   Future<Response> login(String username, String password) async {
     
     try {
       final response = await post(
-        Uri.parse('$_apiUrl/login'),
+        Uri.parse('$url:9090/auth/login'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: jsonEncode({'email': username, 'password': password}),
       );

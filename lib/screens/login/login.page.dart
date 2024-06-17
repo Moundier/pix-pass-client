@@ -1,14 +1,24 @@
+import 'dart:convert';
+
 import 'package:client_flutter/screens/login/login.service.dart';
 import 'package:client_flutter/screens/register/register.page.dart';
 import 'package:client_flutter/screens/tab1/tab1.page.dart';
+import 'package:client_flutter/shared/models/user.dart';
+import 'package:client_flutter/shared/service/alert_service.dart';
+import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:client_flutter/shared/styles/my_input.style.dart';
 import 'package:client_flutter/shared/widgets/my_divider.dart';
 import 'package:client_flutter/shared/widgets/my_hyperlink_text.dart';
-import 'package:client_flutter/shared/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
-import 'package:client_flutter/shared/service/navigation.service.dart';
+import 'package:client_flutter/shared/service/animate_service.dart';
+
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -16,6 +26,9 @@ class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
 
   final _loginService = LoginService();
 
@@ -40,6 +53,8 @@ class LoginPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
+
+                  focusNode: _emailFocus,
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: MyInputStyle.build("Email"),
@@ -49,12 +64,16 @@ class LoginPage extends StatelessWidget {
 
                     return null;
                   },
+                  onEditingComplete: () {
+                    FocusScope.of(context).requestFocus(_passwordFocus);
+                  },
                 ),
               ),
 
               Container(
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
+                  focusNode: _passwordFocus,
                   controller: _passwordController,
                   keyboardType: TextInputType.visiblePassword,
                   decoration: MyInputStyle.build("Password"),
@@ -63,6 +82,9 @@ class LoginPage extends StatelessWidget {
                     if (value?.isEmpty ?? true) return 'Please enter your password';
 
                     return null;
+                  },            
+                  onEditingComplete: () {
+                    FocusScope.of(context).unfocus();
                   },
                 ),
               ),
@@ -85,9 +107,6 @@ class LoginPage extends StatelessWidget {
                   bool formIsSatisfied = _formKey.currentState != null;
                   bool formIsValidated = _formKey.currentState!.validate();
                   
-                  print('Email: ${_emailController.text}');
-                  print('Password: ${_passwordController.text}');
-
                   if (formIsSatisfied && formIsValidated) {
 
                     Response response = await _loginService.login(
@@ -96,14 +115,19 @@ class LoginPage extends StatelessWidget {
                     );
 
                     if (response.statusCode == 200) {
-                      // Provider.of<AuthProvider>(context, listen: false).isAuthenticated;
-                      // Provider.of<AuthProvider>(context, listen: false).login("");
-                      print(response.body);
-                      NavigationService.push(context, const Tab1Page());                  
+                      var json = jsonDecode(response.body);
+                      logger.f(json);
+
+                      User user = User.fromJson(json['user']);
+                      logger.f(user);
+                      AuthService().setData('user', jsonEncode(user));
+                      
+                      // final Map<String, dynamic> tokens = json['tokens'];
+                      AnimationService.push(context, Tab1Page());
                       return;
                     }
 
-                    MyNesSnackbar.show(context, text: "Error: ${response.body}", type: MyNesSnackbarType.error);
+                    AlertService.show(context, text: "Error: ${response.statusCode} ${response.reasonPhrase}", type: AlertType.error);
                   }
                 }
               ),
@@ -136,7 +160,10 @@ class LoginPage extends StatelessWidget {
                 children: [
                   const Text('Not a member?', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 10)),
                   const SizedBox(width: 10),
-                  MyHyperlinkText(text: 'Register Now', onTap: () => NavigationService.push(context, const RegisterPage()),)
+                  MyHyperlinkText(
+                    text: 'Register Now', 
+                    onTap: () => AnimationService.push(context, const RegisterPage()),
+                  )
                 ],
               ),
 

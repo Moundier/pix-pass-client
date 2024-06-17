@@ -15,12 +15,9 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-Flutter environment
-- 
-
 Flutter commands
+- `flutter run | grep 'flutter:'`
 - `flutter emulators --launch flutter_emulator`
-- `f`
 
 Flutter case: source folder renamed
 - `rm -rf build`
@@ -28,8 +25,7 @@ Flutter case: source folder renamed
 - `flutter build linux`
 - `flutter run`
 
-flutter pub add equatable
-flutter pub add flutter_bloc
+MFA Multi Factor Authentication
 
 Fixes
 - Upgrade or Downgrade Gradle version
@@ -43,9 +39,8 @@ Editor Extensions
 - Flutter extensions
 
 Packages
-- Modular UI
-- Nes UI
-- Neu brutalism UI
+- Nes Ui
+- sqflite
 
 Example of theme toggling
 - nes_ui/example/lib/app/*

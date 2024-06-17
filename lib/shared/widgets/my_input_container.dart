@@ -1,22 +1,31 @@
-import 'package:client_flutter/theme/my_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
+
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
 class MyInputContainer extends StatelessWidget {
 
+  final BuildContext? context;
   final String? inputTextLabel;
   final String? valueTextLabel;
-
   final VoidCallback? toggleWidget; // Function
+  final Function(String, String)? onSubmit; // Function to handle form submission
 
   const MyInputContainer({
     super.key,     
+    this.context,
     this.inputTextLabel, 
     this.valueTextLabel, 
     this.toggleWidget, 
+    this.onSubmit,
   });
 
   InputDecoration inputDecorationWithLabel(String? labelText) {
+
     return InputDecoration(
       border: const NesInputBorder(
         borderSide: BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
@@ -30,6 +39,7 @@ class MyInputContainer extends StatelessWidget {
       ),
       labelText: labelText, 
       labelStyle: const TextStyle(
+        fontSize: 12,
         fontFamily: 'minecraftia',
         color: Color.fromARGB(255, 0, 0, 0)
       )
@@ -60,7 +70,10 @@ class MyInputContainer extends StatelessWidget {
                   child: TextField(
                     cursorColor: Colors.red, // Defina a cor do cursor aqui
                     controller: labelController,
-                    decoration: MyTheme.inputDecorationWithLabel(inputTextLabel)
+                    decoration: inputDecorationWithLabel(inputTextLabel),
+                    style: const TextStyle(
+                      fontFamily: 'minecraftia',
+                    ),
                   )
                 ),
               ),
@@ -68,7 +81,18 @@ class MyInputContainer extends StatelessWidget {
               Container(
                 padding: padding,
                 child: NesButton(
-                  onPressed: () { },
+                  onPressed: () {
+                    if (onSubmit != null) {
+
+                      logger.f(labelController.text);
+                      logger.f(inputController.text);
+
+                      onSubmit!(
+                        labelController.text,
+                        inputController.text,
+                      );
+                    }
+                  },
                   type: NesButtonType.success, 
                   child: NesIcon(
                     iconData: NesIcons.check, 

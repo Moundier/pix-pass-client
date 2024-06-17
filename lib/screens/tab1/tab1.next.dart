@@ -9,16 +9,19 @@ import 'package:client_flutter/shared/widgets/my_dummy.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class Tab1Sequence extends StatefulWidget {
-  const Tab1Sequence({super.key});
+class Tab1Next extends StatefulWidget {
+  
+  const Tab1Next({super.key});
+
   @override
-  State<Tab1Sequence> createState() => Tab1SequenceState();
+  State<Tab1Next> createState() => Tab1SequenceState();
 }
 
-class Tab1SequenceState extends State<Tab1Sequence> {
+class Tab1SequenceState extends State<Tab1Next> {
   
   bool showTextField = false;
   bool showPlaceholder = false;
+  
 
   void showInput() {
     setState(() {
@@ -63,6 +66,7 @@ class Tab1SequenceState extends State<Tab1Sequence> {
       body: showPlaceholder ? const MyDummy() : MyListView(
 
         widgetList: [
+          
           const SizedBox(height: 10),
 
           CardCopy(
@@ -79,7 +83,7 @@ class Tab1SequenceState extends State<Tab1Sequence> {
 
         ]
       ),
-      bottomSheet: showTextField ? MyInputContainer(inputTextLabel: "Label", valueTextLabel: "Password", toggleWidget:  showInput,) : MyButton(showInput,),
+      bottomSheet: showTextField ? MyInputContainer(context: context, inputTextLabel: "Label", valueTextLabel: "Password", toggleWidget:  showInput,) : MyButton(showInput,),
       bottomNavigationBar: const MyNavbar(),
     );
   }

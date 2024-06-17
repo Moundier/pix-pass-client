@@ -1,46 +1,26 @@
-import 'package:client_flutter/shared/service/navigation.service.dart';
+import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
-import 'package:client_flutter/shared/widgets/my_text_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class CardCopy extends StatefulWidget {
+class CardCopy extends StatelessWidget {
   
-  final String option;
-  final String paramImage;
-  final VoidCallback onPressed;
+  final String? option;
+  final String? paramImage;
+  final VoidCallback? onPressed;
 
-  const CardCopy({
-    super.key,
-    required this.option,
-    required this.paramImage,
-    required this.onPressed,
-  }); 
-
-  @override
-  CardCopyState createState() => CardCopyState(option: option, paramImage: paramImage, onPressed: onPressed);
-
-}
-
-class CardCopyState extends State<CardCopy> {
-  
-  final String option;
-  final String paramImage;
-  final VoidCallback onPressed;
-
-  CardCopyState({
-    required this.option,
-    required this.paramImage,
-    required this.onPressed,
+  CardCopy({
+    super.key, 
+    this.option,
+    this.paramImage,
+    this.onPressed,
   });
 
   final labelController = TextEditingController();
   final secretController = TextEditingController();
 
-  Widget editor() {
+  Widget _editor(BuildContext context) {
 
     return Column(
 
@@ -50,9 +30,9 @@ class CardCopyState extends State<CardCopy> {
 
         const Column(
           children: [
-            MyTextField(labelText: 'Password', padding: 2),
+            // MyTextField(labelText: 'Password', padding: 2),
             SizedBox(height: 10),
-            MyTextField(labelText: 'Confirm Password', padding: 2,),
+            // MyTextField(labelText: 'Confirm Password', padding: 2,),
             SizedBox(height: 10),
           ],
         ),
@@ -60,9 +40,19 @@ class CardCopyState extends State<CardCopy> {
          Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MyButtonText(text:  'Update', type: NesButtonType.warning, toggleWidget: () { }),
+            MyButtonText(
+              text:  'Update', 
+              type: NesButtonType.warning, 
+              toggleWidget: () { }
+            ),
+            
             const SizedBox(width: 20,),
-            MyButtonText(text: 'Delete', type: NesButtonType.error, toggleWidget: () => NavigationService.pop(context)),
+            
+            MyButtonText(
+              text: 'Delete', 
+              type: NesButtonType.error, 
+              toggleWidget: () => AnimationService.pop(context)
+            ),
           ],
         ),
 
@@ -79,10 +69,11 @@ class CardCopyState extends State<CardCopy> {
           NesDialog.show<void>(
             frame: const NesWindowDialogFrame(title: "Edit secret"),
             context: context,
-            builder: (_) => editor(),
+            builder: (_) => _editor(context),
           );
         },
         child: NesContainer(
+          backgroundColor: Colors.blueGrey[300],
           width: 400,
           label: option,
           padding: const EdgeInsets.all(0.0),
@@ -95,8 +86,8 @@ class CardCopyState extends State<CardCopy> {
                 child: Text(
                   '1234567890111213141516171819202122'.substring(0, 33),
                   style: const TextStyle(
-                    fontFamily: 'minecraftia',
-                    fontSize: 10.0,
+                    fontFamily: 'minecraftia', // J4+, 
+                    fontSize: 7.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -104,7 +95,10 @@ class CardCopyState extends State<CardCopy> {
 
               Container(
                 padding: const EdgeInsets.all(10),
-                child: MyNesIconButton(imagePath: 'assets/images/clipboard.png', onPress: () => print("Message"),),
+                child: MyNesIconButton(
+                  onPress: () => print("Message"),
+                  imagePath: 'assets/images/clipboard.png', 
+                ),
               ),
               
             ]

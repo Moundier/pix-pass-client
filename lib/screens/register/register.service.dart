@@ -1,37 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart';
-
-typedef JSON = Map<String, dynamic>;
+import 'package:client_flutter/shared/config/constants.dart';
 
 class RegisterService {
   
   Future<void> registerUser(String email, String password) async {
 
-    // '192.168.0.5' 
-
     final obj = {
-      'firstName': '',
-      'lastName': '',
+      'firstName': '$email',
+      'lastName': '$email',
       'email': email,
       'password': password,
     };
   
     final Response response = await post(
-      Uri.parse('http://localhost:9090/auth/register'),
+      Uri.parse('$url:9090/auth/register'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
       body: jsonEncode(obj),
     );
     
-    JSON json = jsonDecode(response.body);
+    Map<String, dynamic> json = jsonDecode(response.body);
     print(json);
   }
 
-  bool isValidEmail() {
-    return true;
-  }
-
-  bool isValidPassword() {
-    return true;
-  }
 }
