@@ -7,22 +7,17 @@ class MyDummy extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-
-        NesPulser(
-          interval: const Duration(milliseconds: 1000),
-          child: const Text('No passwords created')
-        ),
-
-        Image.asset(
-          'assets/key.png',
-          width: 150,
-          height: 150,
-        ),
-
-      ]
+    return Center(
+      child: NesPulser(
+        interval: const Duration(milliseconds: 700),
+        child: const Text(
+          'No passwords created',
+          style: TextStyle(
+            fontFamily: 'minecraftia',
+            fontSize: 20
+          ),  
+        )
+      )
     );
   }
 

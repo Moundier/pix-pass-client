@@ -1,4 +1,3 @@
-import 'package:client_flutter/screens/tab1/tab1.page.dart';
 import 'package:client_flutter/screens/tab2/tab2.page.dart';
 import 'package:client_flutter/screens/tab3/tab3.page.dart';
 import 'package:client_flutter/shared/service/animate_service.dart';
@@ -19,14 +18,12 @@ class MyNavbar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
 
-            NesButton(
-              type: NesButtonType.normal,
-              onPressed: () => AnimationService.push(context, Tab1Page()),
-              child: NesIcon(iconData: NesIcons.hamburgerMenu, size: const Size.fromHeight(16),),
-            ),
+            // NesButton(
+            //   type: NesButtonType.normal,
+            //   onPressed: () => AnimationService.push(context, Tab1Page()),
+            //   child: NesIcon(iconData: NesIcons.hamburgerMenu, size: const Size.fromHeight(16),),
+            // ),
             
-            const SizedBox(width: 20),
-
             NesButton(
               type: NesButtonType.normal,
               onPressed: () => AnimationService.push(context, Tab2Page()),

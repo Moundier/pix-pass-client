@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:client_flutter/screens/tab2/tab2.edit.dart';
+import 'package:client_flutter/screens/tab2/portfolio.page.dart';
+import 'package:client_flutter/shared/widgets/my_divider.dart';
+import 'package:client_flutter/shared/widgets/my_toggle_row.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 import 'package:client_flutter/screens/login/login.page.dart';
@@ -11,28 +13,36 @@ import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_dialog.dart';
 
 class Tab2Page extends StatefulWidget {
-  Tab2Page({Key? key}) : super(key: key);
+  
+  const Tab2Page({super.key});
 
   @override
   Tab2PageState createState() => Tab2PageState();
 }
 
 class Tab2PageState extends State<Tab2Page> {
+
+  final authService = AuthService();
+
   bool isSelected = false;
   bool enableBiometrics = false;
   bool enableRecognition = false;
 
   User? user;
+  String? termsAcecepted;
   bool _loading = true;
 
-  NesHourglassLoadingIndicator loader = NesHourglassLoadingIndicator();
+  NesHourglassLoadingIndicator loadingIndicator = const NesHourglassLoadingIndicator();
 
   Future<void> _profile() async {
 
-    await Future.delayed(const Duration(seconds: 4));
-    final userStored = await AuthService().getData('user');
-    Map<String, dynamic> attr = jsonDecode(userStored);
-    user = User.fromJson(attr);
+    await Future.delayed(const Duration(seconds: 3));
+    final user = await authService.getData('user');
+    final attr = jsonDecode(user);
+    this.user = User.parse(attr);
+
+    termsAcecepted = this.user?.termsAcceptedDate.toString();
+    
     setState(() {
       _loading = false; // Set loading to false once user profile is fetched
     });
@@ -57,7 +67,7 @@ class Tab2PageState extends State<Tab2Page> {
           ),
         ),
       ),
-      body: _loading ? Center(child: loader): _loadProfile(), // Show profile content once loaded
+      body: _loading ? Center(child: loadingIndicator): _loadProfile(), // Show profile content once loaded
 
       bottomSheet: Container(
         color: Colors.red,
@@ -97,6 +107,7 @@ class Tab2PageState extends State<Tab2Page> {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: 100,
@@ -106,183 +117,77 @@ class Tab2PageState extends State<Tab2Page> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
+              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        user!.firstName ?? '',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'minecraftia',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  const SizedBox(height: 10),
+                  Text(
+                    user!.firstName,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'minecraftia',
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        '2024/12/12',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'minecraftia',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
+                  const SizedBox(height: 10),
+                  Text(
+                    termsAcecepted ?? '', // Date time
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontFamily: 'minecraftia',
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
+                  const SizedBox(height: 10),
+                  NesButton(
+                    type: NesButtonType.success,
+                    child: const Text(
+                      'EDIT PROFILE',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'minecraftia',
                       ),
-                      NesButton(
-                        type: NesButtonType.success,
-                        child: const Text(
-                          'EDIT PROFILE',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'minecraftia',
-                          ),
-                        ),
-                        onPressed: () =>
-                            AnimationService.push(context, Tab2Edit()),
-                      )
-                    ],
+                    ),
+                    onPressed: () => AnimationService.push(context, Tab2Edit()),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(
-            height: 20,
+
+          const SizedBox(height: 20),
+
+          const MyDivider("Config"),
+
+          const SizedBox(height: 10),
+ 
+          MyToggleRow(
+            width: 400, 
+            imageAssetPath: 'assets/images/touch_id.png', 
+            label: "Enable touch id", 
+            onPressed: () {
+
+            },
           ),
-          const Row(
-            children: [
-              SizedBox(
-                height: 30,
-              ),
-              Text('Settings',
-                  style: TextStyle(
-                    fontFamily: 'minecraftia',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  )),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Divider(
-                  thickness: 3,
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
-              ),
-            ],
+
+          const SizedBox(height: 10,),
+
+          MyToggleRow(
+            width: 400, 
+            imageAssetPath: 'assets/images/face_id.png', 
+            label: "Enable face id", 
+            onPressed: () {
+              
+            },
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          NesContainer(
-            padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-            width: 400,
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/images/touch_id.png',
-                  height: 40,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text(
-                  "Enable face id",
-                  style: TextStyle(
-                    fontFamily: 'minecraftia',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(
-                  width: 40,
-                ),
-                NesButton(
-                  onPressed: () =>
-                      setState(() => enableBiometrics = !enableBiometrics),
-                  type: enableBiometrics
-                      ? NesButtonType.error
-                      : NesButtonType.success,
-                  child: NesIcon(
-                      iconData: enableBiometrics
-                          ? NesIcons.remove
-                          : NesIcons.check,
-                      size: const Size.fromHeight(16)),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          NesContainer(
-            padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
-            width: 400,
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/images/face_id.png',
-                  height: 40,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text(
-                  "Enable face id",
-                  style: TextStyle(
-                    fontFamily: 'minecraftia',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(
-                  width: 40,
-                ),
-                Container(
-                  child: NesButton(
-                    onPressed: () =>
-                        setState(() => enableRecognition = !enableRecognition),
-                    type: enableRecognition
-                        ? NesButtonType.error
-                        : NesButtonType.success,
-                    child: NesIcon(
-                        iconData: enableRecognition
-                            ? NesIcons.remove
-                            : NesIcons.check,
-                        size: const Size.fromHeight(16)),
-                  ),
-                ),
-              ],
-            ),
-          ),
+
+          const SizedBox(height: 20,),
+
+          const MyDivider("Security"),
+          
         ],
       ),
     );

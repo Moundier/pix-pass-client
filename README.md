@@ -24,6 +24,7 @@ Flutter case: source folder renamed
 - `flutter clean`
 - `flutter build linux`
 - `flutter run`
+- `flutter run | sed '/^.\// { /^\(V\|I\|W\|E\)\/flutter/!d }'`
 
 MFA Multi Factor Authentication
 

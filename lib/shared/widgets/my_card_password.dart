@@ -1,24 +1,32 @@
+import 'package:client_flutter/shared/models/password.dart';
 import 'package:client_flutter/shared/service/animate_service.dart';
+import 'package:client_flutter/shared/styles/my_nes_container_style.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-class CardCopy extends StatelessWidget {
-  
-  final String? option;
-  final String? paramImage;
-  final VoidCallback? onPressed;
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
-  CardCopy({
+class MyCardPassword extends StatelessWidget {
+  
+  final Password password;
+  final Function(Password)? onUpdate;
+  final Function(Password)? onDelete;
+
+  MyCardPassword({
     super.key, 
-    this.option,
-    this.paramImage,
-    this.onPressed,
+    required this.password,
+    this.onUpdate,
+    this.onDelete,
   });
 
-  final labelController = TextEditingController();
-  final secretController = TextEditingController();
+  final tagController = TextEditingController();
+  final titleController = TextEditingController();
 
   Widget _editor(BuildContext context) {
 
@@ -72,10 +80,10 @@ class CardCopy extends StatelessWidget {
             builder: (_) => _editor(context),
           );
         },
-        child: NesContainer(
-          backgroundColor: Colors.blueGrey[300],
+        child: MyNesContainer(
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
           width: 400,
-          label: option,
+          label: password.tag,
           padding: const EdgeInsets.all(0.0),
           child: Row(
             children: <Widget>[
@@ -84,21 +92,44 @@ class CardCopy extends StatelessWidget {
               
               Expanded(
                 child: Text(
-                  '1234567890111213141516171819202122'.substring(0, 33),
+                  password.title ?? 'No title',
                   style: const TextStyle(
                     fontFamily: 'minecraftia', // J4+, 
-                    fontSize: 7.0,
+                    fontSize: 10.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
 
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: MyNesIconButton(
-                  onPress: () => print("Message"),
-                  imagePath: 'assets/images/clipboard.png', 
-                ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: MyNesIconButton(
+                    height: 30,
+                    primaryColor: const Color.fromARGB(255, 130, 9, 0),
+                    imagePath: 'assets/images/pencil.png',
+                    onPress: () {
+                      logger.f('Copy to clipboard');
+                      // onDelete!(storage); // Http delete request
+                    },
+                  ),
+                )
+              ),
+
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: NesIconButton(
+                    primaryColor: const Color.fromARGB(255, 130, 9, 0),
+                    icon: NesIcons.delete,
+                    onPress: () {
+                      // logger.f(storage.toString());
+                      // onDelete!(storage); // Http delete request
+                    },
+                  ),
+                )
               ),
               
             ]

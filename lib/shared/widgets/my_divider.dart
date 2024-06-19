@@ -8,31 +8,24 @@ class MyDivider extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Row(
-        children: [
-          const Expanded(
-            child: Divider(
-              thickness: 4,
-              color: Color.fromARGB(255, 0, 0, 0),
-            ),
+    return  Row(
+      children: [
+        const SizedBox(height: 30,),
+        Text(text, 
+          style: const TextStyle(
+            fontFamily: 'minecraftia', 
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          )
+        ),
+        const SizedBox(width: 10,),
+        const Expanded(
+          child: Divider(
+            thickness: 3,
+            color: Color.fromARGB(255, 0, 0, 0),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Text(
-              text,
-              style: const TextStyle(color:Color.fromARGB(255, 0, 0, 0), fontSize: 10),
-            ),
-          ),
-          const Expanded(
-            child: Divider(
-              thickness: 4,
-              color: Color.fromARGB(255, 0, 0, 0),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

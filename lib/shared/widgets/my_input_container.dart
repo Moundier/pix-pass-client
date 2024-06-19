@@ -7,13 +7,19 @@ var logger = Logger(
   printer: SimplePrinter()
 );
 
+
+enum MyInputContainerType {
+  storageInput,
+  passwordInput,
+}
+
 class MyInputContainer extends StatelessWidget {
 
   final BuildContext? context;
   final String? inputTextLabel;
   final String? valueTextLabel;
   final VoidCallback? toggleWidget; // Function
-  final Function(String, String)? onSubmit; // Function to handle form submission
+  final Function(String, String)? onCreate; // Function to handle form submission
 
   const MyInputContainer({
     super.key,     
@@ -21,7 +27,7 @@ class MyInputContainer extends StatelessWidget {
     this.inputTextLabel, 
     this.valueTextLabel, 
     this.toggleWidget, 
-    this.onSubmit,
+    this.onCreate,
   });
 
   InputDecoration inputDecorationWithLabel(String? labelText) {
@@ -39,18 +45,18 @@ class MyInputContainer extends StatelessWidget {
       ),
       labelText: labelText, 
       labelStyle: const TextStyle(
-        fontSize: 12,
+        fontSize: 16,
         fontFamily: 'minecraftia',
         color: Color.fromARGB(255, 0, 0, 0)
-      )
+      ),
     );
   }
   
   @override
   Widget build(BuildContext context) {
 
-    final labelController = TextEditingController();
-    final inputController = TextEditingController();
+    final tagController = TextEditingController();
+    final titleController = TextEditingController();
     
     EdgeInsets padding = const EdgeInsets.all(8);
 
@@ -69,7 +75,7 @@ class MyInputContainer extends StatelessWidget {
                   padding: padding,
                   child: TextField(
                     cursorColor: Colors.red, // Defina a cor do cursor aqui
-                    controller: labelController,
+                    controller: tagController,
                     decoration: inputDecorationWithLabel(inputTextLabel),
                     style: const TextStyle(
                       fontFamily: 'minecraftia',
@@ -82,14 +88,14 @@ class MyInputContainer extends StatelessWidget {
                 padding: padding,
                 child: NesButton(
                   onPressed: () {
-                    if (onSubmit != null) {
+                    if (onCreate != null) {
 
-                      logger.f(labelController.text);
-                      logger.f(inputController.text);
+                      // logger.f(tagController.text);
+                      // logger.f(inputController.text);
 
-                      onSubmit!(
-                        labelController.text,
-                        inputController.text,
+                      onCreate!(
+                        tagController.text,
+                        titleController.text,
                       );
                     }
                   },
@@ -123,8 +129,11 @@ class MyInputContainer extends StatelessWidget {
                   padding: padding,
                   child: TextFormField(
                     cursorColor: Colors.red,
-                    controller: inputController,
-                    decoration: inputDecorationWithLabel(valueTextLabel)
+                    controller: titleController,
+                    decoration: inputDecorationWithLabel(valueTextLabel),
+                    style: const TextStyle(
+                      fontFamily: 'minecraftia',
+                    ),
                   ),
                 ) 
               ),

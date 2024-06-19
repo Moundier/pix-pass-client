@@ -1,6 +1,6 @@
-import 'package:client_flutter/shared/models/storage.dart';
 
 class User {
+
   int id;
   String firstName;
   String lastName;
@@ -21,7 +21,7 @@ class User {
     required this.tutorialComplete,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.parse(Map<String, dynamic> json) {
     return User(
       id: json['id'],
       firstName: json['firstName'],
@@ -46,6 +46,13 @@ class User {
       'tutorialComplete': tutorialComplete,
     };
   }
+
+  @override
+  String toString() {
+    return 'User{id: $id, firstName: $firstName, lastName: $lastName, email: $email, '
+        'role: $role, termsAcceptedDate: $termsAcceptedDate, tutorialComplete: $tutorialComplete}';
+  }
+
 }
 
 enum Role {

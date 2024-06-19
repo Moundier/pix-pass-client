@@ -21,17 +21,15 @@ class AuthService {
 
   getData(String key) async {
     String value = await storage.read(key: key) ?? 'No data found';
-    // logger.i(value);
     return value;
   }
-
 
   Future<User?> getUserData() async {
 
     String? jsonString = await storage.read(key: 'user');
     if (jsonString != null) {
       Map<String, dynamic> json = jsonDecode(jsonString);
-      return User.fromJson(json);
+      return User.parse(json);
     }
     return null; // Handle case where user data is not found or parsing fails
   }

@@ -1,31 +1,33 @@
+import 'package:client_flutter/shared/models/storage.dart';
+
 class Password {
   int? id;
-  String? label;
-  String? password;
-  int? storageId; // Optionally include storageId if needed
+  String? tag;
+  String? title;
+  Storage? storage; // Optionally include storageId if needed
 
   Password({
     this.id,
-    this.label,
-    this.password,
-    this.storageId,
+    this.tag,
+    this.title,
+    this.storage,
   });
 
-  factory Password.fromJson(Map<String, dynamic> json) {
+  factory Password.parse(Map<String, dynamic> json) {
     return Password(
       id: json['id'],
-      label: json['label'],
-      password: json['password'],
-      storageId: json['storageId'],
+      tag: json['tag'],
+      title: json['title'],
+      storage: Storage.parse(json['storage']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'label': label,
-      'password': password,
-      'storageId': storageId,
+      'tag': tag,
+      'title': title,
+      'storage': storage,
     };
   }
 }

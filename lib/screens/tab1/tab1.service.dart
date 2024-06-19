@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:client_flutter/shared/models/password.dart';
 import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:http/http.dart';
@@ -13,56 +14,73 @@ var logger = Logger(
 
 class Tab1Service {
 
-  Future<Response> createStorage(String note, String label, User user) async {
-    final Map<String, dynamic> body = {
-      'note': note,
-      'label': label,
-      'user': user.toJson(), // Ensure User class has a toJson method
-    };
+  /// Handling storage-related HTTP requests.
 
-    logger.f('Body: $body');
-
+  Future<Response> createStorage(Storage storage) async {
     final response = await post(
       Uri.parse('$url:9090/storage'),
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(body),
+      body: jsonEncode(storage),
     );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to create storage');
-    }
 
     return response;
   }
 
   Future<Response> locateAllStorage(User user) async {
-    try {
-      final response = await post(
-        Uri.parse('$url:9090/storage/all'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: jsonEncode(user),
-      );
-      if (response.statusCode != 200) return response;
-      return response;
-    } catch (e) {
-      return Response("", 500); // or handle error in a different way
-    }
+    final response = await post(
+      Uri.parse('$url:9090/storage/all'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(user)
+    );
+
+    return response;
   }
 
   Future<Response> deleteStorage(Storage storage) async {
-
-    try {
-      final response = await post(
-        Uri.parse('$url:9090/storage'),
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: jsonEncode({'storage': storage}),
-      );
-      if (response.statusCode != 200) return response;
-      jsonDecode(response.body);
-      return response;
-    } catch (e) {
-      return Response("", 500); // or handle error in a different way
-    }
+    final response = await delete(
+      Uri.parse('$url:9090/storage'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(storage),
+    );
+  
+    return response;
   }
 
+  /// Handling password-related HTTP requests.
+  
+  Future<Response> createPassword(Password password) async {
+    final response = await post(
+      Uri.parse('$url:9090/password'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(password),
+    );
+
+    logger.d("create password");
+
+    return response;
+  }
+
+  Future<Response> locateAllPassword(Storage storage) async {
+    final response = await post(
+      Uri.parse('$url:9090/password/all'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(storage)
+    );
+
+    return response;
+  }
+
+  Future<Response> updatePassword(Password password) async {
+    return await post(Uri());
+  }
+
+  Future<Response> deletePassword(Password password) async {
+    final response = await delete(
+      Uri.parse('$url:9090/storage'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(password),
+    );
+  
+    return response;
+  }
 }
