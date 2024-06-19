@@ -1,11 +1,13 @@
 import 'package:client_flutter/shared/models/password.dart';
-import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:client_flutter/shared/styles/my_nes_container_style.dart';
-import 'package:client_flutter/shared/widgets/my_button_text.dart';
+import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
+
+import 'package:flutter/services.dart';
 
 var logger = Logger(
   output: ConsoleOutput(),
@@ -28,43 +30,28 @@ class MyCardPassword extends StatelessWidget {
   final tagController = TextEditingController();
   final titleController = TextEditingController();
 
-  Widget _editor(BuildContext context) {
+  Future<void> _deletePassword() async {
 
-    return Column(
+  }
 
-      children: [
+  Future<void> _updatePassword() async {
+   
+  }
 
-        const SizedBox(width: 320),
-
-        const Column(
-          children: [
-            // MyTextField(labelText: 'Password', padding: 2),
-            SizedBox(height: 10),
-            // MyTextField(labelText: 'Confirm Password', padding: 2,),
-            SizedBox(height: 10),
-          ],
+  void _clipboard(String text, BuildContext context) {
+    Clipboard.setData(ClipboardData(text: text));
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: SizedBox(
+          width: double.infinity,
+          child: NesSnackbar(
+            text: text,
+            type: NesSnackbarType.success,
+          ),
         ),
-
-         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MyButtonText(
-              text:  'Update', 
-              type: NesButtonType.warning, 
-              toggleWidget: () { }
-            ),
-            
-            const SizedBox(width: 20,),
-            
-            MyButtonText(
-              text: 'Delete', 
-              type: NesButtonType.error, 
-              toggleWidget: () => AnimationService.pop(context)
-            ),
-          ],
-        ),
-
-      ],
+      ),
     );
   }
 
@@ -72,16 +59,8 @@ class MyCardPassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(4),
-      child: GestureDetector(
-        onTap: () {
-          NesDialog.show<void>(
-            frame: const NesWindowDialogFrame(title: "Edit secret"),
-            context: context,
-            builder: (_) => _editor(context),
-          );
-        },
-        child: MyNesContainer(
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      child: MyNesContainer(
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           width: 400,
           label: password.tag,
           padding: const EdgeInsets.all(0.0),
@@ -89,13 +68,14 @@ class MyCardPassword extends StatelessWidget {
             children: <Widget>[
 
               const SizedBox(width: 20,),
+              const SizedBox(height: 60,),
               
               Expanded(
                 child: Text(
                   password.title ?? 'No title',
                   style: const TextStyle(
                     fontFamily: 'minecraftia', // J4+, 
-                    fontSize: 10.0,
+                    fontSize: 12, // Small text constant
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -104,15 +84,13 @@ class MyCardPassword extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.fromLTRB(12, 6, 4, 6),
                   child: MyNesIconButton(
-                    height: 30,
-                    primaryColor: const Color.fromARGB(255, 130, 9, 0),
-                    imagePath: 'assets/images/pencil.png',
-                    onPress: () {
-                      logger.f('Copy to clipboard');
-                      // onDelete!(storage); // Http delete request
-                    },
+                    image: Image.asset('assets/images/pencil.png', height: 32, width: 28,),
+                    onPress: () => const MyDialogConfirm(
+                      title: '',
+                      extraMessage: '',
+                    ).show(context)
                   ),
                 )
               ),
@@ -121,8 +99,21 @@ class MyCardPassword extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: const EdgeInsets.all(8),
+                  child: MyNesIconButton(
+                    
+                    image: Image.asset('assets/images/clipboard.png', height: 34,),
+                    onPress: () => _clipboard('Copied to clipboard', context),
+                  ),
+                )
+              ),
+
+
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(6, 8, 12, 6),
                   child: NesIconButton(
-                    primaryColor: const Color.fromARGB(255, 130, 9, 0),
+                    primaryColor: Color.fromARGB(255, 119, 1, 1),
                     icon: NesIcons.delete,
                     onPress: () {
                       // logger.f(storage.toString());
@@ -133,7 +124,6 @@ class MyCardPassword extends StatelessWidget {
               ),
               
             ]
-          ),
         ),
       ),
     );

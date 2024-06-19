@@ -63,15 +63,12 @@ class MyCardStorage extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.fromLTRB(12, 6, 4, 6),
                   child: MyNesIconButton(
-                    height: 30,
-                    primaryColor: const Color.fromARGB(255, 130, 9, 0),
-                    imagePath: 'assets/images/pencil.png',
+                    image: Image.asset('assets/images/pencil.png', height: 32, width: 28,),
                     onPress: () {
-                      logger.f('Update storage');
-                      // onDelete!(storage); // Http delete request
-                    },
+                      
+                    }
                   ),
                 )
               ),

@@ -5,8 +5,7 @@ class MyNesIconButton extends StatelessWidget {
 
   const MyNesIconButton({
     super.key,
-    this.height,
-    required this.imagePath,
+    this.image,
     this.onPress,
     this.onPressStart,
     this.onPressEnd,
@@ -16,8 +15,7 @@ class MyNesIconButton extends StatelessWidget {
     this.disabled,
   });
 
-  final double? height;
-  final String imagePath;
+  final Image? image;
   final VoidCallback? onPress;
   final VoidCallback? onPressStart;
   final VoidCallback? onPressEnd;
@@ -39,7 +37,7 @@ class MyNesIconButton extends StatelessWidget {
       disabled: _isDisabled(),
       child: Opacity(
         opacity: _isDisabled() ? .2 : 1.0,
-        child: Image.asset(imagePath, height: height)
+        child: image
       ),
     );
   }

@@ -11,7 +11,7 @@ class MyDummy extends StatelessWidget {
       child: NesPulser(
         interval: const Duration(milliseconds: 700),
         child: const Text(
-          'No passwords created',
+          'No storages created!',
           style: TextStyle(
             fontFamily: 'minecraftia',
             fontSize: 20

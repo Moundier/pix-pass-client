@@ -52,12 +52,7 @@ class PasswordPageState extends State<PasswordPage> {
   Future<void> _createPassword(String tag, String title) async {
 
     final obj = Password(tag: tag, title: title, storage: widget.storage);
-    logger.d("_createPassword Flow");
-    logger.d(tag + " " + title + " " + widget.storage.toString());
-
     Response response = await _tab1Service.createPassword(obj);
-    logger.d("response");
-    logger.d(response);
     
     final json = jsonDecode(response.body);
     Password password = Password.parse(json);
@@ -120,7 +115,14 @@ class PasswordPageState extends State<PasswordPage> {
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        title: const Text('Secret Page'),
+        // title: const Text(
+        //   'Storage name: ',
+        //   style: TextStyle(
+        //     fontFamily: 'minecraftia',
+        //     fontWeight: FontWeight.normal,
+        //     letterSpacing: 1.0,
+        //   ),
+        // ),
         leading: Padding(
           padding: const EdgeInsets.all(8),
           child: NesIconButton(

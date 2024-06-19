@@ -1,16 +1,14 @@
 import 'dart:convert';
 
 import 'package:client_flutter/screens/tab2/portfolio.page.dart';
+import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
 import 'package:client_flutter/shared/widgets/my_divider.dart';
 import 'package:client_flutter/shared/widgets/my_toggle_row.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
-import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
-import 'package:client_flutter/shared/widgets/my_button_text.dart';
-import 'package:client_flutter/shared/widgets/my_dialog.dart';
 
 class Tab2Page extends StatefulWidget {
   
@@ -67,7 +65,7 @@ class Tab2PageState extends State<Tab2Page> {
           ),
         ),
       ),
-      body: _loading ? Center(child: loadingIndicator): _loadProfile(), // Show profile content once loaded
+      body: _loading ? Center(child: loadingIndicator) : _loadProfile(), // Show profile content once loaded
 
       bottomSheet: Container(
         color: Colors.red,
@@ -76,25 +74,11 @@ class Tab2PageState extends State<Tab2Page> {
           type: NesButtonType.error,
           child: const Text('Log out'),
           onPressed: () {
-            MyDialog(
-              widget: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  MyButtonText(
-                      text: 'Confirm',
-                      type: NesButtonType.success,
-                      toggleWidget: () {
-                        AuthService().cleanAllStorage();
-                        AnimationService.push(context, LoginPage());
-                      }),
-                  const SizedBox(width: 20,),
-                  MyButtonText(
-                      text: 'Cancel',
-                      type: NesButtonType.error,
-                      toggleWidget: () => Navigator.of(context).pop(true)),
-                ],
-              ),
-            ).show(context);
+            const MyDialogConfirm(
+              title: 'Logout', 
+              extraMessage: 'Adios for now'
+            )
+            .show(context);
           },
         ),
       ),
@@ -122,7 +106,7 @@ class Tab2PageState extends State<Tab2Page> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10),
+
                   Text(
                     user!.firstName,
                     style: const TextStyle(
