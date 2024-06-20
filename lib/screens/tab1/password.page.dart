@@ -46,6 +46,7 @@ class PasswordPageState extends State<PasswordPage> {
 
   @override
   void dispose() {
+    // Clean up resources here, e.g., cancel ongoing operations
     super.dispose();
   }
 
@@ -68,7 +69,10 @@ class PasswordPageState extends State<PasswordPage> {
     Response response = await _tab1Service.locateAllPassword(storage);
     List<dynamic> json = jsonDecode(response.body);
 
+    if (!mounted) return; // Prevents error: setState called after dispose
+
     setState(() {
+      passwords.clear();
       for (dynamic e in json) {
         passwords.add(Password.parse(e));
       }  
@@ -81,9 +85,15 @@ class PasswordPageState extends State<PasswordPage> {
 
   Future<void> _deletePassword(Password password) async {
 
+    logger.f(password);
+    if (!mounted) return;
+
     setState(() {
-      
+      passwords.remove(password);
+      showPlaceholder = passwords.isEmpty;
     });
+
+    await _tab1Service.deletePassword(password);
   }
 
   void showInput() {
@@ -115,14 +125,6 @@ class PasswordPageState extends State<PasswordPage> {
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        // title: const Text(
-        //   'Storage name: ',
-        //   style: TextStyle(
-        //     fontFamily: 'minecraftia',
-        //     fontWeight: FontWeight.normal,
-        //     letterSpacing: 1.0,
-        //   ),
-        // ),
         leading: Padding(
           padding: const EdgeInsets.all(8),
           child: NesIconButton(

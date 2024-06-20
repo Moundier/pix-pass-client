@@ -1,3 +1,4 @@
+import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:client_flutter/shared/widgets/my_button_text.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class MyDialogConfirm {
             MyButtonText(
               text: 'Yes', 
               type: NesButtonType.warning, 
-              toggleWidget: () { }
+              toggleWidget: () => AnimationService.push(context, LoginPage()),
             ),
             
             const SizedBox(width: 20,),
@@ -57,13 +58,7 @@ class MyDialogConfirm {
   );
 }
 
-// TODO: 
-// dialog confirm edit, delete secure 
-// dialog confirm edit, delete of secret
-// dialog confirm edit authentication methods
-// dialog confirm log out
-
- /// edit storage password user
- /// delete password
- /// clipboard
- /// biometric
+/// TODO: 
+/// dialog confirm edit, delete storage, password, user 
+/// edit storage password user
+/// biometric

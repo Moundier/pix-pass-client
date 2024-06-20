@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: MyInputStyle.build("Email"),
+                  decoration: MyTextFieldStyle.build("Email"),
                   style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
                   validator: (value) {
                     if (value?.isEmpty ?? true) return 'Please enter your email';
@@ -73,7 +73,7 @@ class LoginPage extends StatelessWidget {
                   focusNode: _passwordFocus,
                   controller: _passwordController,
                   keyboardType: TextInputType.visiblePassword,
-                  decoration: MyInputStyle.build("Password"),
+                  decoration: MyTextFieldStyle.build("Password"),
                   style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
                   validator: (value) {
                     if (value?.isEmpty ?? true) return 'Please enter your password';

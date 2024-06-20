@@ -93,7 +93,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             focusNode: _emailFocus,
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: MyInputStyle.build("Email"),
+            decoration: MyTextFieldStyle.build("Email"),
             style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
             validator: (value) {
 
@@ -117,7 +117,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             focusNode: _passwordFocus,
             controller: _passwordController,
             obscureText: true,
-            decoration: MyInputStyle.build("Password"),
+            decoration: MyTextFieldStyle.build("Password"),
             style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
             validator: (String? value) {
               
@@ -138,7 +138,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             focusNode: _confirmFocus,
             controller: _confirmController,
             obscureText: true,
-            decoration: MyInputStyle.build("Confirm Password"),
+            decoration: MyTextFieldStyle.build("Confirm Password"),
             style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
             validator: (String? value) {
               if (value!.isEmpty) return 'Please confirm your password'; // Add more password validation logic if needed

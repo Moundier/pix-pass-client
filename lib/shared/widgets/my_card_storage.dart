@@ -1,11 +1,8 @@
 import 'package:client_flutter/screens/tab1/password.page.dart';
 import 'package:client_flutter/shared/models/storage.dart';
-import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:client_flutter/shared/styles/my_nes_container_style.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 
@@ -34,7 +31,12 @@ class MyCardStorage extends StatelessWidget {
       padding: const EdgeInsets.all(4),
       child: GestureDetector(
         onTap: () { 
-          AnimationService.push(context, PasswordPage(storage: storage));
+
+          Navigator.push(context,  NesFillTransition.route<void>(
+            duration: Durations.extralong4,
+            pageBuilder: (_, __, ___) { return PasswordPage(storage: storage); }
+          ));
+
         },
         child: MyNesContainer(
           width: 400,

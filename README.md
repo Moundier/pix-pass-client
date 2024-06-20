@@ -26,6 +26,9 @@ Flutter case: source folder renamed
 - `flutter run`
 - `flutter run | sed '/^.\// { /^\(V\|I\|W\|E\)\/flutter/!d }'`
 
+- shared preferences
+- jwt_decoder
+
 MFA Multi Factor Authentication
 
 Fixes
