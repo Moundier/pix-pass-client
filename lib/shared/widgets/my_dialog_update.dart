@@ -65,14 +65,3 @@ class MyDialog {
     );
   }
 }
-
-// TODO: 
-// dialog confirm edit, delete secure 
-// dialog confirm edit, delete of secret
-// dialog confirm edit authentication methods
-// dialog confirm log out
-
- /// edit storage password user
- /// delete password
- /// clipboard
- /// biometric
