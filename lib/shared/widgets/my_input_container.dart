@@ -40,6 +40,7 @@ class MyInputContainer extends StatelessWidget {
 
     return Column(
       mainAxisSize: MainAxisSize.min, /// Minimum column size
+      
       children: [
         Row(
           children: [

@@ -14,33 +14,22 @@ class MyNesContainer extends StatelessWidget {
   });
 
   final String? label;
-
   final Widget? child;
-
   final double? width;
-
   final double? height;
-
   final Color? backgroundColor;
-
   final EdgeInsets? padding;
-
   final NesContainerPainterBuilder? painterBuilder;
 
   @override
   Widget build(BuildContext context) {
+
     final nesContainerTheme = context.nesThemeExtension<NesContainerTheme>();
-
     const textStyle = TextStyle(fontFamily: 'minecraftia', fontSize: 12, color: Colors.black, fontWeight: FontWeight.bold);
-
     final containerColor = backgroundColor ?? nesContainerTheme.backgroundColor;
-
     final padding = this.padding ?? nesContainerTheme.padding;
-
     final nesTheme = context.nesThemeExtension<NesTheme>();
-
     final pixelSize = nesContainerTheme.pixelSize ?? nesTheme.pixelSize;
-
     final painter = painterBuilder ?? nesContainerTheme.painter;
 
     return CustomPaint(

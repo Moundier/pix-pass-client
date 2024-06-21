@@ -74,11 +74,7 @@ class Tab2PageState extends State<Tab2Page> {
           type: NesButtonType.error,
           child: const Text('Log out'),
           onPressed: () {
-            const MyDialogConfirm(
-              title: 'Logout', 
-              extraMessage: 'Adios for now'
-            )
-            .show(context);
+            MyDialogConfirm.logout(context);
           },
         ),
       ),

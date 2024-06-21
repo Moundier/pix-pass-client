@@ -102,21 +102,6 @@ class PasswordPageState extends State<PasswordPage> {
     });
   }
 
-  Color background = const Color.fromARGB(255, 154, 154, 154);
-
-  List<Widget> actionWidget() {
-
-    return [
-      Align(
-        alignment: Alignment.centerRight,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Image.asset('assets/images/pencil.png', width: 30, height: 30,),
-        )
-      ), 
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
 

@@ -36,6 +36,17 @@ class Tab1Service {
     return response;
   }
 
+  Future<Response> updateStorage(Storage storage) async {
+
+    final response = await put(
+      Uri.parse('$url:9090/storage'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(storage)
+    );
+
+    return response;
+  }
+
   Future<Response> deleteStorage(Storage storage) async {
     final response = await delete(
       Uri.parse('$url:9090/storage'),

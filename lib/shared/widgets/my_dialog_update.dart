@@ -1,67 +1,130 @@
-import 'package:client_flutter/shared/service/animate_service.dart';
-import 'package:client_flutter/shared/widgets/my_button_text.dart';
+import 'package:client_flutter/shared/models/storage.dart';
+import 'package:client_flutter/shared/styles/my_text_field_style.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
-class MyDialog {
+class MyDialogUpdate extends StatefulWidget {
+  final Storage storage;
 
-  final String? title;
-  final NesIconData? leftIcon;
+  const MyDialogUpdate({super.key, required this.storage});
 
-  final onConfirm;
-  final onCancel;
+  static Future<Storage?> show(BuildContext context, Storage storage) async {
+    return NesDialog.show<Storage>(
+      // frame: NesWindowDialogFrame(title: '', leftIcon: NesIcons16.handPointingRight),
+      context: context, 
+      builder: (context) => MyDialogUpdate(storage: storage)
+    );
+  }
 
-  const MyDialog({
-    this.title,
-    this.leftIcon,
-    this.onConfirm,
-    this.onCancel
-  });
+  @override
+  _MyDialogUpdateState createState() => _MyDialogUpdateState();
+}
+
+class _MyDialogUpdateState extends State<MyDialogUpdate> {
   
-  Future<void> show(BuildContext context) async {
-    
-    NesDialog.show<void>(
-      context: context,
-      builder: (_) => Column(
+  late Storage _storage;
 
-        children: [
+  final formKey = GlobalKey<FormState>();
+  late TextEditingController tagController;
+  late TextEditingController titleController;
 
-          const SizedBox(width: 220),
+  final titleFocus = FocusNode();
 
-          Column(
-            children: [
-              Text(title ?? 'No text provided'),
-            ],
-          ),
+  @override
+  void initState() {
+    super.initState();
+    _storage = widget.storage;
+    tagController = TextEditingController(text: _storage.tag);
+    titleController = TextEditingController(text: _storage.title);
+  }
 
-          const SizedBox(height: 20),
+  @override
+  void dispose() {
+    tagController.dispose();
+    titleController.dispose();
+    titleFocus.dispose();
+    super.dispose();
+  }
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MyButtonText(
-                text: 'Yes', 
-                type: NesButtonType.warning, 
-                toggleWidget: () {
-                  
-                }
-              ),
-              
-              const SizedBox(width: 20,),
-              
-              MyButtonText(
-                text: 'No', 
-                type: NesButtonType.error, 
-                toggleWidget: () {
-                  AnimationService.pop(context);
-                }
-              ),
-            ],
-          ),
+  void _updateStorage() {
 
-        ],
-      ),
+
+    if (formKey.currentState?.validate() ?? false) {
+      _storage = Storage(
+        id: widget.storage.id,
+        tag: tagController.text,
+        title: titleController.text,
+        user: widget.storage.user
+      );
+
+      logger.f(_storage.toString());
+
+      Navigator.of(context).pop(_storage);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        key: formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: tagController,
+              keyboardType: TextInputType.text,
+              decoration: MyTextFieldStyle.build("Tag"),
+              style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
+              validator: (value) {
+                if (value?.isEmpty ?? true) return 'Tag is required';
+                return null;
+              },
+              onEditingComplete: () {
+                FocusScope.of(context).requestFocus(titleFocus);
+              },
+            ),
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: titleController,
+              focusNode: titleFocus,
+              keyboardType: TextInputType.visiblePassword,
+              decoration: MyTextFieldStyle.build("Title"),
+              style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
+              validator: (value) {
+                if (value?.isEmpty ?? true) return 'Title is required';
+                return null;
+              },
+              onEditingComplete: () {
+                FocusScope.of(context).unfocus();
+              },
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                NesButton(
+                  type: NesButtonType.success,
+                  child: const Text('Update'),
+                  onPressed: _updateStorage,
+                ),
+                const SizedBox(width: 10),
+                NesButton(
+                  type: NesButtonType.error,
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
     );
   }
 }

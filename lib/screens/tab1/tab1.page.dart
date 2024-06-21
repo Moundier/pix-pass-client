@@ -5,6 +5,7 @@ import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:client_flutter/shared/widgets/my_button.dart';
 import 'package:client_flutter/shared/widgets/my_card_storage.dart';
+import 'package:client_flutter/shared/widgets/my_dialog_update.dart';
 import 'package:client_flutter/shared/widgets/my_dummy.dart';
 import 'package:client_flutter/shared/widgets/my_input_container.dart';
 import 'package:client_flutter/shared/widgets/my_navbar.dart';
@@ -77,6 +78,33 @@ class MainPageState extends State<Tab1Page> {
     });
   }
 
+  Future<void> _updateStorage(Storage storage) async {
+
+    logger.f('Info: Update Storage');
+  
+    Storage? obj = await MyDialogUpdate.show(context, storage);
+    
+    if (obj == null) {
+      logger.d('Process canceled');
+      return;
+    }
+  
+    Response response = await _tab1service.updateStorage(obj);
+    
+    if (response.statusCode != 200) return;
+  
+    final responseBody = jsonDecode(response.body);
+
+    Storage newStorage = Storage.parse(responseBody);
+
+    setState(() {
+      int index = storages.indexWhere((el) => el.id == newStorage.id);
+      if (index != -1) {
+        storages[index] = newStorage;
+      }
+    });
+  }
+
   Future<void> _deleteStorage(Storage storage) async {
     logger.f(storage);
     setState(() {
@@ -106,6 +134,7 @@ class MainPageState extends State<Tab1Page> {
                 return MyCardStorage(
                   paramImage: 'assets/images/key.png',
                   storage: storages[index],
+                  onUpdate: _updateStorage,
                   onDelete: _deleteStorage,
                 );
               },
@@ -118,7 +147,7 @@ class MainPageState extends State<Tab1Page> {
               toggleWidget: showInput,
               onCreate: _createStorage,
             ) 
-          : MyButton(showInput),
+          : MyButton(showInput), 
       bottomNavigationBar: const MyNavbar(),
     );
   }

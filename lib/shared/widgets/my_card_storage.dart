@@ -15,12 +15,14 @@ class MyCardStorage extends StatelessWidget {
 
   final Storage storage;
   final String? paramImage;
+  final Function(Storage)? onUpdate;
   final Function(Storage)? onDelete;
 
   const MyCardStorage({
     super.key,
     this.paramImage,
     required this.storage,
+    this.onUpdate,
     this.onDelete,
   });
 
@@ -30,14 +32,10 @@ class MyCardStorage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4),
       child: GestureDetector(
-        onTap: () { 
-
-          Navigator.push(context,  NesFillTransition.route<void>(
-            duration: Durations.extralong4,
-            pageBuilder: (_, __, ___) { return PasswordPage(storage: storage); }
-          ));
-
-        },
+        onTap: () => Navigator.push(context, NesFillTransition.route<void>(
+          duration: Durations.extralong4,
+          pageBuilder: (_, __, ___) { return PasswordPage(storage: storage); }
+        )),
         child: MyNesContainer(
           width: 400,
           label: storage.tag ?? '',
@@ -69,7 +67,7 @@ class MyCardStorage extends StatelessWidget {
                   child: MyNesIconButton(
                     image: Image.asset('assets/images/pencil.png', height: 32, width: 28,),
                     onPress: () {
-                      
+                      onUpdate!(storage);
                     }
                   ),
                 )
@@ -82,10 +80,7 @@ class MyCardStorage extends StatelessWidget {
                   child: NesIconButton(
                     primaryColor: const Color.fromARGB(255, 130, 9, 0),
                     icon: NesIcons.delete,
-                    onPress: () {
-                      logger.f(storage.toString());
-                      onDelete!(storage); // Http delete request
-                    },
+                    onPress: () => onDelete!(storage),
                   ),
                 )
               ),

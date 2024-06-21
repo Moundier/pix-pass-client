@@ -1,7 +1,6 @@
 import 'package:client_flutter/shared/models/password.dart';
-import 'package:client_flutter/shared/styles/my_nes_container_style.dart';
-import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';
+import 'package:client_flutter/shared/styles/my_nes_container_style.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
@@ -80,10 +79,13 @@ class MyCardPassword extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(12, 6, 4, 6),
                 child: MyNesIconButton(
                   image: Image.asset('assets/images/pencil.png', height: 32, width: 28,),
-                  onPress: () => const MyDialogConfirm(
-                    title: '',
-                    extraMessage: '',
-                  ).show(context)
+                  onPress: () {
+
+                  //   const MyDialogConfirm(
+                  //   title: '',
+                  //   extraMessage: '',
+                  // ).show(context)
+                  }
                 ),
               )
             ),

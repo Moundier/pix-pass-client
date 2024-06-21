@@ -8,12 +8,12 @@ class MyToggleRow extends StatefulWidget {
   final VoidCallback onPressed;
 
   MyToggleRow({
-    Key? key,
+    super.key,
     required this.width,
     required this.imageAssetPath,
     required this.label,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   _MyToggleRowState createState() => _MyToggleRowState();

@@ -9,13 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 class Tab2Edit extends StatefulWidget {
-  Tab2Edit({Key? key}) : super(key: key);
+  
+  const Tab2Edit({super.key});
 
   @override
   Tab2EditState createState() => Tab2EditState();
 }
 
 class Tab2EditState extends State<Tab2Edit>{
+
+  final authService = AuthService();
 
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
@@ -28,7 +31,7 @@ class Tab2EditState extends State<Tab2Edit>{
   User? user;
 
   Future<void> _profile() async {
-    final userStored = await AuthService().getData('user');
+    final userStored = await authService.getData('user');
     Map<String, dynamic> attr = jsonDecode(userStored);
     user = User.parse(attr);
 
