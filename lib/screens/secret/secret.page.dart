@@ -1,7 +1,8 @@
 
 import 'dart:convert';
 
-import 'package:client_flutter/screens/tab1/tab1.service.dart';
+import 'package:client_flutter/screens/secret/secret.popup.dart';
+import 'package:client_flutter/screens/secret/secret.service.dart';
 import 'package:client_flutter/shared/models/password.dart';
 import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/widgets/my_button.dart';
@@ -31,12 +32,12 @@ class PasswordPage extends StatefulWidget {
 
 class PasswordPageState extends State<PasswordPage> {
 
-  final _tab1Service = Tab1Service();
-  
+  final _secretService = SecretService();
+
   bool showTextField = false;
   bool showPlaceholder = false;
 
-  List<Password> passwords = [];
+  late List<Password> passwords = [];
 
   @override
   void initState() {
@@ -46,14 +47,13 @@ class PasswordPageState extends State<PasswordPage> {
 
   @override
   void dispose() {
-    // Clean up resources here, e.g., cancel ongoing operations
     super.dispose();
   }
 
   Future<void> _createPassword(String tag, String title) async {
 
     final obj = Password(tag: tag, title: title, storage: widget.storage);
-    Response response = await _tab1Service.createPassword(obj);
+    Response response = await _secretService.createPassword(obj);
     
     final json = jsonDecode(response.body);
     Password password = Password.parse(json);
@@ -66,7 +66,7 @@ class PasswordPageState extends State<PasswordPage> {
 
   Future<void> _locateAllPassword(Storage storage) async {
 
-    Response response = await _tab1Service.locateAllPassword(storage);
+    Response response = await _secretService.locateAllPassword(storage);
     List<dynamic> json = jsonDecode(response.body);
 
     if (!mounted) return; // Prevents error: setState called after dispose
@@ -80,12 +80,29 @@ class PasswordPageState extends State<PasswordPage> {
   }
 
   Future<void> _updatePassword(Password password) async {
+    logger.f('Info: Update Password');
+  
+    Password? updatedPassword = await PasswordUpdate.show(context, password);
+    if (updatedPassword == null) {
+      logger.d('Process canceled');
+      return;
+    }
 
+    Response response = await _secretService.updatePassword(updatedPassword);
+    if (response.statusCode != 200) return;
+
+    Password newPassword = Password.parse(jsonDecode(response.body));
+
+    setState(() {
+      int index = passwords.indexWhere((el) => el.id == newPassword.id);
+      if (index != -1) {
+        passwords[index] = newPassword;
+      }
+    });
   }
 
   Future<void> _deletePassword(Password password) async {
 
-    logger.f(password);
     if (!mounted) return;
 
     setState(() {
@@ -93,7 +110,7 @@ class PasswordPageState extends State<PasswordPage> {
       showPlaceholder = passwords.isEmpty;
     });
 
-    await _tab1Service.deletePassword(password);
+    await _secretService.deletePassword(password);
   }
 
   void showInput() {

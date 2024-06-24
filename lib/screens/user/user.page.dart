@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:client_flutter/screens/tab2/portfolio.page.dart';
+import 'package:client_flutter/screens/user/user_update.page.dart';
 import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
 import 'package:client_flutter/shared/widgets/my_divider.dart';
 import 'package:client_flutter/shared/widgets/my_toggle_row.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 import 'package:client_flutter/shared/models/user.dart';
-import 'package:client_flutter/shared/service/animate_service.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
 
 class Tab2Page extends StatefulWidget {
@@ -39,6 +38,8 @@ class Tab2PageState extends State<Tab2Page> {
     final attr = jsonDecode(user);
     this.user = User.parse(attr);
 
+    if (!mounted) return;
+
     termsAcecepted = this.user?.termsAcceptedDate.toString();
     
     setState(() {
@@ -46,10 +47,33 @@ class Tab2PageState extends State<Tab2Page> {
     });
   }
 
+  Future<void> _updateUserProfile() async {
+
+    final updatedUser = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Tab2Edit()),
+    );
+
+    if (updatedUser == null) {
+      return;
+    }
+
+    setState(() {
+      user = updatedUser;
+    });
+
+    await authService.setData('user', jsonEncode(updatedUser.toJson()));
+  }
+
   @override
   void initState() {
     super.initState();
     _profile();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -104,7 +128,7 @@ class Tab2PageState extends State<Tab2Page> {
                 children: [
 
                   Text(
-                    user!.firstName,
+                    user!.firstName ?? '',
                     style: const TextStyle(
                       fontSize: 16,
                       fontFamily: 'minecraftia',
@@ -131,7 +155,7 @@ class Tab2PageState extends State<Tab2Page> {
                         fontFamily: 'minecraftia',
                       ),
                     ),
-                    onPressed: () => AnimationService.push(context, Tab2Edit()),
+                    onPressed: _updateUserProfile,
                   ),
                 ],
               ),

@@ -1,24 +1,24 @@
 
 class User {
 
-  int id;
-  String firstName;
-  String lastName;
-  String email;
-  String password;
-  String role;
-  DateTime termsAcceptedDate;
-  bool tutorialComplete;
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? password;
+  String? role;
+  DateTime? termsAcceptedDate;
+  bool? tutorialComplete;
 
   User({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.password,
-    required this.role,
-    required this.termsAcceptedDate,
-    required this.tutorialComplete,
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.password,
+    this.role,
+    this.termsAcceptedDate,
+    this.tutorialComplete,
   });
 
   factory User.parse(Map<String, dynamic> json) {
@@ -42,22 +42,22 @@ class User {
       'email': email,
       'password': password,
       'role': role,
-      'termsAcceptedDate': termsAcceptedDate.toIso8601String(),
+      'termsAcceptedDate': termsAcceptedDate!.toIso8601String(),
       'tutorialComplete': tutorialComplete,
     };
   }
 
   @override
   String toString() {
-    return 'User{id: $id, firstName: $firstName, lastName: $lastName, email: $email, '
-        'role: $role, termsAcceptedDate: $termsAcceptedDate, tutorialComplete: $tutorialComplete}';
+    return 'User{\n'
+      '  id: $id,'
+      '  firstName: $firstName,'
+      '  lastName: $lastName,'
+      '  email: $email,'
+      '  role: $role,'
+      '  termsAcceptedDate: $termsAcceptedDate,'
+      '  tutorialComplete: $tutorialComplete'
+    '}';
   }
-
-}
-
-enum Role {
-  user, 
-  guest, 
-  admin, 
-  creator,
+  
 }

@@ -1,4 +1,4 @@
-import 'package:client_flutter/screens/tab1/password.page.dart';
+import 'package:client_flutter/screens/secret/secret.page.dart';
 import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/styles/my_nes_container_style.dart';
 import 'package:client_flutter/shared/widgets/my_nes_icon_button.dart';

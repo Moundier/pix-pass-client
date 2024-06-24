@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nes_ui/nes_ui.dart';
@@ -32,7 +33,6 @@ class AnimationService {
         Navigator.of(context).push(transitionHorizontal(page));
         return;
     }
-
   }
 
   static void pop(BuildContext context) {

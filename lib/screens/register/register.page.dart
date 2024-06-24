@@ -174,7 +174,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               NesButton(
                 type: NesButtonType.error,
                 child: const Text('Cancel'),
-                onPressed: () { },
+                onPressed: () => AnimationService.push(context, LoginPage()),
               ),
 
             ],

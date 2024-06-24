@@ -16,8 +16,6 @@ class Storage {
     this.user,
   });
 
-  // Creates a Storage Object from JSON Object
-
   factory Storage.parse(Map<String, dynamic> json) {
     return Storage(
       id: json['id'],

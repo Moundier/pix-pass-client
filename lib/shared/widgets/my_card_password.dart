@@ -79,13 +79,7 @@ class MyCardPassword extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(12, 6, 4, 6),
                 child: MyNesIconButton(
                   image: Image.asset('assets/images/pencil.png', height: 32, width: 28,),
-                  onPress: () {
-
-                  //   const MyDialogConfirm(
-                  //   title: '',
-                  //   extraMessage: '',
-                  // ).show(context)
-                  }
+                  onPress: () => onUpdate!(password)
                 ),
               )
             ),

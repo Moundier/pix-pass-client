@@ -19,11 +19,11 @@ class AlertService extends StatelessWidget {
     super.key,
   });
 
-  static void show(
+  static Future<void> show(
     BuildContext context, {
     required String text,
     AlertType type = AlertType.normal,
-  }) {
+  }) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: 2),

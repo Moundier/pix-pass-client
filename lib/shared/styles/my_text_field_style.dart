@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 class MyTextFieldStyle {
-  
+
   static InputDecoration build(String labelText) {
     return InputDecoration(
       border: const NesInputBorder(
@@ -15,6 +15,10 @@ class MyTextFieldStyle {
         horizontal: 10.0, // Change horizontal padding here
       ),
       labelText: labelText, 
+      helperStyle: const TextStyle(
+        fontFamily: 'minecraftia',
+        color: Color.fromARGB(255, 0, 0, 0)
+      ),
       hintStyle: const TextStyle(
         fontFamily: 'minecraftia',
         color: Color.fromARGB(255, 0, 0, 0)

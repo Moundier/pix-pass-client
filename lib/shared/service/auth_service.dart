@@ -1,5 +1,4 @@
 
-
 import 'dart:convert';
 
 import 'package:client_flutter/shared/models/user.dart';
@@ -25,25 +24,11 @@ class AuthService {
   }
 
   Future<User?> getUserData() async {
+    String? request = await storage.read(key: 'user');
 
-    String? jsonString = await storage.read(key: 'user');
-    if (jsonString != null) {
-      Map<String, dynamic> json = jsonDecode(jsonString);
-      return User.parse(json);
-    }
-    return null; // Handle case where user data is not found or parsing fails
+    Map<String, dynamic> json = jsonDecode(request ?? '');
+
+    return User.parse(json);
   }
 
-  Future<bool> isLoggedIn() async {
-    String? token = await getData("token");
-    return token != null;
-  }
-
-  cleanStorage(String key) async {
-    await storage.delete(key: key);
-  }
-
-  cleanAllStorage() async {
-    await storage.deleteAll();
-  }
 }

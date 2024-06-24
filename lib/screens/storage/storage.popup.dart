@@ -9,24 +9,23 @@ var logger = Logger(
   printer: SimplePrinter()
 );
 
-class MyDialogUpdate extends StatefulWidget {
+class StorageUpdate extends StatefulWidget {
   final Storage storage;
 
-  const MyDialogUpdate({super.key, required this.storage});
+  const StorageUpdate({super.key, required this.storage});
 
   static Future<Storage?> show(BuildContext context, Storage storage) async {
-    return NesDialog.show<Storage>(
-      // frame: NesWindowDialogFrame(title: '', leftIcon: NesIcons16.handPointingRight),
+    return await NesDialog.show<Storage>(
       context: context, 
-      builder: (context) => MyDialogUpdate(storage: storage)
+      builder: (context) => StorageUpdate(storage: storage)
     );
   }
 
   @override
-  _MyDialogUpdateState createState() => _MyDialogUpdateState();
+  StorageUpdateState createState() => StorageUpdateState();
 }
 
-class _MyDialogUpdateState extends State<MyDialogUpdate> {
+class StorageUpdateState extends State<StorageUpdate> {
   
   late Storage _storage;
 
@@ -54,19 +53,18 @@ class _MyDialogUpdateState extends State<MyDialogUpdate> {
 
   void _updateStorage() {
 
+    if (formKey.currentState?.validate() == false) return;
 
-    if (formKey.currentState?.validate() ?? false) {
-      _storage = Storage(
-        id: widget.storage.id,
-        tag: tagController.text,
-        title: titleController.text,
-        user: widget.storage.user
-      );
+    _storage = Storage(
+      id: widget.storage.id,
+      tag: tagController.text,
+      title: titleController.text,
+      user: widget.storage.user
+    );
 
-      logger.f(_storage.toString());
+    logger.f(_storage.toString());
 
-      Navigator.of(context).pop(_storage);
-    }
+    Navigator.of(context).pop(_storage);
   }
 
   @override
