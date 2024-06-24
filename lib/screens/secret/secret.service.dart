@@ -12,7 +12,7 @@ var logger = Logger(
   printer: SimplePrinter()
 );
 
-class SecretService {
+class PasswordService {
 
 
   /// Handling password-related HTTP requests.

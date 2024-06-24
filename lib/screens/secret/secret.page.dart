@@ -32,7 +32,7 @@ class PasswordPage extends StatefulWidget {
 
 class PasswordPageState extends State<PasswordPage> {
 
-  final _secretService = SecretService();
+  final _passwordService = PasswordService();
 
   bool showTextField = false;
   bool showPlaceholder = false;
@@ -53,7 +53,7 @@ class PasswordPageState extends State<PasswordPage> {
   Future<void> _createPassword(String tag, String title) async {
 
     final obj = Password(tag: tag, title: title, storage: widget.storage);
-    Response response = await _secretService.createPassword(obj);
+    Response response = await _passwordService.createPassword(obj);
     
     final json = jsonDecode(response.body);
     Password password = Password.parse(json);
@@ -66,7 +66,7 @@ class PasswordPageState extends State<PasswordPage> {
 
   Future<void> _locateAllPassword(Storage storage) async {
 
-    Response response = await _secretService.locateAllPassword(storage);
+    Response response = await _passwordService.locateAllPassword(storage);
     List<dynamic> json = jsonDecode(response.body);
 
     if (!mounted) return; // Prevents error: setState called after dispose
@@ -88,7 +88,7 @@ class PasswordPageState extends State<PasswordPage> {
       return;
     }
 
-    Response response = await _secretService.updatePassword(updatedPassword);
+    Response response = await _passwordService.updatePassword(updatedPassword);
     if (response.statusCode != 200) return;
 
     Password newPassword = Password.parse(jsonDecode(response.body));
@@ -110,7 +110,7 @@ class PasswordPageState extends State<PasswordPage> {
       showPlaceholder = passwords.isEmpty;
     });
 
-    await _secretService.deletePassword(password);
+    await _passwordService.deletePassword(password);
   }
 
   void showInput() {
@@ -148,8 +148,8 @@ class PasswordPageState extends State<PasswordPage> {
       ),
       bottomSheet: showTextField ? MyInputContainer(
         context: context, 
-        inputTextLabel: "Label", 
-        valueTextLabel: "Password", 
+        inputTextLabel: "Tag", // Label 
+        valueTextLabel: "Title", // Passsword
         toggleWidget:  showInput,
         onCreate: _createPassword,
       ) : MyButton(showInput,),

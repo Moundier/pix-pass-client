@@ -26,7 +26,7 @@ class AlertService extends StatelessWidget {
   }) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 3),
         backgroundColor: Colors.transparent,
         elevation: 0,
         content: SizedBox(

@@ -21,7 +21,7 @@ class User {
     this.tutorialComplete,
   });
 
-  factory User.parse(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
       firstName: json['firstName'],

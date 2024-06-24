@@ -5,9 +5,15 @@ import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
 import 'package:client_flutter/shared/widgets/my_divider.dart';
 import 'package:client_flutter/shared/widgets/my_toggle_row.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
+
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
 class Tab2Page extends StatefulWidget {
   
@@ -19,11 +25,11 @@ class Tab2Page extends StatefulWidget {
 
 class Tab2PageState extends State<Tab2Page> {
 
-  final authService = AuthService();
+  final _authService = SecureStorage();
 
   bool isSelected = false;
-  bool enableBiometrics = false;
-  bool enableRecognition = false;
+  bool biometryEnabled = false;
+  bool recognitionEnabled = false;
 
   User? user;
   String? termsAcecepted;
@@ -34,9 +40,9 @@ class Tab2PageState extends State<Tab2Page> {
   Future<void> _profile() async {
 
     await Future.delayed(const Duration(seconds: 3));
-    final user = await authService.getData('user');
+    final user = await _authService.getData('user');
     final attr = jsonDecode(user);
-    this.user = User.parse(attr);
+    this.user = User.fromJson(attr);
 
     if (!mounted) return;
 
@@ -62,13 +68,22 @@ class Tab2PageState extends State<Tab2Page> {
       user = updatedUser;
     });
 
-    await authService.setData('user', jsonEncode(updatedUser.toJson()));
+    await _authService.setData('user', jsonEncode(updatedUser.toJson()));
+  }
+  
+  Future<void> _biometryEnabled() async {
+    biometryEnabled = await _authService.isEnabled('touch_id');
   }
 
   @override
   void initState() {
     super.initState();
+
     _profile();
+    _biometryEnabled();
+
+    logger.i('biometry value:');
+    logger.i(biometryEnabled);
   }
 
   @override
@@ -147,6 +162,7 @@ class Tab2PageState extends State<Tab2Page> {
                   const SizedBox(height: 10),
                   NesButton(
                     type: NesButtonType.success,
+                    onPressed: _updateUserProfile,
                     child: const Text(
                       'EDIT PROFILE',
                       style: TextStyle(
@@ -155,7 +171,6 @@ class Tab2PageState extends State<Tab2Page> {
                         fontFamily: 'minecraftia',
                       ),
                     ),
-                    onPressed: _updateUserProfile,
                   ),
                 ],
               ),
@@ -172,8 +187,9 @@ class Tab2PageState extends State<Tab2Page> {
             width: 400, 
             imageAssetPath: 'assets/images/touch_id.png', 
             label: "Enable touch id", 
+            currentValue: biometryEnabled,
             onPressed: () {
-
+              _authService.toggleOption('touch_id');
             },
           ),
 
@@ -183,6 +199,7 @@ class Tab2PageState extends State<Tab2Page> {
             width: 400, 
             imageAssetPath: 'assets/images/face_id.png', 
             label: "Enable face id", 
+            currentValue: false,
             onPressed: () {
               
             },

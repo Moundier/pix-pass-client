@@ -27,7 +27,7 @@ class StoragePage extends StatefulWidget {
 
 class StoragePageState extends State<StoragePage> {
   final _tab1service = Tab1Service();
-  final authService = AuthService();
+  final authService = SecureStorage();
 
   bool showPlaceholder = false;
   bool showTextField = false;

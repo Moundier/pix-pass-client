@@ -8,8 +8,8 @@ class LocalAuthService extends ChangeNotifier {
   LocalAuthService({required this.auth});
 
   Future<bool> isBiometricAvailable() async {
-    final bool canAuthenticateWithBiometrics  = await auth.canCheckBiometrics;
-    return canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+    final bool isBiometricCapable  = await auth.canCheckBiometrics;
+    return isBiometricCapable || await auth.isDeviceSupported();
   }
 
   Future<bool> authenticate() async {

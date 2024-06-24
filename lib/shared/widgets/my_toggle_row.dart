@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 class MyToggleRow extends StatefulWidget {
+
   final double width;
   final String imageAssetPath;
   final String label;
+  bool currentValue;
   final VoidCallback onPressed;
 
   MyToggleRow({
@@ -12,15 +14,15 @@ class MyToggleRow extends StatefulWidget {
     required this.width,
     required this.imageAssetPath,
     required this.label,
+    required this.currentValue,
     required this.onPressed,
   });
 
   @override
-  _MyToggleRowState createState() => _MyToggleRowState();
+  State<MyToggleRow> createState() => _MyToggleRowState();
 }
 
 class _MyToggleRowState extends State<MyToggleRow> {
-  bool enableRecognition = false; // Initialize enableRecognition here
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +53,17 @@ class _MyToggleRowState extends State<MyToggleRow> {
               padding: const EdgeInsets.all(8),
               child: NesButton(
                 onPressed: () {
+
                   setState(() {
-                    enableRecognition = !enableRecognition;
+                    widget.currentValue = !widget.currentValue;
                   });
-                  widget.onPressed(); // Call the onPressed callback provided
+
+                  widget.onPressed(); // toogle value passd and executed
+
                 },
-                type: enableRecognition ? NesButtonType.error : NesButtonType.success,
+                type: widget.currentValue ? NesButtonType.success : NesButtonType.error,
                 child: NesIcon(
-                  iconData: enableRecognition ? NesIcons.remove : NesIcons.check,
+                  iconData: widget.currentValue ? NesIcons.check : NesIcons.remove,
                   size: const Size.fromHeight(16),
                 ),
               ),

@@ -24,7 +24,7 @@ class Storage {
       passwords: json['passwords'] != null
           ? List<Password>.from(json['passwords'].map((x) => Password.parse(x)))
           : null,
-      user: json['user'] != null ? User.parse(json['user']) : null,
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
     );
   }
 

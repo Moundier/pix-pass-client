@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:client_flutter/screens/login/login.service.dart';
 import 'package:client_flutter/screens/register/register.page.dart';
 import 'package:client_flutter/screens/storage/storage.page.dart';
+import 'package:client_flutter/shared/models/token_dto.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/alert_service.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
@@ -31,7 +32,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  final _authService = AuthService();
+  final _authService = SecureStorage();
   final _loginService = LoginService();
 
   final _formKey = GlobalKey<FormState>();
@@ -55,20 +56,36 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void checkLocalAuth() async {
+  void biometricAuthentication() async {
+
+    bool hasBiometric = await _authService.exists('touch_id');
+    bool biometricEnabled = await _authService.isEnabled('touch_id');
+
+    if (!hasBiometric) {
+      _error('Please login!');
+      return;
+    }
+
+    if (!biometricEnabled) {
+      _error('Must enable as config.');
+      return;
+    }
+
     final auth = LocalAuthService(auth: LocalAuthentication());
-    final isLocalAuthAvailable = await auth.isBiometricAvailable();
-    
-    if (isLocalAuthAvailable) {
-      final authenticated = await auth.authenticate();
+    final isSupported = await auth.isBiometricAvailable();
 
-      if (!authenticated) {
-        localAuthFailed = true;
-      } else {
+    if (!isSupported) {
+      _error('Biometric authentication is not available on this device.');
+      return;
+    }
 
-        if (!mounted) return;
-        AnimationService.push(context, const StoragePage());
-      }
+    final authenticated = await auth.authenticate();
+
+    if (!authenticated) {
+      _error('Biometric authentication failed.');
+    } else {
+      if (!mounted) return;
+      AnimationService.push(context, const StoragePage());
     }
   }
 
@@ -80,27 +97,47 @@ class _LoginPageState extends State<LoginPage> {
       _passwordController.text,
     );
 
-    await _handleResponse(response);
+    await _responseHandler(response);
   }
 
-  Future<void> _handleResponse(Response response) async {
-    logger.i(response.body);
+  Future<void> _responseHandler(Response response) async {
 
     if (response.statusCode != 200) {
-      await _showErrorAlert("Error: ${response.statusCode} ${response.body}");
+      await _error("Error: ${response.statusCode} ${response.body}");
       return;
     }
 
     Map<String, dynamic> responseBody = jsonDecode(response.body);
-    User user = User.parse(responseBody['user']);
+
+    logger.i(responseBody);
+
+    User user = User.fromJson(responseBody['user']);
+    Token token = Token.fromJson(responseBody['tokens']);
+
     await _authService.setData('user', jsonEncode(user));
+    await _authService.setData('token', jsonEncode(token));
 
     if (mounted) {
       AnimationService.push(context, const StoragePage());
     }
   }
 
-  Future<void> _showErrorAlert(String message) async {
+  Future<void> authenticationCapabilities() async {
+
+    // need flag
+    // need token
+    // need to pass token in header, otherwise
+
+    // flag to ensure if there is a user in localstorage
+    
+    // if not, cannot login with biometric, must first authenticate with username and password
+
+    // if yes, capable of login with biometric, and retrieve user from secure storage 
+
+    return;
+  }
+
+  Future<void> _error(String message) async {
     await AlertService.show(
       context,
       text: message,
@@ -179,8 +216,8 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(width: 25),
                     NesButton(
                       type: NesButtonType.primary,
+                      onPressed: biometricAuthentication,
                       child: Image.asset('assets/images/touch_id.png', width: 50),
-                      onPressed: checkLocalAuth,
                     ),
                   ],
                 ),

@@ -25,7 +25,7 @@ class Tab2Edit extends StatefulWidget {
 class Tab2EditState extends State<Tab2Edit> {
 
   final _tab2Service = Tab2Service();
-  final authService = AuthService();
+  final authService = SecureStorage();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -46,7 +46,7 @@ class Tab2EditState extends State<Tab2Edit> {
   Future<void> _profile() async {
     final userStored = await authService.getData('user');
     Map<String, dynamic> attr = jsonDecode(userStored);
-    user = User.parse(attr);
+    user = User.fromJson(attr);
 
     setState(() {
       _firstNameController.text = user.firstName ?? '';
