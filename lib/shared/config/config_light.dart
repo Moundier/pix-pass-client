@@ -6,11 +6,8 @@ class ThemeCubit extends Cubit<ThemeInitialState> {
   ThemeCubit(): super(const ThemeInitialState(lightMode: true),);
 
   void toogleLightMode() {
-    emit(
-      state.copyWith(
-        lightMode: !state.lightMode,
-      ),
-    );
+    final initState = state.copyWith(lightMode: !state.lightMode,); 
+    emit(initState);
   }
 }
 

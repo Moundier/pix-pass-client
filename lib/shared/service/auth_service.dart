@@ -31,9 +31,6 @@ class SecureStorage {
   }
 
   Future<bool> exists(String key) async {
-
-    // 
-
     String? value = await storage.read(key: key);
     return value != null;
   }

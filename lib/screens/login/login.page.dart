@@ -7,7 +7,7 @@ import 'package:client_flutter/shared/models/token_dto.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/alert_service.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
-import 'package:client_flutter/shared/service/local_auth_service.dart';
+import 'package:client_flutter/shared/service/biometry_service.dart';
 import 'package:client_flutter/shared/styles/my_text_field_style.dart';
 import 'package:client_flutter/shared/widgets/my_divider_middle.dart';
 import 'package:client_flutter/shared/widgets/my_hyperlink_text.dart';
@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    final auth = LocalAuthService(auth: LocalAuthentication());
+    final auth = BiometryService(auth: LocalAuthentication());
     final isSupported = await auth.isBiometricAvailable();
 
     if (!isSupported) {
@@ -109,8 +109,6 @@ class _LoginPageState extends State<LoginPage> {
 
     Map<String, dynamic> responseBody = jsonDecode(response.body);
 
-    logger.i(responseBody);
-
     User user = User.fromJson(responseBody['user']);
     Token token = Token.fromJson(responseBody['tokens']);
 
@@ -120,21 +118,6 @@ class _LoginPageState extends State<LoginPage> {
     if (mounted) {
       AnimationService.push(context, const StoragePage());
     }
-  }
-
-  Future<void> authenticationCapabilities() async {
-
-    // need flag
-    // need token
-    // need to pass token in header, otherwise
-
-    // flag to ensure if there is a user in localstorage
-    
-    // if not, cannot login with biometric, must first authenticate with username and password
-
-    // if yes, capable of login with biometric, and retrieve user from secure storage 
-
-    return;
   }
 
   Future<void> _error(String message) async {

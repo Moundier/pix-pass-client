@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:client_flutter/shared/config/constants.dart';
+import 'package:client_flutter/shared/config/config_ambient.dart';
 import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:http/http.dart';

@@ -1,7 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:client_flutter/shared/config/constants.dart';
+import 'package:client_flutter/shared/config/config_ambient.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
 class RegisterService {
   
@@ -20,8 +26,7 @@ class RegisterService {
       body: jsonEncode(obj),
     );
     
-    Map<String, dynamic> json = jsonDecode(response.body);
-    print(json);
+    logger.i(response.body);
   }
 
 }

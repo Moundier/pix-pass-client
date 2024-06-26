@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 
-class LocalAuthService extends ChangeNotifier {
+class BiometryService extends ChangeNotifier {
 
   final LocalAuthentication auth;
 
-  LocalAuthService({required this.auth});
+  BiometryService({required this.auth});
 
   Future<bool> isBiometricAvailable() async {
     final bool isBiometricCapable  = await auth.canCheckBiometrics;
@@ -13,7 +13,9 @@ class LocalAuthService extends ChangeNotifier {
   }
 
   Future<bool> authenticate() async {
-    return await auth.authenticate(localizedReason: 'Please authenticate for access');
+    return await auth.authenticate(
+      localizedReason: 'Please authenticate for access'
+    );
   }
 
 }

@@ -195,15 +195,15 @@ class Tab2PageState extends State<Tab2Page> {
 
           const SizedBox(height: 10,),
 
-          MyToggleRow(
-            width: 400, 
-            imageAssetPath: 'assets/images/face_id.png', 
-            label: "Enable face id", 
-            currentValue: false,
-            onPressed: () {
+          // MyToggleRow(
+          //   width: 400, 
+          //   imageAssetPath: 'assets/images/face_id.png', 
+          //   label: "Enable face id", 
+          //   currentValue: false,
+          //   onPressed: () {
               
-            },
-          ),
+          //   },
+          // ),
 
           const SizedBox(height: 20,),
 

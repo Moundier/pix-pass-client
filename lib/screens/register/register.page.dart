@@ -152,6 +152,7 @@ class _RegisterFormState extends State<_RegisterForm> {
 
           Row(
             children: <Widget>[
+              
               NesButton(
                 type: NesButtonType.success,
                 onPressed: () {

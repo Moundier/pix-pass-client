@@ -53,13 +53,10 @@ class _MyToggleRowState extends State<MyToggleRow> {
               padding: const EdgeInsets.all(8),
               child: NesButton(
                 onPressed: () {
-
                   setState(() {
                     widget.currentValue = !widget.currentValue;
                   });
-
-                  widget.onPressed(); // toogle value passd and executed
-
+                  widget.onPressed();
                 },
                 type: widget.currentValue ? NesButtonType.success : NesButtonType.error,
                 child: NesIcon(
