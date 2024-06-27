@@ -1,33 +1,27 @@
-import 'package:client_flutter/shared/models/password.dart';
+import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/styles/my_text_field_style.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-var logger = Logger(
-  output: ConsoleOutput(),
-  printer: SimplePrinter()
-);
+class StorageUpdate extends StatefulWidget {
+  final Storage storage;
 
-class PasswordUpdate extends StatefulWidget {
-  final Password password;
+  const StorageUpdate({super.key, required this.storage});
 
-  const PasswordUpdate({super.key, required this.password});
-
-  static Future<Password?> show(BuildContext context, Password password) async {
-    return await NesDialog.show<Password>(
+  static Future<Storage?> show(BuildContext context, Storage storage) async {
+    return await NesDialog.show<Storage>(
       context: context, 
-      builder: (context) => PasswordUpdate(password: password)
+      builder: (context) => StorageUpdate(storage: storage)
     );
   }
 
   @override
-  PasswordUpdateState createState() => PasswordUpdateState();
+  StorageUpdateState createState() => StorageUpdateState();
 }
 
-class PasswordUpdateState extends State<PasswordUpdate> {
+class StorageUpdateState extends State<StorageUpdate> {
   
-  late Password _password;
+  late Storage _storage;
 
   final formKey = GlobalKey<FormState>();
   late TextEditingController tagController;
@@ -37,10 +31,11 @@ class PasswordUpdateState extends State<PasswordUpdate> {
 
   @override
   void initState() {
+    
     super.initState();
-    _password = widget.password;
-    tagController = TextEditingController(text: _password.tag);
-    titleController = TextEditingController(text: _password.title);
+    _storage = widget.storage;
+    tagController = TextEditingController(text: _storage.tag);
+    titleController = TextEditingController(text: _storage.title);
   }
 
   @override
@@ -55,16 +50,14 @@ class PasswordUpdateState extends State<PasswordUpdate> {
 
     if (formKey.currentState?.validate() == false) return;
 
-    _password = Password(
-      id: widget.password.id,
+    _storage = Storage(
+      id: (widget.storage.id),
       tag: tagController.text,
       title: titleController.text,
-      storage: widget.password.storage
+      user: (widget.storage.user)
     );
 
-    logger.f(_password.toString());
-
-    Navigator.of(context).pop(_password);
+    Navigator.of(context).pop(_storage);
   }
 
   @override
@@ -83,9 +76,7 @@ class PasswordUpdateState extends State<PasswordUpdate> {
                 if (value?.isEmpty ?? true) return 'Tag is required';
                 return null;
               },
-              onEditingComplete: () {
-                FocusScope.of(context).requestFocus(titleFocus);
-              },
+              onEditingComplete: () => FocusScope.of(context).requestFocus(titleFocus),
             ),
             const SizedBox(height: 10),
             TextFormField(
@@ -98,9 +89,7 @@ class PasswordUpdateState extends State<PasswordUpdate> {
                 if (value?.isEmpty ?? true) return 'Title is required';
                 return null;
               },
-              onEditingComplete: () {
-                FocusScope.of(context).unfocus();
-              },
+              onEditingComplete: () => FocusScope.of(context).unfocus(),
             ),
             const SizedBox(height: 10),
             Row(
@@ -115,9 +104,7 @@ class PasswordUpdateState extends State<PasswordUpdate> {
                 NesButton(
                   type: NesButtonType.error,
                   child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
             ),

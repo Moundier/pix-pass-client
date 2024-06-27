@@ -1,9 +1,8 @@
-import 'dart:convert';
-
-import 'package:client_flutter/shared/config/config_ambient.dart';
+import 'package:client_flutter/shared/config/config_app.dart';
+import 'package:client_flutter/shared/config/config_dio.dart';
 import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/models/user.dart';
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(
@@ -13,12 +12,16 @@ var logger = Logger(
 
 class Tab1Service {
 
+  final Dio _dio = DioSingleton.dio;
+
   Future<Response> createStorage(Storage storage) async {
 
-    final response = await post(
-      Uri.parse('$url:9090/storage'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(storage),
+    final response = await _dio.post(
+      '$url:9090/storage',
+      data: storage,
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'} 
+      ),
     );
 
     return response;
@@ -26,10 +29,12 @@ class Tab1Service {
 
   Future<Response> locateAllStorage(User user) async {
 
-    final response = await post(
-      Uri.parse('$url:9090/storage/all'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(user)
+    final response = await _dio.post(
+      '$url:9090/storage/all',
+      data: user,
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}, 
+      ),
     );
 
     return response;
@@ -37,10 +42,12 @@ class Tab1Service {
 
   Future<Response> updateStorage(Storage storage) async {
 
-    final response = await put(
-      Uri.parse('$url:9090/storage'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(storage)
+    final response = await _dio.put(
+      '$url:9090/storage',
+      data: storage,
+      options: Options(
+        headers:  {'Content-Type': 'application/json; charset=UTF-8'}
+      ),
     );
 
     return response;
@@ -48,10 +55,12 @@ class Tab1Service {
 
   Future<Response> deleteStorage(Storage storage) async {
     
-    final response = await delete(
-      Uri.parse('$url:9090/storage'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(storage),
+    final response = await _dio.delete(
+      '$url:9090/storage',
+      data: storage,
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+      ) ,
     );
   
     return response;

@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:client_flutter/shared/config/config_ambient.dart';
+import 'package:client_flutter/shared/config/config_dio.dart';
+import 'package:dio/dio.dart';
+import 'package:client_flutter/shared/config/config_app.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(
@@ -9,24 +9,28 @@ var logger = Logger(
   printer: SimplePrinter()
 );
 
-class RegisterService {
-  
+class RegisterService {  
+
+  final Dio _dio = DioSingleton.dio;
+
   Future<void> registerUser(String email, String password) async {
 
-    final obj = {
+    final data = {
       'firstName': '$email',
       'lastName': '$email',
       'email': email,
       'password': password,
     };
   
-    final Response response = await post(
-      Uri.parse('$url:9090/auth/register'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(obj),
+    final Response response = await _dio.post(
+      '$url:9090/auth/register',
+      data: data,
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'} 
+      ),
     );
     
-    logger.i(response.body);
+    logger.i(response.data);
   }
 
 }

@@ -65,6 +65,19 @@ class _RegisterFormState extends State<_RegisterForm> {
     return const TextStyle(fontFamily: 'minecraftia');
   }
 
+  Future<void> _register() async {
+    bool formIsSatisfied = (_formKey.currentState != null);
+    bool formIsValidated = (_formKey.currentState!.validate());
+
+    if (formIsSatisfied && formIsValidated) {
+      final email = _emailController.text;
+      final password = _passwordController.text;
+      _registerService.registerUser(email, password);
+      AlertService.show(context, text: "Success", type: AlertType.success);
+      AnimationService.push(context, LoginPage());
+    } 
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -78,111 +91,98 @@ class _RegisterFormState extends State<_RegisterForm> {
           ),
         ),
       ),
-      body: Form(
-        
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-
-          Center(child: Image.asset('assets/images/id_card.png', width: 180, height: 180,),),
-            
-          const SizedBox(height: 20.0),
-
-          TextFormField(
-            focusNode: _emailFocus,
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: MyTextFieldStyle.build("Email"),
-            style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
-            validator: (value) {
-
-              final text = value ?? '';
-              final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-              
-              if (text.isEmpty) return 'Please enter your email';
-
-              if (!emailRegex.hasMatch(text)) return 'Invalid email';
-              
-              return null;
-            },
-            onEditingComplete: () {
-              FocusScope.of(context).requestFocus(_passwordFocus);
-            },
-          ),
-
-          const SizedBox(height: 20.0),
-
-          TextFormField(
-            focusNode: _passwordFocus,
-            controller: _passwordController,
-            obscureText: true,
-            decoration: MyTextFieldStyle.build("Password"),
-            style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
-            validator: (String? value) {
-              
-              if (value!.isEmpty) return 'Please enter your password'; // Add more password validation logic if needed
-
-              if (value.length < 2) return 'Password is ${value.length} < 2';
-
-              return null;
-            },
-            onEditingComplete: () {
-              FocusScope.of(context).requestFocus(_confirmFocus);
-            },
-          ),
-
-          const SizedBox(height: 20.0),
-
-          TextFormField(
-            focusNode: _confirmFocus,
-            controller: _confirmController,
-            obscureText: true,
-            decoration: MyTextFieldStyle.build("Confirm Password"),
-            style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
-            validator: (String? value) {
-              if (value!.isEmpty) return 'Please confirm your password'; // Add more password validation logic if needed
-              if (value != _passwordController.text) return 'Passwords don\'t match';
-              return null;
-            },
-            onEditingComplete: () => FocusScope.of(context).unfocus(),
-          ),
-
-          const SizedBox(height: 20.0),
-
-          Row(
+      body: SingleChildScrollView( 
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              
-              NesButton(
-                type: NesButtonType.success,
-                onPressed: () {
+              Center(child: Image.asset('assets/images/id_card.png', width: 180, height: 180,),),
+              const SizedBox(height: 20.0),
+              TextFormField(
+                focusNode: _emailFocus,
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: MyTextFieldStyle.build("Email"),
+                style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
+                validator: (value) {
+                
+                  final text = value ?? '';
+                  final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
-                  bool formIsSatisfied = (_formKey.currentState != null);
-                  bool formIsValidated = (_formKey.currentState!.validate());
+                  if (text.isEmpty) return 'Please enter your email';
 
-                  if (formIsSatisfied && formIsValidated) {
-                    _registerService.registerUser(_emailController.text, _passwordController.text);
-                    logger.d('{ ${_emailController.text}, ${_passwordController.text} }');
-                    AlertService.show(context, text: "Success", type: AlertType.success);
-                    AnimationService.push(context, LoginPage());
-                  } 
+                  if (!emailRegex.hasMatch(text)) return 'Invalid email';
+
+                  return null;
                 },
-                child: const Text('Enter'),
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(_passwordFocus);
+                },
               ),
 
-              const SizedBox(width: 20,),
+              const SizedBox(height: 20.0),
 
-              NesButton(
-                type: NesButtonType.error,
-                child: const Text('Cancel'),
-                onPressed: () => AnimationService.push(context, LoginPage()),
+              TextFormField(
+                focusNode: _passwordFocus,
+                controller: _passwordController,
+                obscureText: true,
+                decoration: MyTextFieldStyle.build("Password"),
+                style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
+                validator: (String? value) {
+
+                  if (value!.isEmpty) return 'Please enter your password'; // Add more password validation logic if needed
+
+                  if (value.length < 2) return 'Password is ${value.length} < 2';
+
+                  return null;
+                },
+                onEditingComplete: () {
+                  FocusScope.of(context).requestFocus(_confirmFocus);
+                },
               ),
+
+              const SizedBox(height: 20.0),
+
+              TextFormField(
+                focusNode: _confirmFocus,
+                controller: _confirmController,
+                obscureText: true,
+                decoration: MyTextFieldStyle.build("Confirm Password"),
+                style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14, ),
+                validator: (String? value) {
+                  if (value!.isEmpty) return 'Please confirm your password'; // Add more password validation logic if needed
+                  if (value != _passwordController.text) return 'Passwords don\'t match';
+                  return null;
+                },
+                onEditingComplete: () => FocusScope.of(context).unfocus(),
+              ),
+
+              const SizedBox(height: 20.0),
+
+              Row(
+                children: <Widget>[
+
+                  NesButton(
+                    type: NesButtonType.success,
+                    onPressed: _register,
+                    child: const Text('Enter'),
+                  ),
+
+                  const SizedBox(width: 20,),
+
+                  NesButton(
+                    type: NesButtonType.error,
+                    child: const Text('Cancel'),
+                    onPressed: () => AnimationService.push(context, LoginPage()),
+                  ),
+
+                ],
+              )
 
             ],
-          )
-
-        ],
-      ),
+          ),
+        ),
       ),
     );
   }

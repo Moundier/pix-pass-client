@@ -4,7 +4,7 @@ import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:client_flutter/shared/styles/my_text_field_style.dart';
 import 'package:client_flutter/shared/widgets/my_appbar_leading.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 import 'dart:convert';
@@ -24,7 +24,7 @@ class Tab2Edit extends StatefulWidget {
 
 class Tab2EditState extends State<Tab2Edit> {
 
-  final _tab2Service = Tab2Service();
+  final _userService = UserService();
   final authService = SecureStorage();
 
   final _formKey = GlobalKey<FormState>();
@@ -71,7 +71,7 @@ class Tab2EditState extends State<Tab2Edit> {
     );
 
     logger.f(updatedUser.toString());
-    Response response = await _tab2Service.updateUser(updatedUser);
+    Response response = await _userService.updateUser(updatedUser);
 
     if (!mounted) return;
 

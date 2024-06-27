@@ -1,7 +1,5 @@
 
-import 'dart:convert';
-
-import 'package:client_flutter/screens/secret/secret.popup.dart';
+import 'package:client_flutter/screens/secret/secret.widget.dart';
 import 'package:client_flutter/screens/secret/secret.service.dart';
 import 'package:client_flutter/shared/models/password.dart';
 import 'package:client_flutter/shared/models/storage.dart';
@@ -11,7 +9,7 @@ import 'package:client_flutter/shared/widgets/my_input_container.dart';
 import 'package:client_flutter/shared/widgets/my_navbar.dart';
 import 'package:client_flutter/shared/widgets/my_dummy.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
 
@@ -55,7 +53,7 @@ class PasswordPageState extends State<PasswordPage> {
     final obj = Password(tag: tag, title: title, storage: widget.storage);
     Response response = await _passwordService.createPassword(obj);
     
-    final json = jsonDecode(response.body);
+    final json = response.data;
     Password password = Password.parse(json);
     passwords.add(password);
     
@@ -67,7 +65,7 @@ class PasswordPageState extends State<PasswordPage> {
   Future<void> _locateAllPassword(Storage storage) async {
 
     Response response = await _passwordService.locateAllPassword(storage);
-    List<dynamic> json = jsonDecode(response.body);
+    List<dynamic> json = response.data;
 
     if (!mounted) return; // Prevents error: setState called after dispose
 
@@ -91,7 +89,7 @@ class PasswordPageState extends State<PasswordPage> {
     Response response = await _passwordService.updatePassword(updatedPassword);
     if (response.statusCode != 200) return;
 
-    Password newPassword = Password.parse(jsonDecode(response.body));
+    Password newPassword = Password.parse(response.data);
 
     setState(() {
       int index = passwords.indexWhere((el) => el.id == newPassword.id);

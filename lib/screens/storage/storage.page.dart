@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:client_flutter/screens/storage/storage.popup.dart';
+import 'package:client_flutter/screens/storage/storage.widget.dart';
 import 'package:client_flutter/screens/storage/storage.service.dart';
 import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/models/user.dart';
@@ -10,13 +9,7 @@ import 'package:client_flutter/shared/widgets/my_dummy.dart';
 import 'package:client_flutter/shared/widgets/my_input_container.dart';
 import 'package:client_flutter/shared/widgets/my_navbar.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:logger/logger.dart';
-
-var logger = Logger(
-  output: ConsoleOutput(),
-  printer: SimplePrinter()
-);
+import 'package:dio/dio.dart';
 
 class StoragePage extends StatefulWidget {
   const StoragePage({super.key});
@@ -57,7 +50,7 @@ class StoragePageState extends State<StoragePage> {
 
     Response response = await _tab1service.createStorage(obj);
     
-    final json = jsonDecode(response.body);
+    final json = response.data;
     Storage storage = Storage.parse(json);
 
     setState(() {
@@ -70,7 +63,7 @@ class StoragePageState extends State<StoragePage> {
   Future<void> _locateAllStorage() async {
     User? user = await authService.getUserData();
     Response response = await _tab1service.locateAllStorage(user!);
-    List<dynamic> json = jsonDecode(response.body);
+    List<dynamic> json = response.data; // Error:
 
     if (!mounted) return; // Prevents error: setState called after dispose
 
@@ -84,15 +77,12 @@ class StoragePageState extends State<StoragePage> {
 
     Storage? updatedStorage = await StorageUpdate.show(context, storage);
 
-    if (updatedStorage == null) {
-      logger.d('Process canceled');
-      return;
-    }
+    if (updatedStorage == null) return;
 
     Response response = await _tab1service.updateStorage(updatedStorage);
     if (response.statusCode != 200) return;
 
-    Storage newStorage = Storage.parse(jsonDecode(response.body));
+    Storage newStorage = Storage.parse(response.data);
 
     setState(() {
       int index = storages.indexWhere((el) => el.id == newStorage.id);
@@ -103,13 +93,13 @@ class StoragePageState extends State<StoragePage> {
   }
 
   Future<void> _deleteStorage(Storage storage) async {
-    logger.f(storage);
+
+    await _tab1service.deleteStorage(storage);
+
     setState(() {
       storages.remove(storage);
       showPlaceholder = storages.isEmpty;
     });
-
-    await _tab1service.deleteStorage(storage);
   }
 
   @override
@@ -137,14 +127,14 @@ class StoragePageState extends State<StoragePage> {
               },
             ),
       bottomSheet: showTextField 
-          ? MyInputContainer(
-              context: context, 
-              inputTextLabel: "Label", 
-              valueTextLabel: "Email", 
-              toggleWidget: showInput,
-              onCreate: _createStorage,
-            ) 
-          : MyButton(showInput), 
+        ? MyInputContainer(
+            context: context, 
+            inputTextLabel: "Tag", 
+            valueTextLabel: "Title",
+            toggleWidget: showInput,
+            onCreate: _createStorage,
+          ) 
+        : MyButton(showInput), 
       bottomNavigationBar: const MyNavbar(),
     );
   }

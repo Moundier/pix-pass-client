@@ -1,22 +1,27 @@
+import 'package:client_flutter/shared/config/config_dio.dart';
+import 'package:dio/dio.dart';
+import 'package:client_flutter/shared/config/config_app.dart';
+import 'package:logger/logger.dart';
 
-import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:client_flutter/shared/config/config_ambient.dart';
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
 class LoginService {
 
+  final Dio _dio = DioSingleton.dio;
+
   Future<Response> login(String username, String password) async {
     
-    final response = await post(
-      Uri.parse('$url:9090/auth/login'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode({'email': username, 'password': password}),
+    final response = await _dio.post(
+      '$url:9090/auth/login',
+      data: {'email': username, 'password': password},
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+      )
     );
 
-    if (response.statusCode != 200) {
-      return response;
-    }
-    
     return response;
   }
 

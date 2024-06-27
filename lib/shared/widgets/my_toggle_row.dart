@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 class MyToggleRow extends StatefulWidget {
-
+  
   final double width;
   final String imageAssetPath;
   final String label;
-  bool currentValue;
+  final bool currentValue;
   final VoidCallback onPressed;
 
-  MyToggleRow({
+  const MyToggleRow({
     super.key,
     required this.width,
     required this.imageAssetPath,
@@ -23,6 +23,14 @@ class MyToggleRow extends StatefulWidget {
 }
 
 class _MyToggleRowState extends State<MyToggleRow> {
+  
+  late bool _currentValue;  // Internal state variable
+
+  @override
+  void initState() {
+    super.initState();
+    _currentValue = widget.currentValue;  // Initialize with the value from the widget
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +62,13 @@ class _MyToggleRowState extends State<MyToggleRow> {
               child: NesButton(
                 onPressed: () {
                   setState(() {
-                    widget.currentValue = !widget.currentValue;
+                    _currentValue = !_currentValue;
                   });
                   widget.onPressed();
                 },
-                type: widget.currentValue ? NesButtonType.success : NesButtonType.error,
+                type: _currentValue ? NesButtonType.success : NesButtonType.error,
                 child: NesIcon(
-                  iconData: widget.currentValue ? NesIcons.check : NesIcons.remove,
+                  iconData: _currentValue ? NesIcons.check : NesIcons.remove,
                   size: const Size.fromHeight(16),
                 ),
               ),

@@ -1,4 +1,4 @@
-import 'package:client_flutter/shared/models/storage.dart';
+import 'package:client_flutter/shared/models/password.dart';
 import 'package:client_flutter/shared/styles/my_text_field_style.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -9,73 +9,73 @@ var logger = Logger(
   printer: SimplePrinter()
 );
 
-class StorageUpdate extends StatefulWidget {
-  final Storage storage;
+class PasswordUpdate extends StatefulWidget {
+  final Password password;
 
-  const StorageUpdate({super.key, required this.storage});
+  const PasswordUpdate({super.key, required this.password});
 
-  static Future<Storage?> show(BuildContext context, Storage storage) async {
-    return await NesDialog.show<Storage>(
+  static Future<Password?> show(BuildContext context, Password password) async {
+    return await NesDialog.show<Password>(
       context: context, 
-      builder: (context) => StorageUpdate(storage: storage)
+      builder: (context) => PasswordUpdate(password: password)
     );
   }
 
   @override
-  StorageUpdateState createState() => StorageUpdateState();
+  PasswordUpdateState createState() => PasswordUpdateState();
 }
 
-class StorageUpdateState extends State<StorageUpdate> {
+class PasswordUpdateState extends State<PasswordUpdate> {
   
-  late Storage _storage;
+  late Password _password;
 
-  final formKey = GlobalKey<FormState>();
-  late TextEditingController tagController;
-  late TextEditingController titleController;
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _tagController;
+  late TextEditingController _titleController;
 
   final titleFocus = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _storage = widget.storage;
-    tagController = TextEditingController(text: _storage.tag);
-    titleController = TextEditingController(text: _storage.title);
+    _password = widget.password;
+    _tagController = TextEditingController(text: _password.tag);
+    _titleController = TextEditingController(text: _password.title);
   }
 
   @override
   void dispose() {
-    tagController.dispose();
-    titleController.dispose();
+    _tagController.dispose();
+    _titleController.dispose();
     titleFocus.dispose();
     super.dispose();
   }
 
   void _updateStorage() {
 
-    if (formKey.currentState?.validate() == false) return;
+    if (_formKey.currentState?.validate() == false) return;
 
-    _storage = Storage(
-      id: widget.storage.id,
-      tag: tagController.text,
-      title: titleController.text,
-      user: widget.storage.user
+    _password = Password(
+      id: widget.password.id,
+      tag: _tagController.text,
+      title: _titleController.text,
+      storage: widget.password.storage
     );
 
-    logger.f(_storage.toString());
+    logger.f(_password.toString());
 
-    Navigator.of(context).pop(_storage);
+    Navigator.of(context).pop(_password);
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: formKey,
+        key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              controller: tagController,
+              controller: _tagController,
               keyboardType: TextInputType.text,
               decoration: MyTextFieldStyle.build("Tag"),
               style: const TextStyle(fontFamily: 'minecraftia', fontSize: 14),
@@ -89,7 +89,7 @@ class StorageUpdateState extends State<StorageUpdate> {
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: titleController,
+              controller: _titleController,
               focusNode: titleFocus,
               keyboardType: TextInputType.visiblePassword,
               decoration: MyTextFieldStyle.build("Title"),
@@ -108,8 +108,8 @@ class StorageUpdateState extends State<StorageUpdate> {
               children: [
                 NesButton(
                   type: NesButtonType.success,
-                  child: const Text('Update'),
                   onPressed: _updateStorage,
+                  child: const Text('Update'),
                 ),
                 const SizedBox(width: 10),
                 NesButton(

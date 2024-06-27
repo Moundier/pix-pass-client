@@ -1,10 +1,10 @@
 
-import 'dart:convert';
-import 'package:client_flutter/shared/config/config_ambient.dart';
+import 'package:client_flutter/shared/config/config_app.dart';
+import 'package:client_flutter/shared/config/config_dio.dart';
 import 'package:client_flutter/shared/models/password.dart';
 import 'package:client_flutter/shared/models/storage.dart';
-import 'package:http/http.dart';
 import 'package:logger/logger.dart';
+import 'package:dio/dio.dart';
 
 var logger = Logger(
   output: ConsoleOutput(),
@@ -13,12 +13,16 @@ var logger = Logger(
 
 class PasswordService {
 
+  final Dio _dio = DioSingleton.dio;
+
   Future<Response> createPassword(Password password) async {
 
-    final response = await post(
-      Uri.parse('$url:9090/password'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(password),
+    final response = await _dio.post(
+      '$url:9090/password',
+      data: password,
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'} 
+      ),
     );
 
     return response;
@@ -26,10 +30,12 @@ class PasswordService {
 
   Future<Response> locateAllPassword(Storage storage) async {
 
-    final response = await post(
-      Uri.parse('$url:9090/password/all'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(storage)
+    final response = await _dio.post(
+      '$url:9090/password/all',
+      data: storage,
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+      )
     );
 
     return response;
@@ -37,10 +43,12 @@ class PasswordService {
 
   Future<Response> updatePassword(Password password) async {
 
-    final response = await put(
-      Uri.parse('$url:9090/password'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(password)
+    final response = await _dio.put(
+      '$url:9090/password',
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'}
+      ),
+      data: password
     );
 
     return response;
@@ -48,10 +56,12 @@ class PasswordService {
 
   Future<Response> deletePassword(Password password) async {
     
-    final response = await delete(
-      Uri.parse('$url:9090/storage'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(password),
+    final response = await _dio.delete(
+      '$url:9090/storage',
+      options: Options(
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      ),
+      data: password,
     );
   
     return response;

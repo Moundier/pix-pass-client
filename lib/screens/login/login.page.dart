@@ -12,7 +12,8 @@ import 'package:client_flutter/shared/styles/my_text_field_style.dart';
 import 'package:client_flutter/shared/widgets/my_divider_middle.dart';
 import 'package:client_flutter/shared/widgets/my_hyperlink_text.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:dio/dio.dart';
+
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
@@ -82,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
     final authenticated = await auth.authenticate();
 
     if (!authenticated) {
-      _error('Biometric authentication failed.');
+      _error('Biometric authentication canceled.');
     } else {
       if (!mounted) return;
       AnimationService.push(context, const StoragePage());
@@ -97,18 +98,22 @@ class _LoginPageState extends State<LoginPage> {
       _passwordController.text,
     );
 
+    logger.i('login.page.dart');
+    logger.i(response);
+
     await _responseHandler(response);
   }
 
   Future<void> _responseHandler(Response response) async {
 
     if (response.statusCode != 200) {
-      await _error("Error: ${response.statusCode} ${response.body}");
+      await _error("Error: ${response.statusCode} ${response.data}");
       return;
     }
 
-    Map<String, dynamic> responseBody = jsonDecode(response.body);
-
+    logger.i('handle_response');
+    logger.i(response.data);
+    Map responseBody = response.data;
     User user = User.fromJson(responseBody['user']);
     Token token = Token.fromJson(responseBody['tokens']);
 
