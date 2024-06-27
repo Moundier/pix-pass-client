@@ -15,11 +15,11 @@ class SecureStorage {
 
   final storage = const FlutterSecureStorage();
   
-  Future<void> setData(String key, String value) async {
+  Future<void> write(String key, String value) async {
     await storage.write(key: key, value: value); // encrypt AES
   }
 
-  Future<String> getData(String key) async {
+  Future<String> read(String key) async {
     String value = await storage.read(key: key) ?? 'No data found';
     return value;
   }

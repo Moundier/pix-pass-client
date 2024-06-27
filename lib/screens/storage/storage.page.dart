@@ -61,6 +61,8 @@ class StoragePageState extends State<StoragePage> {
   }
 
   Future<void> _locateAllStorage() async {
+
+    // get user id
     User? user = await authService.getUserData();
     Response response = await _tab1service.locateAllStorage(user!);
     List<dynamic> json = response.data; // Error:

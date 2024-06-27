@@ -44,7 +44,8 @@ class Tab2EditState extends State<Tab2Edit> {
   late User user;
 
   Future<void> _profile() async {
-    final userStored = await authService.getData('user');
+    
+    final userStored = await authService.read('user');
     Map<String, dynamic> attr = jsonDecode(userStored);
     user = User.fromJson(attr);
 
@@ -56,8 +57,6 @@ class Tab2EditState extends State<Tab2Edit> {
   }
 
   void _handleConfirm() async {
-
-    logger.f('Update Confirmed');
 
     final updatedUser = User(
       id: user.id, 
@@ -77,6 +76,7 @@ class Tab2EditState extends State<Tab2Edit> {
 
     if (response.statusCode != 200) {
       Navigator.pop(context);
+      return;
     }
 
     Navigator.pop(context, updatedUser);

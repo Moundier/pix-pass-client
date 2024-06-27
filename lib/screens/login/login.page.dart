@@ -13,6 +13,7 @@ import 'package:client_flutter/shared/widgets/my_divider_middle.dart';
 import 'package:client_flutter/shared/widgets/my_hyperlink_text.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
@@ -73,11 +74,10 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final auth = BiometryService(auth: LocalAuthentication());
-    final isSupported = await auth.isBiometricAvailable();
+    final isSupported = await auth.biometrySupported();
 
     if (!isSupported) {
       _error('Biometric authentication is not available on this device.');
-      return;
     }
 
     final authenticated = await auth.authenticate();
@@ -108,17 +108,38 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode != 200) {
       await _error("Error: ${response.statusCode} ${response.data}");
-      return;
     }
 
-    logger.i('handle_response');
-    logger.i(response.data);
-    Map responseBody = response.data;
-    User user = User.fromJson(responseBody['user']);
-    Token token = Token.fromJson(responseBody['tokens']);
+    Map resp = response.data;
+    User user = User.fromJson(resp['user']);
+    Token token = Token.fromJson(resp['tokens']);
 
-    await _authService.setData('user', jsonEncode(user));
-    await _authService.setData('token', jsonEncode(token));
+    int? userId = user.id;
+
+
+    Map<String, dynamic>? decodedToken = JwtDecoder.decode(token.toJson()['accessToken']);
+
+    await _authService.write('user_id', userId.toString());
+    await _authService.write('access_token', token.toJson()['accessToken']);
+    await _authService.write('refresh_token', token.toJson()['refreshToken']);
+    await _authService.write('biometric_enable<$userId>', 'false');
+
+    String a = await _authService.read('user_id');
+    String b = await _authService.read('access_token');
+    String c = await _authService.read('refresh_token');
+    String d = await _authService.read('biometric_enable<$userId>');
+    logger.f(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+    logger.i('Decoded Token');
+    logger.i(decodedToken);
+    logger.i(decodedToken['sub']);
+    logger.f(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+    logger.i(a);
+    logger.i(b);
+    logger.i(c);
+    logger.i(d);
+    logger.f(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+    
+    await _authService.write('user', jsonEncode(user));
 
     if (mounted) {
       AnimationService.push(context, const StoragePage());
@@ -131,6 +152,8 @@ class _LoginPageState extends State<LoginPage> {
       text: message,
       type: AlertType.error,
     );
+
+    return;
   }
 
   @override

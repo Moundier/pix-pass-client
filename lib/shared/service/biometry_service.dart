@@ -7,14 +7,17 @@ class BiometryService extends ChangeNotifier {
 
   BiometryService({required this.auth});
 
-  Future<bool> isBiometricAvailable() async {
-    final bool isBiometricCapable  = await auth.canCheckBiometrics;
-    return isBiometricCapable || await auth.isDeviceSupported();
+  Future<bool> biometrySupported() async {
+    final bool available  = await auth.canCheckBiometrics;
+    return available || await auth.isDeviceSupported();
   }
 
   Future<bool> authenticate() async {
     return await auth.authenticate(
-      localizedReason: 'Please authenticate for access'
+      localizedReason: 'Please authenticate for access',
+      options: const AuthenticationOptions(
+        biometricOnly: true,
+      ),
     );
   }
 

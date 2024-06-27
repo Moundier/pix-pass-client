@@ -1,9 +1,11 @@
 import 'dart:convert';
 
-import 'package:client_flutter/screens/user/user_update.page.dart';
+import 'package:client_flutter/screens/user/user.service.dart';
+import 'package:client_flutter/screens/user/user.widget.dart';
 import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
 import 'package:client_flutter/shared/widgets/my_divider.dart';
 import 'package:client_flutter/shared/widgets/my_toggle_row.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
@@ -26,6 +28,7 @@ class Tab2Page extends StatefulWidget {
 class Tab2PageState extends State<Tab2Page> {
 
   final _authService = SecureStorage();
+  final _userService = UserService();
 
   bool isSelected = false;
   bool biometryEnabled = false;
@@ -40,9 +43,12 @@ class Tab2PageState extends State<Tab2Page> {
   Future<void> _profile() async {
 
     await Future.delayed(const Duration(seconds: 3));
-    final user = await _authService.getData('user');
-    final attr = jsonDecode(user);
-    this.user = User.fromJson(attr);
+
+    int id = int.parse(await _authService.read('user_id'));
+    User user = User(id: id);
+    Response response = await _userService.getUserById(user);
+
+    this.user = response.data;
 
     if (!mounted) return;
 
@@ -57,7 +63,7 @@ class Tab2PageState extends State<Tab2Page> {
 
     final updatedUser = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Tab2Edit()),
+      MaterialPageRoute(builder: (context) => const Tab2Edit()),
     );
 
     if (updatedUser == null) {
@@ -68,7 +74,7 @@ class Tab2PageState extends State<Tab2Page> {
       user = updatedUser;
     });
 
-    await _authService.setData('user', jsonEncode(updatedUser.toJson()));
+    await _authService.write('user', jsonEncode(updatedUser));
   }
   
   Future<void> _biometryEnabled() async {
@@ -81,9 +87,6 @@ class Tab2PageState extends State<Tab2Page> {
 
     _profile();
     _biometryEnabled();
-
-    logger.i('biometry value:');
-    logger.i(biometryEnabled);
   }
 
   @override
@@ -195,15 +198,15 @@ class Tab2PageState extends State<Tab2Page> {
 
           const SizedBox(height: 10,),
 
-          // MyToggleRow(
-          //   width: 400, 
-          //   imageAssetPath: 'assets/images/face_id.png', 
-          //   label: "Enable face id", 
-          //   currentValue: false,
-          //   onPressed: () {
+          MyToggleRow(
+            width: 400, 
+            imageAssetPath: 'assets/images/face_id.png', 
+            label: "Enable face id", 
+            currentValue: false,
+            onPressed: () {
               
-          //   },
-          // ),
+            },
+          ),
 
           const SizedBox(height: 20,),
 

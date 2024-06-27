@@ -27,8 +27,6 @@ class Tab3Page extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // Information divider
-
             const Row(
               children: [
                 SizedBox(height: 30,),
@@ -50,21 +48,21 @@ class Tab3Page extends StatelessWidget {
             ),
 
             const SizedBox(height: 10),
-            MyTextStyle(text: "Developed by Garamoundier"),
+            const MyTextStyle(text: "Developed by Garamoundier"),
 
             const SizedBox(height: 10),
-            MyTextStyle(text: "Pix Pass simplifies password management"),
+            const MyTextStyle(text: "Pix Pass simplifies password management"),
 
             const SizedBox(height: 10),
-            MyTextStyle(text: "Includes encryption and biometric security"),
+            const MyTextStyle(text: "Includes encryption and biometric security"),
 
             const SizedBox(height: 10),
-            MyTextStyle(text: "Thank you for choosing Pix Pass"),
+            const MyTextStyle(text: "Thank you for choosing Pix Pass"),
+            
             const SizedBox(height: 10),
-
-            MyTextStyle(text: "garamoundier.developer@protonmail.com"),
+            const MyTextStyle(text: "garamoundier.developer@protonmail.com"),
+            
             const SizedBox(height: 10),
-
             NesButton(type: NesButtonType.normal, child: const Text('Donate'), onPressed: () => {} ,),
 
             const SizedBox(height: 20,),

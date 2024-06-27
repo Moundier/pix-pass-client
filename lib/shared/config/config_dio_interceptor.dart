@@ -10,17 +10,15 @@ class DioInterceptor extends Interceptor {
   
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-
-    
     options.headers['Authorization'] = 'Bearer your_token_here';
     logger.i('Req[${options.method}] => ${options.path}');
-    return handler.next(options); // Continue with the request
+    return handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     logger.i('Res[${response.statusCode}] => ${response.requestOptions.path}');
-    return handler.next(response); // Continue with the response
+    return handler.next(response);
   }
 
   @override

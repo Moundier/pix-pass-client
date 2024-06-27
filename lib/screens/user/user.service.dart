@@ -27,4 +27,13 @@ class UserService {
     return response;
   }
 
+  Future<Response> getUserById(User user) async {
+    final response = await _dio.post('$url/', 
+      data: user, 
+      options: Options(headers: {'Content-type': 'application/json; charset=UTF-8'})
+    );
+
+    return response;
+  }
+
 }
