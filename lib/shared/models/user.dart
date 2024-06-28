@@ -5,20 +5,14 @@ class User {
   String? firstName;
   String? lastName;
   String? email;
-  String? password;
-  String? role;
   DateTime? termsAcceptedDate;
-  bool? tutorialComplete;
 
   User({
     this.id,
     this.firstName,
     this.lastName,
     this.email,
-    this.password,
-    this.role,
     this.termsAcceptedDate,
-    this.tutorialComplete,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -27,10 +21,7 @@ class User {
       firstName: json['firstName'],
       lastName: json['lastName'],
       email: json['email'],
-      password: json['password'],
-      role:  json['role'],
       termsAcceptedDate: DateTime.parse(json['termsAcceptedDate']),
-      tutorialComplete: json['tutorialComplete'],
     );
   }
 
@@ -40,10 +31,7 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
-      'password': password,
-      'role': role,
-      'termsAcceptedDate': termsAcceptedDate!.toIso8601String(),
-      'tutorialComplete': tutorialComplete,
+      'termsAcceptedDate': termsAcceptedDate,
     };
   }
 
@@ -54,9 +42,7 @@ class User {
       '  firstName: $firstName,'
       '  lastName: $lastName,'
       '  email: $email,'
-      '  role: $role,'
       '  termsAcceptedDate: $termsAcceptedDate,'
-      '  tutorialComplete: $tutorialComplete'
     '}';
   }
   

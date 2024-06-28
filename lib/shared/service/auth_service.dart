@@ -2,7 +2,6 @@
 import 'dart:convert';
 
 import 'package:client_flutter/shared/models/token_dto.dart';
-import 'package:client_flutter/shared/models/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
@@ -20,14 +19,14 @@ class SecureStorage {
   }
 
   Future<String> read(String key) async {
-    String value = await storage.read(key: key) ?? 'No data found';
+    String value = await storage.read(key: key) ?? 'false_'; // 
     return value;
   }
 
-  Future<User?> getUserData() async {
-    String? request = await storage.read(key: 'user');
-    Map<String, dynamic> json = jsonDecode(request ?? '');
-    return User.fromJson(json);
+  Future<void> erase() async {
+    await storage.delete(key: 'user_id');
+    await storage.delete(key: 'access_token');
+    await storage.delete(key: 'refresh_token');
   }
 
   Future<bool> exists(String key) async {
@@ -43,18 +42,5 @@ class SecureStorage {
     return value.toLowerCase() == 'true';
   }
 
-  Future<void> toggleOption(String key) async {
-    String? currentValue = await storage.read(key: key);
-    bool newValue = currentValue != 'true';
-    await storage.write(key: key, value: newValue.toString());
-  }
-
-  Future<Token?> getTokens() async {
-    String? request = await storage.read(key: 'token');
-
-    Map<String, dynamic> json = jsonDecode(request ?? '');
-
-    return Token.fromJson(json);
-  }
 
 }

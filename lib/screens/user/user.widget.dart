@@ -46,8 +46,8 @@ class Tab2EditState extends State<Tab2Edit> {
   Future<void> _profile() async {
     
     final userStored = await authService.read('user');
-    Map<String, dynamic> attr = jsonDecode(userStored);
-    user = User.fromJson(attr);
+    final json = jsonDecode(userStored);
+    user = User.fromJson(json);
 
     setState(() {
       _firstNameController.text = user.firstName ?? '';
@@ -64,9 +64,6 @@ class Tab2EditState extends State<Tab2Edit> {
       lastName: _lastNameController.text,
       email: _emailController.text,
       termsAcceptedDate: user.termsAcceptedDate,
-      password: user.password,
-      role: user.role,
-      tutorialComplete: user.tutorialComplete
     );
 
     logger.f(updatedUser.toString());

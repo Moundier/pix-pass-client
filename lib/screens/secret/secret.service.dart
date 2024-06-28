@@ -17,8 +17,10 @@ class PasswordService {
 
   Future<Response> createPassword(Password password) async {
 
+    final endpoint = '$url:9090/password';
+
     final response = await _dio.post(
-      '$url:9090/password',
+      endpoint,
       data: password,
       options: Options(
         headers: {'Content-Type': 'application/json; charset=UTF-8'} 
@@ -30,8 +32,10 @@ class PasswordService {
 
   Future<Response> locateAllPassword(Storage storage) async {
 
+    final endpoint = '$url:9090/password/all';
+
     final response = await _dio.post(
-      '$url:9090/password/all',
+      endpoint,
       data: storage,
       options: Options(
         headers: {'Content-Type': 'application/json; charset=UTF-8'}
@@ -43,8 +47,10 @@ class PasswordService {
 
   Future<Response> updatePassword(Password password) async {
 
+    final endpoint = '$url:9090/password';
+
     final response = await _dio.put(
-      '$url:9090/password',
+      endpoint,
       options: Options(
         headers: {'Content-Type': 'application/json; charset=UTF-8'}
       ),
@@ -56,8 +62,10 @@ class PasswordService {
 
   Future<Response> deletePassword(Password password) async {
     
+    final endpoint = '$url:9090/storage';
+
     final response = await _dio.delete(
-      '$url:9090/storage',
+      endpoint,
       options: Options(
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
       ),

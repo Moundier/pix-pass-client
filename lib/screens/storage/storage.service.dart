@@ -13,28 +13,29 @@ var logger = Logger(
 class Tab1Service {
 
   final Dio _dio = DioSingleton.dio;
+  final Options options = Options(
+    headers: {'Content-Type':'application/json; charset=UTF-8'}
+  );
 
   Future<Response> createStorage(Storage storage) async {
 
+    final endpoint = '$url:9090/storage';
+
     final response = await _dio.post(
-      '$url:9090/storage',
-      data: storage,
-      options: Options(
-        headers: {'Content-Type': 'application/json; charset=UTF-8'} 
-      ),
+      endpoint, 
+      data: storage, 
+      options: options,
     );
 
     return response;
   }
 
   Future<Response> locateAllStorage(User user) async {
+    
+    final endpoint = '$url:9090/storage/all';
 
     final response = await _dio.post(
-      '$url:9090/storage/all',
-      data: user,
-      options: Options(
-        headers: {'Content-Type': 'application/json; charset=UTF-8'}, 
-      ),
+      endpoint, data: user, options: options,
     );
 
     return response;
@@ -42,12 +43,12 @@ class Tab1Service {
 
   Future<Response> updateStorage(Storage storage) async {
 
+    final endpoint = '$url:9090/storage';
+
     final response = await _dio.put(
-      '$url:9090/storage',
-      data: storage,
-      options: Options(
-        headers:  {'Content-Type': 'application/json; charset=UTF-8'}
-      ),
+      endpoint, 
+      data: storage, 
+      options: options,
     );
 
     return response;
@@ -55,12 +56,12 @@ class Tab1Service {
 
   Future<Response> deleteStorage(Storage storage) async {
     
+    final endpoint = '$url:9090/storage';
+
     final response = await _dio.delete(
-      '$url:9090/storage',
-      data: storage,
-      options: Options(
-        headers: {'Content-Type': 'application/json; charset=UTF-8'}
-      ) ,
+      endpoint, 
+      data: storage, 
+      options: options
     );
   
     return response;

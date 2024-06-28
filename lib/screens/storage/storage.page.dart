@@ -10,8 +10,15 @@ import 'package:client_flutter/shared/widgets/my_input_container.dart';
 import 'package:client_flutter/shared/widgets/my_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger(
+  output: ConsoleOutput(),
+  printer: SimplePrinter()
+);
 
 class StoragePage extends StatefulWidget {
+
   const StoragePage({super.key});
   
   @override
@@ -19,13 +26,14 @@ class StoragePage extends StatefulWidget {
 }
 
 class StoragePageState extends State<StoragePage> {
+
+  final _secureStorage = SecureStorage();
   final _tab1service = Tab1Service();
-  final authService = SecureStorage();
 
   bool showPlaceholder = false;
   bool showTextField = false;
 
-  List<Storage> storages = []; // List<Storage>
+  List<Storage> storages = [];
 
   void showInput() {
     setState(() {
@@ -36,6 +44,7 @@ class StoragePageState extends State<StoragePage> {
   @override
   void initState() {
     super.initState();
+
     _locateAllStorage();
   }
 
@@ -45,13 +54,15 @@ class StoragePageState extends State<StoragePage> {
   }
 
   Future<void> _createStorage(String tag, String title) async {
-    User? user = await authService.getUserData();
-    final obj = Storage(tag: tag, title: title, user: user!);
+    
+    int id =  int.parse(await _secureStorage.read('user_id'));
 
-    Response response = await _tab1service.createStorage(obj);
+    User? user = User(id: id);
+    Storage storage = Storage(tag: tag, title: title, user: user);
+    Response response = await _tab1service.createStorage(storage);
     
     final json = response.data;
-    Storage storage = Storage.parse(json);
+    storage = Storage.parse(json);
 
     setState(() {
       storages.add(storage);
@@ -62,17 +73,19 @@ class StoragePageState extends State<StoragePage> {
 
   Future<void> _locateAllStorage() async {
 
-    // get user id
-    User? user = await authService.getUserData();
-    Response response = await _tab1service.locateAllStorage(user!);
-    List<dynamic> json = response.data; // Error:
+    int id =  int.parse(await _secureStorage.read('user_id'));
+    User user = User(id: id);
+    Response response = await _tab1service.locateAllStorage(user);
 
-    if (!mounted) return; // Prevents error: setState called after dispose
+    List<dynamic> json = response.data;
+
+    if (!mounted) return;
 
     setState(() {
       storages = json.map((e) => Storage.parse(e)).toList();
       showPlaceholder = storages.isEmpty;
     });
+
   }
 
   Future<void> _updateStorage(Storage storage) async {

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:client_flutter/screens/user/user.service.dart';
 import 'package:client_flutter/screens/user/user.widget.dart';
 import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
@@ -27,35 +25,52 @@ class Tab2Page extends StatefulWidget {
 
 class Tab2PageState extends State<Tab2Page> {
 
-  final _authService = SecureStorage();
   final _userService = UserService();
+  final _secureStorage = SecureStorage();
+
+  late User _user;
+  late String? _termsAcecepted;
+  bool _loading = true;
+
+  NesHourglassLoadingIndicator loadingIndicator = const NesHourglassLoadingIndicator();
+
 
   bool isSelected = false;
   bool biometryEnabled = false;
   bool recognitionEnabled = false;
 
-  User? user;
-  String? termsAcecepted;
-  bool _loading = true;
+  Future<void> _getUser() async {
+    _user = User(id: int.parse(await _secureStorage.read('user_id')));
+  }
 
-  NesHourglassLoadingIndicator loadingIndicator = const NesHourglassLoadingIndicator();
+  @override
+  void initState() {
+    super.initState();
+
+    _getUser();
+
+    _profile();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   Future<void> _profile() async {
 
     await Future.delayed(const Duration(seconds: 3));
 
-    int id = int.parse(await _authService.read('user_id'));
-    User user = User(id: id);
-    Response response = await _userService.getUserById(user);
-
-    this.user = response.data;
+    Response response = await _userService.getUserById(_user);    
+    
+    final json = response.data;
+    _user = User.fromJson(json);
+    _termsAcecepted = _user.termsAcceptedDate.toString();
 
     if (!mounted) return;
 
-    termsAcecepted = this.user?.termsAcceptedDate.toString();
-    
     setState(() {
-      _loading = false; // Set loading to false once user profile is fetched
+      _loading = false; 
     });
   }
 
@@ -66,33 +81,34 @@ class Tab2PageState extends State<Tab2Page> {
       MaterialPageRoute(builder: (context) => const Tab2Edit()),
     );
 
-    if (updatedUser == null) {
-      return;
-    }
+    if (updatedUser == null) return;
 
     setState(() {
-      user = updatedUser;
+      _user = updatedUser;
     });
-
-    await _authService.write('user', jsonEncode(updatedUser));
   }
   
-  Future<void> _biometryEnabled() async {
-    biometryEnabled = await _authService.isEnabled('touch_id');
+  Future<void> _switchBiometry() async {
+    logger.i('_switchBiometry');
+
+    final id = _user.id.toString();
+    final key = 'biometric_enabled_$id';
+    final currentState = await _secureStorage.read(key);
+
+    // Initialize with 'false' if no state is found
+    final state = currentState;
+
+    String enabled = state;
+
+    // Toggle the boolean value
+    final value = enabled != 'true';
+    final toggleBool = value ? 'true' : 'false';
+
+    logger.f('New biometric state for user $id: $toggleBool');
+
+    await _secureStorage.write(key, toggleBool);
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    _profile();
-    _biometryEnabled();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +162,7 @@ class Tab2PageState extends State<Tab2Page> {
                 children: [
 
                   Text(
-                    user!.firstName ?? '',
+                    _user.firstName ?? '',
                     style: const TextStyle(
                       fontSize: 16,
                       fontFamily: 'minecraftia',
@@ -155,7 +171,7 @@ class Tab2PageState extends State<Tab2Page> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    termsAcecepted ?? '', // Date time
+                    _termsAcecepted ?? '', // Date time
                     style: const TextStyle(
                       fontSize: 12,
                       fontFamily: 'minecraftia',
@@ -191,9 +207,7 @@ class Tab2PageState extends State<Tab2Page> {
             imageAssetPath: 'assets/images/touch_id.png', 
             label: "Enable touch id", 
             currentValue: biometryEnabled,
-            onPressed: () {
-              _authService.toggleOption('touch_id');
-            },
+            onPressed: _switchBiometry,
           ),
 
           const SizedBox(height: 10,),

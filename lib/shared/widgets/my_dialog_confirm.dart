@@ -1,10 +1,12 @@
 import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/shared/service/animate_service.dart';
+import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
 
 class MyDialogConfirm {
+
 
   final String? title;
   final String? extraMessage;
@@ -17,6 +19,10 @@ class MyDialogConfirm {
   });
 
   static Future<void> logout(BuildContext context) async {
+
+
+    final _secureStorage = SecureStorage();
+
     await NesDialog.show<void>(
       context: context,
       builder: (_) => Column(
@@ -34,6 +40,7 @@ class MyDialogConfirm {
                   type: NesButtonType.success,
                   child: const Text('Yes'),
                   onPressed: () {
+                    _secureStorage.erase();
                     AnimationService.push(context, LoginPage());
                   },
                 ),
@@ -47,7 +54,7 @@ class MyDialogConfirm {
                   type: NesButtonType.error,
                   child: const Text('No'),
                   onPressed: () {
-                    AnimationService.push(context, LoginPage());
+                    AnimationService.pop(context);
                   },
                 ),
               ),

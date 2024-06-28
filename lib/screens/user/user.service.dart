@@ -14,23 +14,29 @@ class UserService {
 
   final Dio _dio = DioSingleton.dio;
 
+  final options = Options(headers: {'Content-type': 'application/json; charset=UTF-8'});
+
   Future<Response> updateUser(User user) async {
     
+    final endpoint = '$url:9090/user'; 
+
     final response = await _dio.put(
-      '$url:9090/user',
+      endpoint,
       data: user,
-      options: Options(
-        headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      ),
+      options: options,
     );
     
     return response;
   }
 
   Future<Response> getUserById(User user) async {
-    final response = await _dio.post('$url/', 
+
+    final endpoint = '$url:9090/user';
+
+    final response = await _dio.post(
+      endpoint,
       data: user, 
-      options: Options(headers: {'Content-type': 'application/json; charset=UTF-8'})
+      options: options
     );
 
     return response;

@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:client_flutter/screens/login/login.service.dart';
 import 'package:client_flutter/screens/register/register.page.dart';
 import 'package:client_flutter/screens/storage/storage.page.dart';
-import 'package:client_flutter/shared/models/token_dto.dart';
-import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/alert_service.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:client_flutter/shared/service/biometry_service.dart';
@@ -82,12 +78,14 @@ class _LoginPageState extends State<LoginPage> {
 
     final authenticated = await auth.authenticate();
 
-    if (!authenticated) {
-      _error('Biometric authentication canceled.');
-    } else {
-      if (!mounted) return;
+    if (!mounted) return;
+
+    if (authenticated) {
       AnimationService.push(context, const StoragePage());
+      return;
     }
+
+    _error('Biometric authentication canceled.');
   }
 
   Future<void> _login() async {
@@ -98,9 +96,6 @@ class _LoginPageState extends State<LoginPage> {
       _passwordController.text,
     );
 
-    logger.i('login.page.dart');
-    logger.i(response);
-
     await _responseHandler(response);
   }
 
@@ -110,36 +105,17 @@ class _LoginPageState extends State<LoginPage> {
       await _error("Error: ${response.statusCode} ${response.data}");
     }
 
-    Map resp = response.data;
-    User user = User.fromJson(resp['user']);
-    Token token = Token.fromJson(resp['tokens']);
+    Map token = response.data;
 
-    int? userId = user.id;
+    Map? decodedToken = JwtDecoder.decode(token['accessToken']);
 
+    int? id = int.parse(decodedToken['sub']);
+    String see = await _authService.read('biometric_enabled');
+    logger.f('Lets see: $see');
 
-    Map<String, dynamic>? decodedToken = JwtDecoder.decode(token.toJson()['accessToken']);
-
-    await _authService.write('user_id', userId.toString());
-    await _authService.write('access_token', token.toJson()['accessToken']);
-    await _authService.write('refresh_token', token.toJson()['refreshToken']);
-    await _authService.write('biometric_enable<$userId>', 'false');
-
-    String a = await _authService.read('user_id');
-    String b = await _authService.read('access_token');
-    String c = await _authService.read('refresh_token');
-    String d = await _authService.read('biometric_enable<$userId>');
-    logger.f(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-    logger.i('Decoded Token');
-    logger.i(decodedToken);
-    logger.i(decodedToken['sub']);
-    logger.f(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-    logger.i(a);
-    logger.i(b);
-    logger.i(c);
-    logger.i(d);
-    logger.f(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-    
-    await _authService.write('user', jsonEncode(user));
+    await _authService.write('user_id', id.toString());
+    await _authService.write('access_token', token['accessToken']);
+    await _authService.write('refresh_token', token['refreshToken']);
 
     if (mounted) {
       AnimationService.push(context, const StoragePage());
