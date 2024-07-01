@@ -30,6 +30,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  final _biometricService = BiometryService(auth: LocalAuthentication());
   final _secureService = SecureStorage();
   final _loginService = LoginService();
 
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void biometricAuthentication() async {
+  void performBiometry() async {
 
     final read = await _secureService.read('biometric_enabled');
     final status = read.split(":")[0];
@@ -67,8 +68,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    final _biometryService = BiometryService(auth: LocalAuthentication());
-    final supported = await _biometryService.biometrySupported();
+    final supported = await _biometricService.biometrySupported();
 
     if (!supported) {
       const msg = 'Biometry unavailable.';
@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    final authenticated = await _biometryService.authBiometry();
+    final authenticated = await _biometricService.authBiometry();
 
     if (!authenticated) {
       const msg = 'Canceled.';
@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(width: 25),
                     NesButton(
                       type: NesButtonType.primary,
-                      onPressed: biometricAuthentication,
+                      onPressed: performBiometry,
                       child: Image.asset('assets/images/touch_id.png', width: 50),
                     ),
                   ],

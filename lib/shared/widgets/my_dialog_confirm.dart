@@ -20,9 +20,6 @@ class MyDialogConfirm {
 
   static Future<void> logout(BuildContext context) async {
 
-
-    final _secureStorage = SecureStorage();
-
     await NesDialog.show<void>(
       context: context,
       builder: (_) => Column(
@@ -40,7 +37,6 @@ class MyDialogConfirm {
                   type: NesButtonType.success,
                   child: const Text('Yes'),
                   onPressed: () {
-                    _secureStorage.erase();
                     AnimationService.push(context, LoginPage());
                   },
                 ),
