@@ -1,6 +1,6 @@
 import 'package:client_flutter/screens/login/login.service.dart';
 import 'package:client_flutter/screens/register/register.page.dart';
-import 'package:client_flutter/screens/storage/storage.page.dart';
+import 'package:client_flutter/screens/tab1/storage.page.dart';
 import 'package:client_flutter/shared/service/alert_service.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:client_flutter/shared/service/biometry_service.dart';
@@ -30,7 +30,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  final _authService = SecureStorage();
+  final _secureService = SecureStorage();
   final _loginService = LoginService();
 
   final _formKey = GlobalKey<FormState>();
@@ -56,36 +56,40 @@ class _LoginPageState extends State<LoginPage> {
 
   void biometricAuthentication() async {
 
-    bool hasBiometric = await _authService.exists('touch_id');
-    bool biometricEnabled = await _authService.isEnabled('touch_id');
+    final read = await _secureService.read('biometric_enabled');
+    final status = read.split(":")[0];
+    final userId = read.split(':')[1];
+    logger.f(status);
 
-    if (!hasBiometric) {
-      _error('Please login!');
+    if (status == 'false') {
+      const msg = 'Must enable as config.';
+      _error(msg);
       return;
     }
 
-    if (!biometricEnabled) {
-      _error('Must enable as config.');
+    final _biometryService = BiometryService(auth: LocalAuthentication());
+    final supported = await _biometryService.biometrySupported();
+
+    if (!supported) {
+      const msg = 'Biometry unavailable.';
+      _error(msg);
       return;
     }
 
-    final auth = BiometryService(auth: LocalAuthentication());
-    final isSupported = await auth.biometrySupported();
+    final authenticated = await _biometryService.authBiometry();
 
-    if (!isSupported) {
-      _error('Biometric authentication is not available on this device.');
-    }
-
-    final authenticated = await auth.authenticate();
-
-    if (!mounted) return;
-
-    if (authenticated) {
-      AnimationService.push(context, const StoragePage());
+    if (!authenticated) {
+      const msg = 'Canceled.';
+      _error(msg);
       return;
     }
 
-    _error('Biometric authentication canceled.');
+    await _secureService.write('user_id', userId);
+
+    if (mounted) {
+      AnimationService.push(context, const Tab1Page());
+      return;
+    }
   }
 
   Future<void> _login() async {
@@ -102,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _responseHandler(Response response) async {
 
     if (response.statusCode != 200) {
-      await _error("Error: ${response.statusCode} ${response.data}");
+      await _error("Error: ${response.statusMessage}");
     }
 
     Map token = response.data;
@@ -110,15 +114,13 @@ class _LoginPageState extends State<LoginPage> {
     Map? decodedToken = JwtDecoder.decode(token['accessToken']);
 
     int? id = int.parse(decodedToken['sub']);
-    String see = await _authService.read('biometric_enabled');
-    logger.f('Lets see: $see');
 
-    await _authService.write('user_id', id.toString());
-    await _authService.write('access_token', token['accessToken']);
-    await _authService.write('refresh_token', token['refreshToken']);
+    await _secureService.write('user_id', id.toString());
+    await _secureService.write('access_token', token['accessToken']);
+    await _secureService.write('refresh_token', token['refreshToken']);
 
     if (mounted) {
-      AnimationService.push(context, const StoragePage());
+      AnimationService.push(context, const Tab1Page());
     }
   }
 

@@ -1,5 +1,5 @@
-import 'package:client_flutter/screens/user/user.service.dart';
-import 'package:client_flutter/screens/user/user.widget.dart';
+import 'package:client_flutter/screens/tab2/user.service.dart';
+import 'package:client_flutter/screens/tab2/user.widget.dart';
 import 'package:client_flutter/shared/widgets/my_dialog_confirm.dart';
 import 'package:client_flutter/shared/widgets/my_divider.dart';
 import 'package:client_flutter/shared/widgets/my_toggle_row.dart';
@@ -26,7 +26,7 @@ class Tab2Page extends StatefulWidget {
 class Tab2PageState extends State<Tab2Page> {
 
   final _userService = UserService();
-  final _secureStorage = SecureStorage();
+  final _secureService = SecureStorage();
 
   late User _user;
   late String? _termsAcecepted;
@@ -34,13 +34,18 @@ class Tab2PageState extends State<Tab2Page> {
 
   NesHourglassLoadingIndicator loadingIndicator = const NesHourglassLoadingIndicator();
 
-
   bool isSelected = false;
-  bool biometryEnabled = false;
+  bool biometry = false;
   bool recognitionEnabled = false;
 
   Future<void> _getUser() async {
-    _user = User(id: int.parse(await _secureStorage.read('user_id')));
+    _user = User(id: int.parse(await _secureService.read('user_id')));
+  }
+
+  Future<void> _getBiometryState() async {
+    final reader = await _secureService.read('biometric_enabled');
+    final state = reader.split(":")[0];
+    biometry = bool.parse(state);
   }
 
   @override
@@ -48,6 +53,8 @@ class Tab2PageState extends State<Tab2Page> {
     super.initState();
 
     _getUser();
+
+    _getBiometryState();
 
     _profile();
   }
@@ -92,21 +99,19 @@ class Tab2PageState extends State<Tab2Page> {
     logger.i('_switchBiometry');
 
     final id = _user.id.toString();
-    final key = 'biometric_enabled_$id';
-    final currentState = await _secureStorage.read(key);
+    const key = 'biometric_enabled';
+    final currentState = await _secureService.read(key);
 
-    // Initialize with 'false' if no state is found
-    final state = currentState;
-
-    String enabled = state;
+    final state = (currentState).split(':');
+    final bool enabled = (state[0] == 'true');
 
     // Toggle the boolean value
-    final value = enabled != 'true';
-    final toggleBool = value ? 'true' : 'false';
+    final toggle = '${!enabled ? 'true' : 'false'}:$id';
 
-    logger.f('New biometric state for user $id: $toggleBool');
+    await _secureService.write(key, toggle);
 
-    await _secureStorage.write(key, toggleBool);
+    final value = await _secureService.read(key);
+    logger.f('Toggle value: $value');
   }
 
 
@@ -206,7 +211,7 @@ class Tab2PageState extends State<Tab2Page> {
             width: 400, 
             imageAssetPath: 'assets/images/touch_id.png', 
             label: "Enable touch id", 
-            currentValue: biometryEnabled,
+            currentValue: biometry,
             onPressed: _switchBiometry,
           ),
 

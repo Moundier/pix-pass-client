@@ -1,4 +1,4 @@
-import 'package:client_flutter/screens/user/user.service.dart';
+import 'package:client_flutter/screens/tab2/user.service.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:client_flutter/shared/styles/my_text_field_style.dart';
@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:nes_ui/nes_ui.dart';
-import 'dart:convert';
 
 var logger = Logger(
   output: ConsoleOutput(),
@@ -45,9 +44,10 @@ class Tab2EditState extends State<Tab2Edit> {
 
   Future<void> _profile() async {
     
-    final userStored = await authService.read('user');
-    final json = jsonDecode(userStored);
-    user = User.fromJson(json);
+    final id = int.parse(await authService.read('user_id'));
+    User user = User(id: id);
+    Response response = await _userService.getUserById(user);
+    user = User.fromJson(response.data);
 
     setState(() {
       _firstNameController.text = user.firstName ?? '';

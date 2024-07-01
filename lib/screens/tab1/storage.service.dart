@@ -13,9 +13,8 @@ var logger = Logger(
 class Tab1Service {
 
   final Dio _dio = DioSingleton.dio;
-  final Options options = Options(
-    headers: {'Content-Type':'application/json; charset=UTF-8'}
-  );
+  
+  final Options options = Options(headers: {'Content-Type':'application/json; charset=UTF-8'});
 
   Future<Response> createStorage(Storage storage) async {
 
@@ -35,7 +34,9 @@ class Tab1Service {
     final endpoint = '$url:9090/storage/all';
 
     final response = await _dio.post(
-      endpoint, data: user, options: options,
+      endpoint, 
+      data: user, 
+      options: options,
     );
 
     return response;

@@ -1,5 +1,6 @@
-import 'package:client_flutter/screens/storage/storage.widget.dart';
-import 'package:client_flutter/screens/storage/storage.service.dart';
+import 'package:client_flutter/screens/tab1/storage.widget.dart';
+import 'package:client_flutter/screens/tab1/storage.service.dart';
+import 'package:client_flutter/screens/tab2/user.service.dart';
 import 'package:client_flutter/shared/models/storage.dart';
 import 'package:client_flutter/shared/models/user.dart';
 import 'package:client_flutter/shared/service/auth_service.dart';
@@ -17,23 +18,25 @@ var logger = Logger(
   printer: SimplePrinter()
 );
 
-class StoragePage extends StatefulWidget {
+class Tab1Page extends StatefulWidget {
 
-  const StoragePage({super.key});
+  const Tab1Page({super.key});
   
   @override
-  State<StoragePage> createState() => StoragePageState();
+  State<Tab1Page> createState() => Tab1PageState();
 }
 
-class StoragePageState extends State<StoragePage> {
+class Tab1PageState extends State<Tab1Page> {
 
   final _secureStorage = SecureStorage();
   final _tab1service = Tab1Service();
+  final _userService = UserService();
 
   bool showPlaceholder = false;
   bool showTextField = false;
 
   List<Storage> storages = [];
+  late User _user;
 
   void showInput() {
     setState(() {
@@ -45,6 +48,8 @@ class StoragePageState extends State<StoragePage> {
   void initState() {
     super.initState();
 
+    _getUserById();
+
     _locateAllStorage();
   }
 
@@ -53,13 +58,23 @@ class StoragePageState extends State<StoragePage> {
     super.dispose();
   }
 
-  Future<void> _createStorage(String tag, String title) async {
-    
-    int id =  int.parse(await _secureStorage.read('user_id'));
+  Future<void> _getUserById() async {
 
-    User? user = User(id: id);
-    Storage storage = Storage(tag: tag, title: title, user: user);
+    User user = User(id: int.parse(await _secureStorage.read('user_id')));
+    
+    Response response = await _userService.getUserById(user); 
+
+    _user = User.fromJson(response.data);
+  }
+
+  Future<void> _createStorage(String tag, String title) async {
+
+    User user = _user;
+    user.termsAcceptedDate = null;
+    Storage storage = Storage(tag: tag, title: title, user: _user);
+
     Response response = await _tab1service.createStorage(storage);
+    logger.f(response);
     
     final json = response.data;
     storage = Storage.parse(json);
