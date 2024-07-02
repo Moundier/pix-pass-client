@@ -1,12 +1,9 @@
 import 'package:client_flutter/screens/login/login.page.dart';
 import 'package:client_flutter/shared/service/animate_service.dart';
-import 'package:client_flutter/shared/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:nes_ui/nes_ui.dart';
 
-
 class MyDialogConfirm {
-
 
   final String? title;
   final String? extraMessage;

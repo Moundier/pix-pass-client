@@ -95,6 +95,8 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
+    logger.f(await _secureService.read('accessToken'));
+
     Response response = await _loginService.login(
       _emailController.text,
       _passwordController.text,
@@ -105,7 +107,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _responseHandler(Response response) async {
 
+
     if (response.statusCode != 200) {
+      logger.f('The response is this');
       await _error("Error: ${response.statusMessage}");
     }
 

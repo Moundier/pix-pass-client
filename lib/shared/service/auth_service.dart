@@ -19,24 +19,12 @@ class SecureStorage {
     return await storage.read(key: key) ?? 'false_'; // AES dencryption
   }
 
-  Future<void> erase() async {
-    await storage.delete(key: 'user_id');
-    await storage.delete(key: 'access_token');
-    await storage.delete(key: 'refresh_token');
+  Future<void> deleteAll() async {
+    storage.deleteAll();
   }
 
   Future<bool> exists(String key) async {
     String? value = await storage.read(key: key);
     return value != null;
   }
-
-  Future<bool> isEnabled(String key) async {
-    String? value = await storage.read(key: key);
-    
-    if (value == null) return false; // Key not found, consider it disabled
-
-    return value.toLowerCase() == 'true';
-  }
-
-
 }
